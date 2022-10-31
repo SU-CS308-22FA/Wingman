@@ -1,0 +1,27 @@
+{
+  "name": "wingman",
+  "version": "1.0.0",
+  "description": "wingman package",
+  "main": "index.js",
+  "scripts": {
+    "test": "hello",
+    "start": "cd server && npm install && node index.js",
+    "heroku-postbuild": "cd client && npm install && npm run build"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/SU-CS308-22FA/Wingman.git"
+  },
+  "keywords": [
+    "tff"
+  ],
+  "author": "deniz can",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/SU-CS308-22FA/Wingman/issues"
+  },
+  "homepage": "https://github.com/SU-CS308-22FA/Wingman#readme",
+  "dependencies": {
+    "dotenv": "^16.0.3"
+  }
+}
