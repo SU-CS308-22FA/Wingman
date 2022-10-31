@@ -1,20 +1,22 @@
+import app from "./server.js"
+import dotenv from "dotenv";
+import express from "express";
+import path from  "path";
+
 //Initialize env path
 dotenv.config({
     path: '../.env'
 })
+const __dirname = "wingman"
+
+const API_URL =
+  process.env.NODE_ENV === "production"
+    ? "YOUR_APP_URL"
+    : "http://localhost:5000";
 
 
 // Serve static files from the React frontend app
 app.use(express.static(path.join(__dirname, '../client/build')))
-console.log(__dirname)
-
-
-// Your API routes go here
-
-// After defining your routes, anything that doesn't match what's above, we want to return index.html from our built React app
-app.get('*', (req, res) => {
-    res.sendFile(path.join(__dirname + '/../client/build/index.html'))
-})
 
 
 app.listen(process.env.PORT || 5000, () => {
