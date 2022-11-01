@@ -1,8 +1,8 @@
-import React, { Fragment, useState, useEffect } from "react";
+import React, { Fragment, useState, useEffect, useNavigate } from "react";
 import Button from '@mui/material/Button';
 import CssBaseline from '@mui/material/CssBaseline';
 import TextField from '@mui/material/TextField';
-import {useNavigate} from "react-router-dom"
+
 import Link from '@mui/material/Link';
 import Grid from '@mui/material/Grid';
 import Box from '@mui/material/Box';
@@ -11,6 +11,7 @@ import Typography from '@mui/material/Typography';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 import ResponsiveAppBar from './WelcomeWingmanBar';
 import UserDataService from "../services/user.service";
+import { useHistory } from "react-router-dom";
 import Login from "./adminlogin.components";
 
 const theme = createTheme({
@@ -25,7 +26,7 @@ const theme = createTheme({
 });
 
 
- 
+
 
 function Copyright(props) {
   return (
@@ -41,8 +42,7 @@ function Copyright(props) {
 }
 
 
-const SignUp = ({}) => {
-  const navigate = useNavigate();
+const UpdateProfile = ({}) => {
   const [inputs, setInputs] = useState({
     mail: "",
     name: "",
@@ -62,7 +62,7 @@ const SignUp = ({}) => {
     try {
       const body = { mail, name, surname, password };
       await fetch(
-        "${API_URL}/api/wingman/users",
+        "http://localhost:5000/api/wingman/users",
         {
           method: "POST",
           headers: {
@@ -75,18 +75,15 @@ const SignUp = ({}) => {
       .then(data => ({data: data.data,}))
       .then(res => {
         console.log(res.data.mail)
-        if(response.status==200){
-          navigate("/login")}
+        setSubmitted(true)
       }));
-      
     } catch (err) {
       console.error('onSubmit form error: ', err.message);
     }
-
   };
 
   return (
-     <ThemeProvider theme={theme}>
+    <ThemeProvider theme={theme}>
       <ResponsiveAppBar/>
       <Container component="main" maxWidth="xs">
         <CssBaseline />
@@ -164,7 +161,7 @@ const SignUp = ({}) => {
             </Button>
             <Grid container justifyContent="flex-end">
               <Grid item>
-                <Link href="/login" variant="body2">
+                <Link href="/profile" variant="body2">
                   Already have an account? Sign in
                 </Link>
               </Grid>

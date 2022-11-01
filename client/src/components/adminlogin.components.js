@@ -11,6 +11,11 @@ import Typography from '@mui/material/Typography';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 import ResponsiveAppBar from './WelcomeWingmanBar';
 
+const API_URL =
+  process.env.NODE_ENV === "production"
+    ? "https://wingman-team29.herokuapp.com"
+    : "http://localhost:5000";
+
 const theme = createTheme({
   palette: {
     primary: {
@@ -55,7 +60,7 @@ const Login = ({}) => {
       try {
         const body = { mail, password };
         const response = await fetch(
-          "http://localhost:5000/api/wingman/auth",
+          "${API_URL}/api/wingman/auth",
           {
             method: "PUT",
             headers: {
