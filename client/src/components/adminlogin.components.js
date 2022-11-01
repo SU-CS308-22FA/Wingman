@@ -49,6 +49,8 @@ const Login = ({}) => {
       mail: "",
       password: ""
     });
+
+    const [error, setError] = useState(null)
   
     const { mail, password } = inputs;
   
@@ -60,7 +62,7 @@ const Login = ({}) => {
       try {
         const body = { mail, password };
         const response = await fetch(
-          "${API_URL}/api/wingman/auth",
+          "http://localhost:5000/api/wingman/auth",
           {
             method: "PUT",
             headers: {
@@ -73,7 +75,14 @@ const Login = ({}) => {
         .then(data => ({data: data.data,}))
         .then(res => {
           if(response.status==200){
-            navigate("/profile/" + res.data.user_id, {id: res.data.user_id})}
+            navigate("/profile/" + res.data.user_id)}
+            else if(response.status==404){
+              setError("There was a problem with mail or password")
+            }
+            else
+            {
+              setError("There was an unknown problem")
+            }
         }));
 
 
@@ -127,6 +136,7 @@ const Login = ({}) => {
               autoComplete="current-password"
               onChange={e => onChange(e)}
             />
+            {error && <h5 className="alert">{error}</h5>}
             <Button
               type="submit"
               fullWidth

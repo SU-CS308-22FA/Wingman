@@ -59,6 +59,7 @@ const ProfilePage = ({}) => {
     name: "",
   });
 
+  
 function getActorInfo()
 {
   try {
@@ -85,6 +86,10 @@ function getActorInfo()
     }
 }
 
+useEffect(() => {
+  getActorInfo();
+}, []);
+
   function onDelete(){
     try {
       const response = fetch(
@@ -102,6 +107,10 @@ function getActorInfo()
     catch(err){
       console.error('profile get error: ', err);
       }
+  }
+
+  function onUpdate(){
+    navigate("/update/" + id)
   }
   
 
@@ -124,21 +133,13 @@ function getActorInfo()
           }}
         >
           <Container maxWidth="sm">
-          <Button
-              onClick={getActorInfo}
-              fullWidth
-              variant="contained"
-              sx={{ mt: 3, mb: 2 }}
-            >
-              Get User
-            </Button>
             <Typography
               variant="h3"
               align="center"
               color="#70798C"
               gutterBottom
             >
-              Welcome, {user.mail}
+              Welcome,
             </Typography>
             <Typography
               variant="h5"
@@ -154,7 +155,7 @@ function getActorInfo()
               color="#70798C"
               gutterBottom
             >
-                Mail
+                {user.mail}
             </Typography>
             <Typography variant="h6" align="center" color="text.secondary" paragraph>
                 Welcome the Wingman, TFF user! You will be able to see information about the user in the near future. For now, you can update your name if you did any mistake or you can delete your account to start again!
@@ -165,7 +166,7 @@ function getActorInfo()
               spacing={2}
               justifyContent="center"
             >
-              <Button color = 'fourth' variant="contained">UPDATE ACCOUNT</Button>
+              <Button onClick={onUpdate} color = 'fourth' variant="contained">UPDATE ACCOUNT</Button>
               <Button onClick={onDelete} color = 'error' variant="contained">DELETE ACCOUNT</Button>
             </Stack>
           </Container>

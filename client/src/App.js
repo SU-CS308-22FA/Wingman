@@ -5,6 +5,7 @@ import './App.css';
 import SignUp from "./components/adminregister.component";
 import Login from "./components/adminlogin.components";
 import ProfilePage from "./components/ProfilePage";
+import UpdatePage from "./components/updateprofile.components";
 class App extends Component {
  
   render() {
@@ -18,10 +19,12 @@ class App extends Component {
     return (    
         <div style = {myStyle}>
         <Router>
-          <Routes>        
-                <Route path="/" element={<SignUp/>}/>
+          <Routes>
+                <Route path="/" element={<SignUp/>}/>        
+                <Route path="/register" element={<SignUp/>}/>
                 <Route path="/login" element={<Login/>}/>
-                <Route path="/profile/:id" element={<ProfilePage/>}/>
+                <Route path="/profile/:id" element={<ProfilePage/>}/>\
+                <Route path="/update/:id" element={<UpdatePage/>}/>
             </Routes> 
           </Router>       
         </div>
