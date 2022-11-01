@@ -44,6 +44,7 @@ export default class userController{
 
     static async createUser(req, res, next){
       try {
+        console.log(`I have recived this data from request ${req.body} "Full request:${req}"`)
         const newUser = await db.query('INSERT INTO wingman.users (mail,name,surname) values ($1,$2,$3) returning *'
         , [req.body.mail, req.body.name, req.body.surname])
         res.status(200).json({
