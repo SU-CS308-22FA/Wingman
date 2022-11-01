@@ -24,7 +24,10 @@ const theme = createTheme({
   },
 });
 
-
+const API_URL =
+  process.env.NODE_ENV === "production"
+    ? "https://wingman-team29.herokuapp.com"
+    : "http://localhost:5000";
  
 
 function Copyright(props) {
@@ -62,7 +65,7 @@ const SignUp = ({}) => {
     try {
       const body = { mail, name, surname, password };
       await fetch(
-        "${API_URL}/api/wingman/users",
+        API_URL+"/api/wingman/users",
         {
           method: "POST",
           headers: {
