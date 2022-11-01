@@ -40,11 +40,11 @@ function Copyright(props) {
 
 const Login = ({}) => {
     const [inputs, setInputs] = useState({
-      email: "",
+      mail: "",
       password: ""
     });
   
-    const { email, password } = inputs;
+    const { mail, password } = inputs;
   
     const onChange = e =>
       setInputs({ ...inputs, [e.target.name]: e.target.value });
@@ -52,21 +52,28 @@ const Login = ({}) => {
     const onSubmitForm = async e => {
       e.preventDefault();
       try {
-        const body = { email, password };
+        const body = { mail, password };
         const response = await fetch(
-          "http://localhost:5000/authentication/login",
+          "http://localhost:5000/api/wingman/auth",
           {
-            method: "POST",
+            method: "PUT",
             headers: {
               "Content-type": "application/json"
             },
             body: JSON.stringify(body)
           }
-        );
+        )
+      .then(response => response.json()
+      .then(data => (
+        {data: data.data,}))
+      .then(res => {
+        console.log(res);
+      }));
     }
 
-    catch(err){}
-    
+    catch(err){
+      console.error('onSubmit form error: ', err.message);
+      }  
     };
   
 
@@ -94,11 +101,12 @@ const Login = ({}) => {
               margin="normal"
               required
               fullWidth
-              id="email"
+              id="mail"
               label="Email Address"
-              name="email"
-              autoComplete="email"
+              name="mail"
+              autoComplete="mail"
               autoFocus
+              onChange={e => onChange(e)}
             />
             <TextField
               margin="normal"
@@ -109,6 +117,7 @@ const Login = ({}) => {
               type="password"
               id="password"
               autoComplete="current-password"
+              onChange={e => onChange(e)}
             />
             <Button
               type="submit"
