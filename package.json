@@ -20,7 +20,7 @@
   "bugs": {
     "url": "https://github.com/SU-CS308-22FA/Wingman/issues"
   },
-  "homepage": ".",
+  "homepage": "https://wingman-team29.herokuapp.com/",
   "dependencies": {
     "dotenv": "^16.0.3"
   },

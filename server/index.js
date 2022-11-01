@@ -15,13 +15,12 @@ dotenv.config({
     //: "http://localhost:5000";
 
 const __filename = fileURLToPath(import.meta.url)
+console.log(__filename)
 const __dirname = path.dirname(__filename);
+console.log(__dirname)
 // Serve static files from the React frontend app
-app.use(express.static(__dirname + '/client/build'));
+app.use(express.static(__dirname + '/../client/build'));
 
-app.get("*", function(req, res) {
-  res.sendFile(path.join(__dirname, "index.html"));
-});
 
 
 app.listen(process.env.PORT || 5000, () => {
