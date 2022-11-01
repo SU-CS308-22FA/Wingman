@@ -18,6 +18,8 @@ router.route("/users/:id").get(userController.getUserById)
 router.route("/users/").post(userController.createUser)
 router.route("/users/:id").delete(userController.deleteById)
 router.route("/users/:id").put(userController.updateUser)
+router.route("/auth").put(userController.userAuthTemp)
+
 
 
 

@@ -43,6 +43,8 @@ export default class userController{
       }   
     }
 
+
+
     static async createUser(req, res, next){
       try {
         const salt = await bcrypt.genSalt(10);
@@ -60,9 +62,46 @@ export default class userController{
       }   
   }
 
+  static async userAuthTemp(req, res, next){
+    try {
+  
+      const resolvedUser = await db.query('SELECT * from wingman.users WHERE mail = $1'
+      , [req.body.mail])
+      
+      if(resolvedUser.rows.length == 0)
+        {
+          throw {
+            detail: "User mail not found.",
+            code: 1,
+            error: new Error()
+          };
+        }
+        const validPassword = await bcrypt.compare(req.body.password, resolvedUser.rows[0].password);
+      if(!validPassword) {
+        throw {
+          detail: "User password not found.",
+          code: 1,
+          error: new Error()
+        }
+      }
+      res.status(200).json({
+        data: resolvedUser.rows[0]
+      })
+
+    } catch (err) {
+      console.log(`Error when auth user ${err}`)
+      if(err.code == 1)
+      {
+        res.status(404).json({detail:err.detail, data:[]})
+        return
+      }
+      res.status(400).json({detail:err, data:[]})
+       
+      }   
+}
   static async updateUser(req, res, next){
     try {
-
+      
       //TODO: Update with null fields.
       const salt = await bcrypt.genSalt(10);
       const hashed_password = await bcrypt.hash(req.body.password, salt);
