@@ -1,8 +1,9 @@
 import React, { Component } from "react"
 import "bootstrap/dist/css/bootstrap.min.css"
-import {Routes,Route,Link} from "react-router-dom";
+import {BrowserRouter as Router, Routes, Route} from "react-router-dom";
 import './App.css';
 import SignUp from "./components/adminregister.component";
+import Login from "./components/adminlogin.components";
 class App extends Component {
  
   render() {
@@ -15,7 +16,12 @@ class App extends Component {
 
     return (    
         <div style = {myStyle}>
-            {<SignUp/>} 
+        <Router>
+          <Routes>        
+                <Route path="/" element={<SignUp/>}/>
+                <Route path="/login" element={<Login/>}/>
+            </Routes> 
+          </Router>       
         </div>
  
     );

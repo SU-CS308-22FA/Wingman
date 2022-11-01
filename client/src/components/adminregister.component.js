@@ -1,4 +1,4 @@
-import React, { Fragment, useState, useEffect } from "react";
+import React, { Fragment, useState, useEffect, useNavigate } from "react";
 import Button from '@mui/material/Button';
 import CssBaseline from '@mui/material/CssBaseline';
 import TextField from '@mui/material/TextField';
@@ -11,6 +11,8 @@ import Typography from '@mui/material/Typography';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 import ResponsiveAppBar from './WelcomeWingmanBar';
 import UserDataService from "../services/user.service";
+import { useHistory } from "react-router-dom";
+import Login from "./adminlogin.components";
 
 const theme = createTheme({
   palette: {
@@ -22,6 +24,7 @@ const theme = createTheme({
     },
   },
 });
+
 
 
 
@@ -46,6 +49,8 @@ const SignUp = ({}) => {
     surname: "",
     password: ""
   });
+  const [submitted, setSubmitted] = useState(false)
+  
 
   const { mail, name, surname,password } = inputs;
 
@@ -56,7 +61,7 @@ const SignUp = ({}) => {
     e.preventDefault();
     try {
       const body = { mail, name, surname };
-      const response = await fetch(
+      await fetch(
         "http://localhost:5000/api/wingman/users",
         {
           method: "POST",
@@ -65,8 +70,13 @@ const SignUp = ({}) => {
           },
           body: JSON.stringify(body)
         }
-      );
-      const parseRes = await response.json();
+      )
+      .then(response => response.json()
+      .then(data => ({data: data.data,}))
+      .then(res => {
+        console.log(res.data.mail)
+        setSubmitted(true)
+      }));
     } catch (err) {
       console.error('onSubmit form error: ', err.message);
     }
@@ -151,7 +161,7 @@ const SignUp = ({}) => {
             </Button>
             <Grid container justifyContent="flex-end">
               <Grid item>
-                <Link href="#" variant="body2">
+                <Link href="/login" variant="body2">
                   Already have an account? Sign in
                 </Link>
               </Grid>
@@ -159,7 +169,8 @@ const SignUp = ({}) => {
           </Box>
         </Box>
         <Copyright sx={{ mt: 5 }} />
-      </Container>
+      </Container>)}
+      
     </ThemeProvider>
   );
 }
