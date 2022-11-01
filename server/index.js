@@ -1,5 +1,7 @@
 import app from "./server.js"
 import dotenv from "dotenv";
+import express from "express"
+import path from "path"
 
 //Initialize env path
 dotenv.config({
@@ -14,7 +16,7 @@ dotenv.config({
 
 
 // Serve static files from the React frontend app
-//app.use(express.static(path.join(__dirname, '../client/build')))
+app.use(express.static(path.join(__dirname, '../client/build')))
 
 
 app.listen(process.env.PORT || 5000, () => {
