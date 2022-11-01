@@ -1,8 +1,8 @@
-import React, { Fragment, useState, useEffect, useNavigate } from "react";
+import React, { Fragment, useState, useEffect} from "react";
 import Button from '@mui/material/Button';
 import CssBaseline from '@mui/material/CssBaseline';
 import TextField from '@mui/material/TextField';
-
+import {useNavigate} from "react-router-dom"
 import Link from '@mui/material/Link';
 import Grid from '@mui/material/Grid';
 import Box from '@mui/material/Box';
@@ -43,13 +43,15 @@ function Copyright(props) {
 
 
 const UpdateProfile = ({}) => {
+  
+  const id = window.location.href.split("/").at(-1)
+
+  const navigate = useNavigate()
+
+  const [error, setError] = useState(null)
+
   const [inputs, setInputs] = useState({
-    mail: "",
-    name: "",
-    surname: "",
-    password: ""
   });
-  const [submitted, setSubmitted] = useState(false)
   
 
   const { mail, name, surname,password } = inputs;
@@ -62,9 +64,9 @@ const UpdateProfile = ({}) => {
     try {
       const body = { mail, name, surname, password };
       await fetch(
-        "http://localhost:5000/api/wingman/users",
+        "http://localhost:5000/api/wingman/users/" + id,
         {
-          method: "POST",
+          method: "PUT",
           headers: {
             "Content-type": "application/json"
           },
@@ -75,7 +77,11 @@ const UpdateProfile = ({}) => {
       .then(data => ({data: data.data,}))
       .then(res => {
         console.log(res.data.mail)
-        setSubmitted(true)
+        if(response.status==200){
+          navigate("/profile/" + id)}
+        else{
+          setError("Please fill all the fields.")
+        }
       }));
     } catch (err) {
       console.error('onSubmit form error: ', err.message);
@@ -98,7 +104,7 @@ const UpdateProfile = ({}) => {
           <img src="https://i.hizliresim.com/t6q9rs6.png" height="66" width="50" />          
           <Box m={1} pt={0}> </Box>
           <Typography component="h3" variant="h5">
-            Register
+            Update Profile Info
           </Typography>
           <Box component="form" noValidate onSubmit={onSubmitForm} sx={{ mt: 3 }}>
             <Grid container spacing={2}>
@@ -150,6 +156,7 @@ const UpdateProfile = ({}) => {
               </Grid>
 
             </Grid>
+            {error && <h5 className="alert">{error}</h5>}
             <Button
               type="submit"
               color = "secondary"
@@ -157,15 +164,8 @@ const UpdateProfile = ({}) => {
               variant="contained"
               sx={{ mt: 3, mb: 2 }}
             >
-              Sign Up
+              Update Info
             </Button>
-            <Grid container justifyContent="flex-end">
-              <Grid item>
-                <Link href="/profile" variant="body2">
-                  Already have an account? Sign in
-                </Link>
-              </Grid>
-            </Grid>
           </Box>
         </Box>
         <Copyright sx={{ mt: 5 }} />
@@ -174,4 +174,4 @@ const UpdateProfile = ({}) => {
     </ThemeProvider>
   );
 }
-export default SignUp;
+export default UpdateProfile;

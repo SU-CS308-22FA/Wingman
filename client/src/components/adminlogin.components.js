@@ -49,6 +49,8 @@ const Login = ({}) => {
       mail: "",
       password: ""
     });
+
+    const [error, setError] = useState(null)
   
     const { mail, password } = inputs;
   
@@ -69,14 +71,19 @@ const Login = ({}) => {
             body: JSON.stringify(body)
           }
         )
-      .then(response => response.json()
-      .then(data => (
-        {data: data.data,}))
-      .then(res => {
-        console.log(res);
-        if(response.status==200){
-          navigate("/profile")}
-      }));
+        .then(response => response.json()
+        .then(data => ({data: data.data,}))
+        .then(res => {
+          if(response.status==200){
+            navigate("/profile/" + res.data.user_id)}
+            else if(response.status==404){
+              setError("There was a problem with mail or password")
+            }
+            else
+            {
+              setError("There was an unknown problem")
+            }
+        }));
 
 
     }
@@ -129,6 +136,7 @@ const Login = ({}) => {
               autoComplete="current-password"
               onChange={e => onChange(e)}
             />
+            {error && <h5 className="alert">{error}</h5>}
             <Button
               type="submit"
               fullWidth

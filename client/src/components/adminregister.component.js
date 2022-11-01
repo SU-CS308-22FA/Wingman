@@ -45,12 +45,11 @@ function Copyright(props) {
 
 
 const SignUp = ({}) => {
+
+  const [error, setError] = useState(null)
+
   const navigate = useNavigate();
   const [inputs, setInputs] = useState({
-    mail: "",
-    name: "",
-    surname: "",
-    password: ""
   });
   const [submitted, setSubmitted] = useState(false)
   
@@ -78,9 +77,20 @@ const SignUp = ({}) => {
       .then(data => ({data: data.data,}))
       .then(res => {
         console.log(res.data.mail)
-        setSubmitted(true)
         if(response.status==200){
           navigate("/login")}
+        else if(response.status==400)
+        {
+          setError("There was a problem")
+        }
+        else if(response.status==404)
+        {
+          setError("There was a problem")
+        }
+        else
+        {
+          setError("There was a problem")
+        }
       }));
       
     } catch (err) {
@@ -157,6 +167,7 @@ const SignUp = ({}) => {
               </Grid>
 
             </Grid>
+            {error && <h5 className="alert">{error}</h5>}
             <Button
               type="submit"
               color = "secondary"
@@ -168,7 +179,7 @@ const SignUp = ({}) => {
             </Button>
             <Grid container justifyContent="flex-end">
               <Grid item>
-                <Link href="/profile" variant="body2">
+                <Link href="/login" variant="body2">
                   Already have an account? Sign in
                 </Link>
               </Grid>

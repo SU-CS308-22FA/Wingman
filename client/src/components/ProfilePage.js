@@ -1,4 +1,5 @@
 import * as React from 'react';
+import { useState, useRef, useEffect } from "react";
 import AppBar from '@mui/material/AppBar';
 import Button from '@mui/material/Button';
 import CameraIcon from '@mui/icons-material/PhotoCamera';
@@ -16,6 +17,8 @@ import Container from '@mui/material/Container';
 import Link from '@mui/material/Link';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 import ResponsiveAppBar from './WelcomeWingmanBar';
+import {useNavigate} from "react-router-dom"
+
 
 
 
@@ -43,7 +46,79 @@ const theme = createTheme({
 const cards = [1, 2, 3, 4, 5, 6, 7, 8, 9];
 
 
-export default function ProfilePage() {
+
+
+const ProfilePage = ({}) => {
+  const navigate = useNavigate();
+
+  const id = window.location.href.split("/").at(-1) //Illegal code
+
+  const [user, setUser] = useState({
+    mail: "",
+    surname: "",
+    name: "",
+  });
+
+  
+function getActorInfo()
+{
+  try {
+    const response = fetch(
+      "http://localhost:5000/api/wingman/users/" + id,
+      {
+        method: "GET",
+      }
+    )
+    .then(response => response.json()
+    .then(data => ({data: data.data,}))
+    .then(res => {
+      let val = {
+        mail: res.data.mail,
+        name: res.data.name,
+        surname: res.data.surname,
+      }
+      setUser(val)
+      console.log(val)
+    }));
+  }
+  catch(err){
+    console.error('profile get error: ', err);
+    }
+}
+
+useEffect(() => {
+  getActorInfo();
+}, []);
+
+  function onDelete(){
+    try {
+      const response = fetch(
+        "http://localhost:5000/api/wingman/users/" + id,
+        {
+          method: "DELETE",
+        }
+      )
+      .then(response => response.json()
+      .then(data => ({data: data.data,}))
+      .then(res => {
+        navigate("/login/")
+      }));
+    }
+    catch(err){
+      console.error('profile get error: ', err);
+      }
+  }
+
+  function onUpdate(){
+    navigate("/update/" + id)
+  }
+  
+
+
+
+
+
+
   return (
     <ThemeProvider theme={theme}>
       <CssBaseline />
@@ -64,7 +139,7 @@ export default function ProfilePage() {
               color="#70798C"
               gutterBottom
             >
-              Welcome, @Username
+              Welcome,
             </Typography>
             <Typography
               variant="h5"
@@ -72,7 +147,7 @@ export default function ProfilePage() {
               color="#70798C"
               gutterBottom
             >
-              Name, Surname
+              {user.name}, {user.surname}
             </Typography>
             <Typography
               variant="h6"
@@ -80,7 +155,7 @@ export default function ProfilePage() {
               color="#70798C"
               gutterBottom
             >
-                Mail
+                {user.mail}
             </Typography>
             <Typography variant="h6" align="center" color="text.secondary" paragraph>
                 Welcome the Wingman, TFF user! You will be able to see information about the user in the near future. For now, you can update your name if you did any mistake or you can delete your account to start again!
@@ -91,8 +166,8 @@ export default function ProfilePage() {
               spacing={2}
               justifyContent="center"
             >
-              <Button color = 'fourth' variant="contained">UPDATE ACCOUNT</Button>
-              <Button color = 'error' variant="contained">DELETE ACCOUNT</Button>
+              <Button onClick={onUpdate} color = 'fourth' variant="contained">UPDATE ACCOUNT</Button>
+              <Button onClick={onDelete} color = 'error' variant="contained">DELETE ACCOUNT</Button>
             </Stack>
           </Container>
         </Box>
@@ -117,3 +192,5 @@ export default function ProfilePage() {
     </ThemeProvider>
   );
 }
+
+export default ProfilePage
