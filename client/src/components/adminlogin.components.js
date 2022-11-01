@@ -55,7 +55,7 @@ const Login = ({}) => {
       try {
         const body = { mail, password };
         const response = await fetch(
-          "http://localhost:5000/api/wingman/auth",
+          "https://wingman-team29.herokuapp.com/api/wingman/auth",
           {
             method: "PUT",
             headers: {
