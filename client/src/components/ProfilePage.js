@@ -17,6 +17,8 @@ import Container from '@mui/material/Container';
 import Link from '@mui/material/Link';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 import ResponsiveAppBar from './WelcomeWingmanBar';
+import {useNavigate} from "react-router-dom"
+
 
 
 
@@ -46,7 +48,8 @@ const cards = [1, 2, 3, 4, 5, 6, 7, 8, 9];
 
 
 
-export default function ProfilePage(props) {
+const ProfilePage = ({}) => {
+  const navigate = useNavigate();
 
   const id = window.location.href.split("/").at(-1) //Illegal code
 
@@ -56,7 +59,7 @@ export default function ProfilePage(props) {
     name: "",
   });
 
-  function getActorInfo(id)
+function getActorInfo()
 {
   try {
     const response = fetch(
@@ -81,6 +84,25 @@ export default function ProfilePage(props) {
     console.error('profile get error: ', err);
     }
 }
+
+  function onDelete(){
+    try {
+      const response = fetch(
+        "http://localhost:5000/api/wingman/users/" + id,
+        {
+          method: "DELETE",
+        }
+      )
+      .then(response => response.json()
+      .then(data => ({data: data.data,}))
+      .then(res => {
+        navigate("/login/")
+      }));
+    }
+    catch(err){
+      console.error('profile get error: ', err);
+      }
+  }
   
 
 
@@ -103,12 +125,12 @@ export default function ProfilePage(props) {
         >
           <Container maxWidth="sm">
           <Button
-              onClick={getActorInfo(id)}
+              onClick={getActorInfo}
               fullWidth
               variant="contained"
               sx={{ mt: 3, mb: 2 }}
             >
-              Sign In
+              Get User
             </Button>
             <Typography
               variant="h3"
@@ -144,7 +166,7 @@ export default function ProfilePage(props) {
               justifyContent="center"
             >
               <Button color = 'fourth' variant="contained">UPDATE ACCOUNT</Button>
-              <Button color = 'error' variant="contained">DELETE ACCOUNT</Button>
+              <Button onClick={onDelete} color = 'error' variant="contained">DELETE ACCOUNT</Button>
             </Stack>
           </Container>
         </Box>
@@ -169,3 +191,5 @@ export default function ProfilePage(props) {
     </ThemeProvider>
   );
 }
+
+export default ProfilePage
