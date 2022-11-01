@@ -39,7 +39,7 @@ export default class userController{
           res.status(404).json({detail:err.detail, data:[]})
           return
         }
-        res.status(400).json({detail:err.detail, data:[]})
+        res.status(400).json({detail:err, data:[]})
       }   
     }
 
@@ -47,8 +47,11 @@ export default class userController{
 
     static async createUser(req, res, next){
       try {
-        const newUser = await db.query('INSERT INTO wingman.users (mail,name,surname) values ($1,$2,$3) returning *'
-        , [req.body.mail, req.body.name, req.body.surname])
+        const salt = await bcrypt.genSalt(10);
+        const hashed_password = await bcrypt.hash(req.body.password, salt);
+        console.log(`I have recived this data from request ${req.body} "Full request:${req}"`)
+        const newUser = await db.query('INSERT INTO wingman.users (mail,name,surname, password) values ($1,$2,$3,$4) returning *'
+        , [req.body.mail, req.body.name, req.body.surname, hashed_password])
         res.status(200).json({
           data: newUser.rows[0]
         })
@@ -100,8 +103,10 @@ export default class userController{
     try {
       
       //TODO: Update with null fields.
-      const results = await db.query('UPDATE wingman.users SET mail = $1 ,name = $2 ,surname = $3 WHERE user_id = $4 returning *'
-      , [req.body.mail, req.body.name, req.body.surname, req.params.id])
+      const salt = await bcrypt.genSalt(10);
+      const hashed_password = await bcrypt.hash(req.body.password, salt);
+      const results = await db.query('UPDATE wingman.users SET mail = $1 ,name = $2 ,surname = $3, password = $4 WHERE user_id = $5 returning *'
+      , [req.body.mail, req.body.name, req.body.surname, hashed_password, req.params.id])
 
       if(results.rows.length == 0)
         {
@@ -141,7 +146,7 @@ export default class userController{
           res.status(404).json({detail:err.detail, data:[]})
           return
         }
-        res.status(400).json({detail:err.detail, data:[]})
+        res.status(400).json({detail:err, data:[]})
     }   
   }
 
