@@ -11,8 +11,8 @@ app.use("/api/Wingman", wingman)
 
 // After defining your routes, anything that doesn't match what's above, we want to return index.html from our built React app
 app.get('*', (req, res) => {
-    //res.sendFile(path.join(__dirname + '/../client/build/index.html'))
-    res.status(404).json({error: "not found in server.js"})
+    res.sendFile(path.join(__dirname + '/../client/build/index.html'))
+    //res.status(404).json({error: "not found in server.js"})
 })
 
 //export app as a module > than import app to accses database
