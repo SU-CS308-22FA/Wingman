@@ -1,4 +1,4 @@
-import * as React from 'react';
+import React, { Fragment, useState, useEffect } from "react";
 import Button from '@mui/material/Button';
 import CssBaseline from '@mui/material/CssBaseline';
 import TextField from '@mui/material/TextField';
@@ -39,35 +39,37 @@ function Copyright(props) {
 }
 
 
-export default function SignUp() {
-  const handleSubmit = (event) => {
-    event.preventDefault();
-    const data = new FormData(event.currentTarget);
-    console.log(data.entries)
-    fetch("http://localhost:5000/api/wingman/users", {
-      method: "POST",
-      mode:"cors",
-      headers: {
-        "Content-type": "application/json"
-      },
-      body: JSON.stringify(data)
-    } )
-    //console.log(data);
-    ////UserDataService.create(JSON.stringify(data)
-    //)
-    //  .then(response => {
-    //    this.setState({
-    //      id : response.data.id,
-    //      mail : data.get('email'),
-    //      name: data.get('firstName'),
-    //      surname: data.get('lastName'),
-    //      submitted: true
-    //    });
-    //    console.log(response.data);
-    //  })
-    //  .catch(e => {
-    //    console.log(e);
-    //  });
+const SignUp = ({}) => {
+  const [inputs, setInputs] = useState({
+    mail: "",
+    name: "",
+    surname: "",
+    password: ""
+  });
+
+  const { mail, name, surname,password } = inputs;
+
+  const onChange = e =>
+    setInputs({ ...inputs, [e.target.name]: e.target.value });
+
+  const onSubmitForm = async e => {
+    e.preventDefault();
+    try {
+      const body = { mail, name, surname };
+      const response = await fetch(
+        "http://localhost:5000/api/wingman/users",
+        {
+          method: "POST",
+          headers: {
+            "Content-type": "application/json"
+          },
+          body: JSON.stringify(body)
+        }
+      );
+      const parseRes = await response.json();
+    } catch (err) {
+      console.error('onSubmit form error: ', err.message);
+    }
   };
 
   return (
@@ -88,7 +90,7 @@ export default function SignUp() {
           <Typography component="h3" variant="h5">
             Register
           </Typography>
-          <Box component="form" noValidate onSubmit={handleSubmit} sx={{ mt: 3 }}>
+          <Box component="form" noValidate onSubmit={onSubmitForm} sx={{ mt: 3 }}>
             <Grid container spacing={2}>
               <Grid item xs={12} sm={6}>
                 <TextField
@@ -98,6 +100,7 @@ export default function SignUp() {
                   fullWidth
                   id="name"
                   label="First Name"
+                  onChange={e => onChange(e)}
                   autoFocus
                 />
               </Grid>
@@ -109,6 +112,7 @@ export default function SignUp() {
                   label="Last Name"
                   name="surname"
                   autoComplete="family-name"
+                  onChange={e => onChange(e)}
                 />
               </Grid>
               <Grid item xs={12}>
@@ -119,6 +123,7 @@ export default function SignUp() {
                   label="Email Address"
                   name="mail"
                   autoComplete="email"
+                  onChange={e => onChange(e)}
                 />
               </Grid>
               <Grid item xs={12}>
@@ -130,6 +135,7 @@ export default function SignUp() {
                   type="password"
                   id="password"
                   autoComplete="new-password"
+                  onChange={e => onChange(e)}
                 />
               </Grid>
 
@@ -157,3 +163,4 @@ export default function SignUp() {
     </ThemeProvider>
   );
 }
+export default SignUp;
