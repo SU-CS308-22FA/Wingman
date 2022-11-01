@@ -62,7 +62,7 @@ const Login = ({}) => {
       try {
         const body = { mail, password };
         const response = await fetch(
-          "http://localhost:5000/api/wingman/auth",
+          API_URL+"/api/wingman/auth",
           {
             method: "PUT",
             headers: {
