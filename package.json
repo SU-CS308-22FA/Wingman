@@ -4,13 +4,10 @@
   "description": "wingman package",
   "main": "index.js",
   "scripts": {
-    "dev": "react-scripts start",
-    "start": "serve -s build",
-    "build": "react-scripts build",
-    "test": "react-scripts test --env=jsdom",
-    "eject": "react-scripts eject",
-    "heroku-postbuild": "npm run build"
-    },
+    "test": "hello",
+    "start": "cd server && npm install && node index.js",
+    "heroku-postbuild": "cd client && npm install && npm run build"
+  },
   "repository": {
     "type": "git",
     "url": "git+https://github.com/SU-CS308-22FA/Wingman.git"
