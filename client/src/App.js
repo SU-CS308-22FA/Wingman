@@ -1,25 +1,31 @@
-import logo from './logo.svg';
+import React, { Component } from "react"
+import "bootstrap/dist/css/bootstrap.min.css"
+import {BrowserRouter as Router, Routes, Route} from "react-router-dom";
 import './App.css';
+import SignUp from "./components/adminregister.component";
+import Login from "./components/adminlogin.components";
+class App extends Component {
+ 
+  render() {
+    const myStyle={
+      background: "#F5F1ED",
+      height:'100vh',
+      fontSize:'24px',
+      backgroundSize: 'cover',
+  };
 
-function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
+    return (    
+        <div style = {myStyle}>
+        <Router>
+          <Routes>        
+                <Route path="/" element={<SignUp/>}/>
+                <Route path="/login" element={<Login/>}/>
+            </Routes> 
+          </Router>       
+        </div>
+ 
+    );
+  }
 }
-
+    
 export default App;
