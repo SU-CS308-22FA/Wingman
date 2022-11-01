@@ -19,8 +19,8 @@ console.log(__filename)
 const __dirname = path.dirname(__filename);
 console.log(__dirname)
 // Serve static files from the React frontend app
-app.use(express.static(__dirname + '/../client/build'));
-
+app.use(express.static(path.join(__dirname + '/../client/build')));
+console.log(path.join(__dirname + '/../client/build'))
 
 
 app.listen(process.env.PORT || 5000, () => {
