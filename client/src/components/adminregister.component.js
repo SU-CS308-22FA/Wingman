@@ -75,7 +75,6 @@ const SignUp = ({}) => {
       .then(data => ({data: data.data,}))
       .then(res => {
         console.log(res.data.mail)
-        setSubmitted(true)
         if(response.status==200){
           navigate("/login")}
       }));
@@ -165,7 +164,7 @@ const SignUp = ({}) => {
             </Button>
             <Grid container justifyContent="flex-end">
               <Grid item>
-                <Link href="/profile" variant="body2">
+                <Link href="/login" variant="body2">
                   Already have an account? Sign in
                 </Link>
               </Grid>

@@ -64,14 +64,12 @@ const Login = ({}) => {
             body: JSON.stringify(body)
           }
         )
-      .then(response => response.json()
-      .then(data => (
-        {data: data.data,}))
-      .then(res => {
-        console.log(res);
-        if(response.status==200){
-          navigate("/profile")}
-      }));
+        .then(response => response.json()
+        .then(data => ({data: data.data,}))
+        .then(res => {
+          if(response.status==200){
+            navigate("/profile/" + res.data.user_id, {id: res.data.user_id})}
+        }));
 
 
     }

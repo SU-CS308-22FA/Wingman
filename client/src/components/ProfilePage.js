@@ -1,4 +1,5 @@
 import * as React from 'react';
+import { useState, useRef, useEffect } from "react";
 import AppBar from '@mui/material/AppBar';
 import Button from '@mui/material/Button';
 import CameraIcon from '@mui/icons-material/PhotoCamera';
@@ -43,7 +44,50 @@ const theme = createTheme({
 const cards = [1, 2, 3, 4, 5, 6, 7, 8, 9];
 
 
-export default function ProfilePage() {
+
+
+export default function ProfilePage(props) {
+
+  const id = window.location.href.split("/").at(-1) //Illegal code
+
+  const [user, setUser] = useState({
+    mail: "",
+    surname: "",
+    name: "",
+  });
+
+  function getActorInfo(id)
+{
+  try {
+    const response = fetch(
+      "http://localhost:5000/api/wingman/users/" + id,
+      {
+        method: "GET",
+      }
+    )
+    .then(response => response.json()
+    .then(data => ({data: data.data,}))
+    .then(res => {
+      let val = {
+        mail: res.data.mail,
+        name: res.data.name,
+        surname: res.data.surname,
+      }
+      setUser(val)
+      console.log(val)
+    }));
+  }
+  catch(err){
+    console.error('profile get error: ', err);
+    }
+}
+  
+
+
+
+
+
+
   return (
     <ThemeProvider theme={theme}>
       <CssBaseline />
@@ -58,13 +102,21 @@ export default function ProfilePage() {
           }}
         >
           <Container maxWidth="sm">
+          <Button
+              onClick={getActorInfo(id)}
+              fullWidth
+              variant="contained"
+              sx={{ mt: 3, mb: 2 }}
+            >
+              Sign In
+            </Button>
             <Typography
               variant="h3"
               align="center"
               color="#70798C"
               gutterBottom
             >
-              Welcome, @Username
+              Welcome, {user.mail}
             </Typography>
             <Typography
               variant="h5"
@@ -72,7 +124,7 @@ export default function ProfilePage() {
               color="#70798C"
               gutterBottom
             >
-              Name, Surname
+              {user.name}, {user.surname}
             </Typography>
             <Typography
               variant="h6"
