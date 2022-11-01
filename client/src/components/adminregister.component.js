@@ -62,7 +62,7 @@ const SignUp = ({}) => {
     try {
       const body = { mail, name, surname, password };
       await fetch(
-        "https://wingman-team29.herokuapp.com//api/wingman/users",
+        "http://localhost:5000/api/wingman/users",
         {
           method: "POST",
           headers: {
