@@ -6,9 +6,7 @@ const app = express()
 
 app.use(cors())
 app.use(express.json()) //For funcionality to read json
-//if (process.env.NODE_ENV === "production") {
-//    app.use(express.static(path.join(__dirname, "client/build")));
-//  }
+
 app.use("/api/Wingman", wingman) 
 
 // After defining your routes, anything that doesn't match what's above, we want to return index.html from our built React app
