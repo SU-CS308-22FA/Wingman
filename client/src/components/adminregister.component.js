@@ -60,7 +60,7 @@ const SignUp = ({}) => {
   const onSubmitForm = async e => {
     e.preventDefault();
     try {
-      const body = { mail, name, surname };
+      const body = { mail, name, surname, password };
       await fetch(
         "http://localhost:5000/api/wingman/users",
         {
