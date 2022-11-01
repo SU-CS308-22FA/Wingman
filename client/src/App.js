@@ -4,6 +4,7 @@ import {BrowserRouter as Router, Routes, Route} from "react-router-dom";
 import './App.css';
 import SignUp from "./components/adminregister.component";
 import Login from "./components/adminlogin.components";
+import ProfilePage from "./components/ProfilePage";
 class App extends Component {
  
   render() {
@@ -20,6 +21,7 @@ class App extends Component {
           <Routes>        
                 <Route path="/" element={<SignUp/>}/>
                 <Route path="/login" element={<Login/>}/>
+                <Route path="/profile" element={<ProfilePage/>}/>
             </Routes> 
           </Router>       
         </div>
