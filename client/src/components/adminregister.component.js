@@ -1,8 +1,8 @@
-import React, { Fragment, useState, useEffect, useNavigate } from "react";
+import React, { Fragment, useState, useEffect } from "react";
 import Button from '@mui/material/Button';
 import CssBaseline from '@mui/material/CssBaseline';
 import TextField from '@mui/material/TextField';
-
+import {useNavigate} from "react-router-dom"
 import Link from '@mui/material/Link';
 import Grid from '@mui/material/Grid';
 import Box from '@mui/material/Box';
@@ -11,7 +11,6 @@ import Typography from '@mui/material/Typography';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 import ResponsiveAppBar from './WelcomeWingmanBar';
 import UserDataService from "../services/user.service";
-import { useHistory } from "react-router-dom";
 import Login from "./adminlogin.components";
 
 const theme = createTheme({
@@ -26,7 +25,7 @@ const theme = createTheme({
 });
 
 
-
+ 
 
 function Copyright(props) {
   return (
@@ -43,6 +42,7 @@ function Copyright(props) {
 
 
 const SignUp = ({}) => {
+  const navigate = useNavigate();
   const [inputs, setInputs] = useState({
     mail: "",
     name: "",
@@ -76,14 +76,18 @@ const SignUp = ({}) => {
       .then(res => {
         console.log(res.data.mail)
         setSubmitted(true)
+        if(response.status==200){
+          navigate("/login")}
       }));
+      
     } catch (err) {
       console.error('onSubmit form error: ', err.message);
     }
+
   };
 
   return (
-    <ThemeProvider theme={theme}>
+     <ThemeProvider theme={theme}>
       <ResponsiveAppBar/>
       <Container component="main" maxWidth="xs">
         <CssBaseline />

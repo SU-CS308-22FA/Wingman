@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import Button from '@mui/material/Button';
 import CssBaseline from '@mui/material/CssBaseline';
 import TextField from '@mui/material/TextField';
-
+import {useNavigate} from "react-router-dom"
 import Link from '@mui/material/Link';
 import Grid from '@mui/material/Grid';
 import Box from '@mui/material/Box';
@@ -39,6 +39,7 @@ function Copyright(props) {
 
 
 const Login = ({}) => {
+    const navigate = useNavigate();
     const [inputs, setInputs] = useState({
       mail: "",
       password: ""
@@ -68,7 +69,11 @@ const Login = ({}) => {
         {data: data.data,}))
       .then(res => {
         console.log(res);
+        if(response.status==200){
+          navigate("/profile")}
       }));
+
+
     }
 
     catch(err){
