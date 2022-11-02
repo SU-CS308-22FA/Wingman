@@ -20,7 +20,10 @@ import ResponsiveAppBar from './WelcomeWingmanBar';
 import {useNavigate} from "react-router-dom"
 
 
-
+const API_URL =
+  process.env.NODE_ENV === "production"
+    ? "https://wingman-team29.herokuapp.com"
+    : "http://localhost:5000";
 
 const theme = createTheme({
     palette: {
@@ -64,7 +67,7 @@ function getActorInfo()
 {
   try {
     const response = fetch(
-      "http://localhost:5000/api/wingman/users/" + id,
+      API_URL + "/api/wingman/users/" + id,
       {
         method: "GET",
       }
@@ -93,7 +96,7 @@ useEffect(() => {
   function onDelete(){
     try {
       const response = fetch(
-        "http://localhost:5000/api/wingman/users/" + id,
+        API_URL + "/api/wingman/users/" + id,
         {
           method: "DELETE",
         }
