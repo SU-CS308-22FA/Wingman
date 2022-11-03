@@ -122,7 +122,7 @@ export default class userController{
       }
       else{
         const salt = await bcrypt.genSalt(10);
-        const hashed_password = await bcrypt.hash(req.body.password, salt);
+        const hashed_password = await bcrypt.hash(pass, salt);
         results = await db.query('UPDATE wingman.users SET mail = $1 ,name = $2 ,surname = $3, password = $4 WHERE user_id = $5 returning *'
       , [req.body.mail, req.body.name, req.body.surname, hashed_password, req.params.id])
       } 
