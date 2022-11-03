@@ -12,6 +12,7 @@ import { createTheme, ThemeProvider } from '@mui/material/styles';
 import ResponsiveAppBar from './WelcomeWingmanBar';
 import UserDataService from "../services/user.service";
 import Login from "./adminlogin.components";
+import Alert from '@mui/material/Alert';
 
 const theme = createTheme({
   palette: {
@@ -56,12 +57,22 @@ const SignUp = ({}) => {
 
   const { mail, name, surname,password } = inputs;
 
+  function isValidEmail(email) {
+    return /\S+@\S+\.\S+/.test(email);
+  }
+
   const onChange = e =>
     setInputs({ ...inputs, [e.target.name]: e.target.value });
 
   const onSubmitForm = async e => {
     e.preventDefault();
     try {
+
+      if(!isValidEmail(mail)){
+        throw{}
+      }
+
+
       const body = { mail, name, surname, password };
       await fetch(
         API_URL+"/api/wingman/users",
@@ -81,19 +92,16 @@ const SignUp = ({}) => {
           navigate("/login")}
         else if(response.status==400)
         {
-          setError("There was a problem")
-        }
-        else if(response.status==404)
-        {
-          setError("There was a problem")
+          setError("There is a problem with at least one of the fields, please check it.")
         }
         else
         {
-          setError("There was a problem")
+          setError("There is a problem with at least one of the fields, please check it.")
         }
       }));
       
     } catch (err) {
+      setError("Please use a valid email address.")
       console.error('onSubmit form error: ', err.message);
     }
 
@@ -167,7 +175,8 @@ const SignUp = ({}) => {
               </Grid>
 
             </Grid>
-            {error && <h5 className="alert">{error}</h5>}
+            <Box m={1} pt={0}> </Box>
+            {error &&<Alert variant="filled" severity="error"> {error} </Alert>}
             <Button
               type="submit"
               color = "secondary"

@@ -10,6 +10,7 @@ import Container from '@mui/material/Container';
 import Typography from '@mui/material/Typography';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 import ResponsiveAppBar from './WelcomeWingmanBar';
+import Alert from '@mui/material/Alert';
 
 const API_URL =
   process.env.NODE_ENV === "production"
@@ -46,8 +47,7 @@ function Copyright(props) {
 const Login = ({}) => {
     const navigate = useNavigate();
     const [inputs, setInputs] = useState({
-      mail: "",
-      password: ""
+
     });
 
     const [error, setError] = useState(null)
@@ -77,7 +77,7 @@ const Login = ({}) => {
           if(response.status==200){
             navigate("/profile/" + res.data.user_id)}
             else if(response.status==404){
-              setError("There was a problem with mail or password")
+              setError("There was a problem with mail or password!")
             }
             else
             {
@@ -89,6 +89,7 @@ const Login = ({}) => {
     }
 
     catch(err){
+      setError("Please fill the fields!")
       console.error('onSubmit form error: ', err.message);
       }  
     };
@@ -136,7 +137,8 @@ const Login = ({}) => {
               autoComplete="current-password"
               onChange={e => onChange(e)}
             />
-            {error && <h5 className="alert">{error}</h5>}
+            <Box m={1} pt={0}> </Box>
+            {error &&<Alert variant="filled" severity="error"> {error} </Alert>}
             <Button
               type="submit"
               fullWidth

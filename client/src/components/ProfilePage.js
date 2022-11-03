@@ -54,7 +54,7 @@ const cards = [1, 2, 3, 4, 5, 6, 7, 8, 9];
 const ProfilePage = ({}) => {
   const navigate = useNavigate();
 
-  const id = window.location.href.split("/").at(-1) //Illegal code
+  const id = window.location.href.split("/").at(-1) 
 
   const [user, setUser] = useState({
     mail: "",
@@ -142,7 +142,7 @@ useEffect(() => {
               color="#70798C"
               gutterBottom
             >
-              Welcome,
+              Welcome {user.name}!
             </Typography>
             <Typography
               variant="h5"
@@ -150,7 +150,7 @@ useEffect(() => {
               color="#70798C"
               gutterBottom
             >
-              {user.name}, {user.surname}
+              {user.name} {user.surname}
             </Typography>
             <Typography
               variant="h6"
@@ -161,7 +161,7 @@ useEffect(() => {
                 {user.mail}
             </Typography>
             <Typography variant="h6" align="center" color="text.secondary" paragraph>
-                Welcome the Wingman, TFF user! You will be able to see information about the user in the near future. For now, you can update your name if you did any mistake or you can delete your account to start again!
+                Welcome the Wingman, {user.name}! You will be able to see information about the user in the near future. For now, you can update your name if you did any mistake or you can delete your account to start again!
             </Typography>
             <Stack
               sx={{ pt: 4 }}

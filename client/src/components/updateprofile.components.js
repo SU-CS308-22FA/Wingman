@@ -13,6 +13,7 @@ import ResponsiveAppBar from './WelcomeWingmanBar';
 import UserDataService from "../services/user.service";
 import { useHistory } from "react-router-dom";
 import Login from "./adminlogin.components";
+import Alert from '@mui/material/Alert';
 
 const theme = createTheme({
   palette: {
@@ -59,12 +60,19 @@ const UpdateProfile = ({}) => {
 
   const { mail, name, surname,password } = inputs;
 
-  const onChange = e =>
-    setInputs({ ...inputs, [e.target.name]: e.target.value });
+  function isValidEmail(email) {
+    return /\S+@\S+\.\S+/.test(email);
+  }
 
+  const onChange = e =>
+    setInputs({ ...inputs, [e.target.name]: e.target.value }); 
   const onSubmitForm = async e => {
     e.preventDefault();
     try {
+      if(!isValidEmail(mail)){
+        throw{}
+      }
+
       const body = { mail, name, surname, password };
       await fetch(
         API_URL + "/api/wingman/users/" + id,
@@ -83,10 +91,11 @@ const UpdateProfile = ({}) => {
         if(response.status==200){
           navigate("/profile/" + id)}
         else{
-          setError("Please fill all the fields.")
+          setError("Selected mail is already in use!")
         }
       }));
     } catch (err) {
+      setError("Some of the fields are empty or you choosed email which is already in use or invalid, please check it!")
       console.error('onSubmit form error: ', err.message);
     }
   };
@@ -159,8 +168,9 @@ const UpdateProfile = ({}) => {
               </Grid>
 
             </Grid>
-            {error && <h5 className="alert">{error}</h5>}
-            <Button
+            <Box m={1} pt={0}> </Box>
+            {error &&<Alert variant="filled" severity="error"> {error} </Alert>}
+          <Button
               type="submit"
               color = "secondary"
               fullWidth
