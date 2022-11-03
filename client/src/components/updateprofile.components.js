@@ -120,7 +120,7 @@ useEffect(() => {
         if(!isValidPass(password))
         {
           throw{
-            fmessage: "Password is invalid. Make sure your password is at least eight fields long."
+            fmessage: "Password is invalid. Make sure your password is at least eight characters long."
           }
         }
         if(name.length == 0 || surname.length == 0)

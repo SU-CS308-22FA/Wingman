@@ -85,7 +85,7 @@ const Login = ({}) => {
         if(!isValidPass(password))
         {
           throw{
-            fmessage: "Password is invalid. Make sure your password is at least eight fields long."
+            fmessage: "Password is invalid. Make sure your password is at least eight characters long."
           }
         }
         const body = { mail, password };
