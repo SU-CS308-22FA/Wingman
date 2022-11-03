@@ -10,9 +10,8 @@ import Container from '@mui/material/Container';
 import Typography from '@mui/material/Typography';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 import ResponsiveAppBar from './WelcomeWingmanBar';
-import UserDataService from "../services/user.service";
-import Login from "./adminlogin.components";
 import Alert from '@mui/material/Alert';
+
 
 const theme = createTheme({
   palette: {
@@ -51,15 +50,26 @@ const SignUp = ({}) => {
 
   const navigate = useNavigate();
   const [inputs, setInputs] = useState({
-  });
-  const [submitted, setSubmitted] = useState(false)
-  
+    mail: "",
+    password: "",
+    name: "",
+    surname: "",
+  });  
 
   const { mail, name, surname,password } = inputs;
 
   function isValidEmail(email) {
     return /\S+@\S+\.\S+/.test(email);
   }
+
+  function isValidPass(pass) {
+    if(pass.length >= 8)
+    {
+      return true;
+    } else{
+      return false;
+    }
+  };
 
   const onChange = e =>
     setInputs({ ...inputs, [e.target.name]: e.target.value });
@@ -68,9 +78,24 @@ const SignUp = ({}) => {
     e.preventDefault();
     try {
 
-      if(!isValidEmail(mail)){
-        throw{}
-      }
+      if(!isValidEmail(mail))
+        {
+          throw{
+            fmessage: "Mail is invalid. Please check the mail field."
+          }
+        }
+        if(!isValidPass(password))
+        {
+          throw{
+            fmessage: "Password is invalid. Make sure your password is at least eight characters long."
+          }
+        }
+        if(name.length == 0 || surname.length == 0)
+        {
+          throw{
+            fmessage: "Please fill all the fields."
+          }
+        }
 
 
       const body = { mail, name, surname, password };
@@ -90,19 +115,26 @@ const SignUp = ({}) => {
         console.log(res.data.mail)
         if(response.status==200){
           navigate("/login")}
-        else if(response.status==400)
+        else if(response.status==401)
         {
-          setError("There is a problem with at least one of the fields, please check it.")
+          throw{
+            fmessage: "Selected mail is already in use, please change it."
+          }
         }
         else
         {
-          setError("There is a problem with at least one of the fields, please check it.")
+          throw{
+            fmessage: "Unkown problem from server. Please try again later."
+          }
         }
       }));
       
     } catch (err) {
-      setError("Please use a valid email address.")
-      console.error('onSubmit form error: ', err.message);
+      if(err.fmessage)
+        setError(err.fmessage)
+      else
+        setError("There was an unknown problem")
+      console.error('onSubmit form error: ', err);
     }
 
   };

@@ -10,9 +10,6 @@ import Container from '@mui/material/Container';
 import Typography from '@mui/material/Typography';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 import ResponsiveAppBar from './WelcomeWingmanBar';
-import UserDataService from "../services/user.service";
-import { useHistory } from "react-router-dom";
-import Login from "./adminlogin.components";
 import Alert from '@mui/material/Alert';
 
 const theme = createTheme({
@@ -54,8 +51,44 @@ const UpdateProfile = ({}) => {
 
   const [error, setError] = useState(null)
 
+  const [isLoading, setLoading] = useState(true)
+
   const [inputs, setInputs] = useState({
+    mail: "",
+    password: "",
+    name: "",
+    surname: "",
   });
+
+  function getActorInfo()
+{
+  try {
+    const response = fetch(
+      API_URL + "/api/wingman/users/" + id,
+      {
+        method: "GET",
+      }
+    )
+    .then(response => response.json()
+    .then(data => ({data: data.data,}))
+    .then(res => {
+      setInputs({
+        mail: res.data.mail,
+        name: res.data.name,
+        surname: res.data.surname,
+        password: "",
+      })
+      setLoading(false)
+    }));
+  }
+  catch(err){
+    console.error('profile get error: ', err);
+    }
+}
+
+useEffect(() => {
+  getActorInfo();
+}, []);
   
 
   const { mail, name, surname,password } = inputs;
@@ -64,14 +97,38 @@ const UpdateProfile = ({}) => {
     return /\S+@\S+\.\S+/.test(email);
   }
 
+  function isValidPass(pass) {
+    if(pass.length >= 8)
+    {
+      return true;
+    } else{
+      return false;
+    }
+  };
+
   const onChange = e =>
     setInputs({ ...inputs, [e.target.name]: e.target.value }); 
   const onSubmitForm = async e => {
     e.preventDefault();
     try {
-      if(!isValidEmail(mail)){
-        throw{}
-      }
+      if(!isValidEmail(mail))
+        {
+          throw{
+            fmessage: "Mail is invalid. Please check the mail field."
+          }
+        }
+        if(!isValidPass(password))
+        {
+          throw{
+            fmessage: "Password is invalid. Make sure your password is at least eight characters long."
+          }
+        }
+        if(name.length == 0 || surname.length == 0)
+        {
+          throw{
+            fmessage: "Please fill all the fields."
+          }
+        }
 
       const body = { mail, name, surname, password };
       await fetch(
@@ -89,14 +146,27 @@ const UpdateProfile = ({}) => {
       .then(res => {
         console.log(res.data.mail)
         if(response.status==200){
-          navigate("/profile/" + id)}
-        else{
-          setError("Selected mail is already in use!")
+          navigate("/profile/" + id)
         }
+          else if(response.status==401)
+          {
+            throw{
+              fmessage: "Selected mail is already in use, please change it."
+            }
+          }
+          else
+          {
+            throw{
+              fmessage: "Unkown problem from server. Please try again later."
+            }
+          }
       }));
     } catch (err) {
-      setError("Some of the fields are empty or you choosed email which is already in use or invalid, please check it!")
-      console.error('onSubmit form error: ', err.message);
+      if(err.fmessage)
+        setError(err.fmessage)
+      else
+        setError("There was an unknown problem")
+      console.error('onSubmit form error: ', err);
     }
   };
 
@@ -105,7 +175,10 @@ const UpdateProfile = ({}) => {
       <ResponsiveAppBar/>
       <Container component="main" maxWidth="xs">
         <CssBaseline />
-        <Box
+        {isLoading? 
+            <h1>Loading...</h1>
+          :
+          <Box
           sx={{
             marginTop: 8,
             display: 'flex',
@@ -124,6 +197,7 @@ const UpdateProfile = ({}) => {
                 <TextField
                   autoComplete="given-name"
                   name="name"
+                  value={inputs.name}
                   required
                   fullWidth
                   id="name"
@@ -136,6 +210,7 @@ const UpdateProfile = ({}) => {
                 <TextField
                   required
                   fullWidth
+                  value={inputs.surname}
                   id="surname"
                   label="Last Name"
                   name="surname"
@@ -147,6 +222,7 @@ const UpdateProfile = ({}) => {
                 <TextField
                   required
                   fullWidth
+                  value={inputs.mail}
                   id="mail"
                   label="Email Address"
                   name="mail"
@@ -158,6 +234,7 @@ const UpdateProfile = ({}) => {
                 <TextField
                   required
                   fullWidth
+                  value={inputs.password}
                   name="password"
                   label="Password"
                   type="password"
@@ -181,6 +258,10 @@ const UpdateProfile = ({}) => {
             </Button>
           </Box>
         </Box>
+          }
+
+
+        
         <Copyright sx={{ mt: 5 }} />
       </Container>
       
