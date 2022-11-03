@@ -98,7 +98,11 @@ useEffect(() => {
   }
 
   function isValidPass(pass) {
-    if(pass.length >= 8)
+    if (password == "" || password == null)
+    {
+      return true;
+    }
+    else if(pass.length >= 8)
     {
       return true;
     } else{

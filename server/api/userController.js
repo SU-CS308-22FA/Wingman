@@ -109,13 +109,23 @@ export default class userController{
 }
   static async updateUser(req, res, next){
     try {
-      
-      //TODO: Update with null fields.
-      const salt = await bcrypt.genSalt(10);
-      const hashed_password = await bcrypt.hash(req.body.password, salt);
-      const results = await db.query('UPDATE wingman.users SET mail = $1 ,name = $2 ,surname = $3, password = $4 WHERE user_id = $5 returning *'
+      const user_info = await db.query('SELECT password from wingman.users WHERE user_id = $1', [req.params.id])
+      let pass = req.params.password
+      let results = []
+      if(pass == "" || pass == null)
+      {
+        console.log('geldim iste dostum')
+        console.log(user_info)
+        pass = user_info.rows[0].password
+        results = await db.query('UPDATE wingman.users SET mail = $1 ,name = $2 ,surname = $3, password = $4 WHERE user_id = $5 returning *'
+      , [req.body.mail, req.body.name, req.body.surname, pass, req.params.id])
+      }
+      else{
+        const salt = await bcrypt.genSalt(10);
+        const hashed_password = await bcrypt.hash(req.body.password, salt);
+        results = await db.query('UPDATE wingman.users SET mail = $1 ,name = $2 ,surname = $3, password = $4 WHERE user_id = $5 returning *'
       , [req.body.mail, req.body.name, req.body.surname, hashed_password, req.params.id])
-
+      } 
       if(results.rows.length == 0)
         {
           throw {
