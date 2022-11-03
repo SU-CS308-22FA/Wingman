@@ -114,6 +114,8 @@ export default class userController{
       let results = []
       if(pass == "" || pass == null)
       {
+        const salt = await bcrypt.genSalt(10);
+        const hashed_password = await bcrypt.hash(pass, salt);
         console.log('geldim iste dostum')
         console.log(user_info)
         pass = user_info.rows[0].password
