@@ -47,12 +47,28 @@ function Copyright(props) {
 const Login = ({}) => {
     const navigate = useNavigate();
     const [inputs, setInputs] = useState({
-
+      mail: "",
+      surname: "",
+      name: "",
+      password: "",
     });
 
     const [error, setError] = useState(null)
   
     const { mail, password } = inputs;
+
+    function isValidEmail(email) {
+      return /\S+@\S+\.\S+/.test(email);
+    }
+
+    function isValidPass(pass) {
+      if(pass.length >= 8)
+      {
+        return true;
+      } else{
+        return false;
+      }
+    };
   
     const onChange = e =>
       setInputs({ ...inputs, [e.target.name]: e.target.value });
@@ -60,6 +76,18 @@ const Login = ({}) => {
     const onSubmitForm = async e => {
       e.preventDefault();
       try {
+        if(!isValidEmail(mail))
+        {
+          throw{
+            fmessage: "Mail is invalid. Please check the mail field."
+          }
+        }
+        if(!isValidPass(password))
+        {
+          throw{
+            fmessage: "Password is invalid. Make sure your password is at least eight fields long."
+          }
+        }
         const body = { mail, password };
         const response = await fetch(
           API_URL+"/api/wingman/auth",
@@ -77,20 +105,24 @@ const Login = ({}) => {
           if(response.status==200){
             navigate("/profile/" + res.data.user_id)}
             else if(response.status==404){
-              setError("There was a problem with mail or password!")
+              throw{
+                fmessage: "Invalid creditianls."
+              }
             }
             else
             {
-              setError("There was an unknown problem")
+              throw{
+                fmessage: "There was an unknown problem"
+              }
             }
         }));
-
-
     }
-
     catch(err){
-      setError("Please fill the fields!")
-      console.error('onSubmit form error: ', err.message);
+      if(err.fmessage)
+        setError(err.fmessage)
+      else
+        setError("There was an unknown problem")
+      console.error('onSubmit form error: ', err);
       }  
     };
   

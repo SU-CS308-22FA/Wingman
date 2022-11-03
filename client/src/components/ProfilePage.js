@@ -1,20 +1,11 @@
 import * as React from 'react';
 import { useState, useRef, useEffect } from "react";
-import AppBar from '@mui/material/AppBar';
 import Button from '@mui/material/Button';
-import CameraIcon from '@mui/icons-material/PhotoCamera';
-import Card from '@mui/material/Card';
-import CardActions from '@mui/material/CardActions';
-import CardContent from '@mui/material/CardContent';
-import CardMedia from '@mui/material/CardMedia';
 import CssBaseline from '@mui/material/CssBaseline';
-import Grid from '@mui/material/Grid';
 import Stack from '@mui/material/Stack';
 import Box from '@mui/material/Box';
-import Toolbar from '@mui/material/Toolbar';
 import Typography from '@mui/material/Typography';
 import Container from '@mui/material/Container';
-import Link from '@mui/material/Link';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 import ResponsiveAppBar from './WelcomeWingmanBar';
 import {useNavigate} from "react-router-dom"
@@ -56,6 +47,8 @@ const ProfilePage = ({}) => {
 
   const id = window.location.href.split("/").at(-1) 
 
+  const [isLoading, setLoading] = useState(true)
+
   const [user, setUser] = useState({
     mail: "",
     surname: "",
@@ -81,7 +74,7 @@ function getActorInfo()
         surname: res.data.surname,
       }
       setUser(val)
-      console.log(val)
+      setLoading(false)
     }));
   }
   catch(err){
@@ -126,56 +119,64 @@ useEffect(() => {
     <ThemeProvider theme={theme}>
       <CssBaseline />
       <ResponsiveAppBar/>
-      <main>
-        {/* Hero unit */}
-        <Box
-          sx={{
-            bgcolor: 'background.paper',
-            pt: 8,
-            pb: 6,
-          }}
-        >
-          <Container maxWidth="sm">
-            <Typography
-              variant="h3"
-              align="center"
-              color="#70798C"
-              gutterBottom
-            >
-              Welcome {user.name}!
-            </Typography>
-            <Typography
-              variant="h5"
-              align="center"
-              color="#70798C"
-              gutterBottom
-            >
-              {user.name} {user.surname}
-            </Typography>
-            <Typography
-              variant="h6"
-              align="center"
-              color="#70798C"
-              gutterBottom
-            >
-                {user.mail}
-            </Typography>
-            <Typography variant="h6" align="center" color="text.secondary" paragraph>
-                Welcome the Wingman, {user.name}! You will be able to see information about the user in the near future. For now, you can update your name if you did any mistake or you can delete your account to start again!
-            </Typography>
-            <Stack
-              sx={{ pt: 4 }}
-              direction="row"
-              spacing={2}
-              justifyContent="center"
-            >
-              <Button onClick={onUpdate} color = 'fourth' variant="contained">UPDATE ACCOUNT</Button>
-              <Button onClick={onDelete} color = 'error' variant="contained">DELETE ACCOUNT</Button>
-            </Stack>
-          </Container>
-        </Box>
+      {isLoading? 
+            <h1>Loading...</h1>
+          :
+          <main>
+          {/* Hero unit */}
+          <Box
+            sx={{
+              bgcolor: 'background.paper',
+              pt: 8,
+              pb: 6,
+            }}
+          >
+            <Container maxWidth="sm">
+              <Typography
+                variant="h3"
+                align="center"
+                color="#70798C"
+                gutterBottom
+              >
+                Welcome {user.name}!
+              </Typography>
+              <Typography
+                variant="h5"
+                align="center"
+                color="#70798C"
+                gutterBottom
+              >
+                {user.name} {user.surname}
+              </Typography>
+              <Typography
+                variant="h6"
+                align="center"
+                color="#70798C"
+                gutterBottom
+              >
+                  {user.mail}
+              </Typography>
+              <Typography variant="h6" align="center" color="text.secondary" paragraph>
+                  Welcome the Wingman, {user.name}! You will be able to see information about the user in the near future. For now, you can update your name if you did any mistake or you can delete your account to start again!
+              </Typography>
+              <Stack
+                sx={{ pt: 4 }}
+                direction="row"
+                spacing={2}
+                justifyContent="center"
+              >
+                <Button onClick={onUpdate} color = 'fourth' variant="contained">UPDATE ACCOUNT</Button>
+                <Button onClick={onDelete} color = 'error' variant="contained">DELETE ACCOUNT</Button>
+              </Stack>
+            </Container>
+          </Box>
+  
+        </main>
+          }
 
-      </main>
+
+
+      
       {/* Footer */}
       <Box sx={{ bgcolor: 'primary', p: 6 }} component="footer">
         <center>

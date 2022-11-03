@@ -58,7 +58,15 @@ export default class userController{
 
       } catch (error) {
         console.log(`Error when creating user ${error}`)
-        res.status(400).json({error:error, data:{users:[]}})
+        if(String(error).includes("users_mail_key") )
+        {
+          res.status(401).json({error:error, data:{users:[]}})
+        }
+        else{
+          res.status(400).json({error:error, data:{users:[]}})
+        }
+
+        
       }   
   }
 
@@ -122,7 +130,13 @@ export default class userController{
       res.status(200).json({data: results.rows[0]})
     } catch (error) {
       console.log(`Failed to update user ${error}.`)
-      res.status(400).json({detail:error.detail})
+      if(String(error).includes("users_mail_key") )
+      {
+        res.status(401).json({error:error, data:{users:[]}})
+      }
+      else{
+        res.status(400).json({error:error, data:{users:[]}})
+      }
     }   
   }
 
