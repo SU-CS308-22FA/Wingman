@@ -33,7 +33,7 @@ export default class userController{
         data: result.rows[0]
         })
       } catch (err) {
-        console.log(`Error when getting one user ${err.detail}`)
+        console.log(`Error when getting one user ${err}`)
         if(err.code == 1)
         {
           res.status(404).json({detail:err.detail, data:[]})
@@ -97,7 +97,7 @@ export default class userController{
       })
 
     } catch (err) {
-      console.log(`Error when auth user ${err}`)
+      console.log(`Error when auth user ${err.detail}`)
       if(err.code == 1)
       {
         res.status(404).json({detail:err.detail, data:[]})
