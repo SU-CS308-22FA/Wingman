@@ -1,4 +1,4 @@
-import React, { Fragment, useState, useEffect } from "react";
+import React, { useContext, useState, useEffect } from "react";
 import Button from '@mui/material/Button';
 import CssBaseline from '@mui/material/CssBaseline';
 import TextField from '@mui/material/TextField';
@@ -8,46 +8,15 @@ import Grid from '@mui/material/Grid';
 import Box from '@mui/material/Box';
 import Container from '@mui/material/Container';
 import Typography from '@mui/material/Typography';
-import { createTheme, ThemeProvider } from '@mui/material/styles';
-import ResponsiveAppBar from './WelcomeWingmanBar';
 import Alert from '@mui/material/Alert';
+import { UsersContext } from "../context/UserContex";
+import UserFinder from "../apis/UserFinder";
 
 
-const theme = createTheme({
-  palette: {
-    primary: {
-      main: '#A99985',
-    },
-    secondary: {
-      main: '#70798C',
-    },
-  },
-});
-
-const API_URL =
-  process.env.NODE_ENV === "production"
-    ? "https://wingman-team29.herokuapp.com"
-    : "http://localhost:5000";
- 
-
-function Copyright(props) {
-  return (
-    <Typography variant="body2" color="text.secondary" align="center" {...props}>
-      {'Copyright © '}
-      <Link color="inherit" href="https://mui.com/">
-        Wingman
-      </Link>{' '}
-      {new Date().getFullYear()}
-      {'.'}
-    </Typography>
-  );
-}
-
-
-const SignUp = ({}) => {
+const Register = () => {
 
   const [error, setError] = useState(null)
-
+  
   const navigate = useNavigate();
   const [inputs, setInputs] = useState({
     mail: "",
@@ -79,69 +48,37 @@ const SignUp = ({}) => {
     try {
 
       if(!isValidEmail(mail))
-        {
-          throw{
-            fmessage: "Mail is invalid. Please check the mail field."
-          }
-        }
+          throw{fmessage: "Mail is invalid. Please check the mail field."}
         if(!isValidPass(password))
-        {
-          throw{
-            fmessage: "Password is invalid. Make sure your password is at least eight characters long."
-          }
-        }
+          throw{fmessage: "Password is invalid. Make sure your password is at least eight characters long."}
         if(name.length == 0 || surname.length == 0)
-        {
-          throw{
-            fmessage: "Please fill all the fields."
-          }
-        }
+            throw{fmessage: "Please fill all the fields."}
 
 
-      const body = { mail, name, surname, password };
-      await fetch(
-        API_URL+"/api/wingman/users",
-        {
-          method: "POST",
-          headers: {
-            "Content-type": "application/json"
-          },
-          body: JSON.stringify(body)
-        }
-      )
-      .then(response => response.json()
-      .then(data => ({data: data.data,}))
-      .then(res => {
-        console.log(res.data.mail)
-        if(response.status==200){
-          navigate("/login")}
-        else if(response.status==401)
-        {
-          throw{
-            fmessage: "Selected mail is already in use, please change it."
-          }
-        }
-        else
-        {
-          throw{
-            fmessage: "Unkown problem from server. Please try again later."
-          }
-        }
-      }));
+      const response = await UserFinder.post("/users/", {
+        mail: mail, 
+        name: name, 
+        surname: surname, 
+        password: password
+      })
+
+      console.log(response.data)
       
-    } catch (err) {
-      if(err.fmessage)
-        setError(err.fmessage)
-      else
-        setError("There was an unknown problem")
-      console.error('onSubmit form error: ', err);
-    }
+      if(response.status==200){
+        navigate("/login")}
 
+    } catch (err) {
+        if(err.fmessage)
+            setError(err.fmessage)
+        else if(err.response.status == 401)
+            setError("Selected mail is already in use, please change it.")
+        else
+            setError("There was an unknown problem")
+        console.error('onSubmit form error: ', err);
+    }
   };
 
   return (
-     <ThemeProvider theme={theme}>
-      <ResponsiveAppBar/>
       <Container component="main" maxWidth="xs">
         <CssBaseline />
         <Box
@@ -227,10 +164,6 @@ const SignUp = ({}) => {
             </Grid>
           </Box>
         </Box>
-        <Copyright sx={{ mt: 5 }} />
-      </Container>
-      
-    </ThemeProvider>
-  );
+      </Container>  );
 }
-export default SignUp;
+export default Register;
