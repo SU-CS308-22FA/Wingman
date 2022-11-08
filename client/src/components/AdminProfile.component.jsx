@@ -11,7 +11,7 @@ import { UsersContext } from "../context/UserContex";
 
 
 
-const RRProfile = ({}) => {
+const AdminProfile = ({}) => {
   const navigate = useNavigate();
 
   const [isLoading, setLoading] = useState(true)
@@ -77,7 +77,7 @@ const RRProfile = ({}) => {
                   {user.mail}
               </Typography>
               <Typography variant="h6" align="center" color="text.secondary" paragraph>
-                  Welcome dear {user.role}, {user.name}! You will be able to see information about the user in the near future. For now, you can update your name if you did any mistake or you can delete your account to start again!
+                  Welcome dear TFF Admin your page is uniqe, {user.name}! You will be able to see information about the user in the near future. For now, you can update your name if you did any mistake or you can delete your account to start again!
               </Typography>
               <Stack
                 sx={{ pt: 4 }}
@@ -97,4 +97,4 @@ const RRProfile = ({}) => {
   );
 }
 
-export default RRProfile
+export default AdminProfile

@@ -6,26 +6,31 @@ import {useNavigate} from "react-router-dom"
 import Link from '@mui/material/Link';
 import Grid from '@mui/material/Grid';
 import Box from '@mui/material/Box';
+import Select from '@mui/material/Select';
+import MenuItem from '@mui/material/MenuItem';
 import Container from '@mui/material/Container';
 import Typography from '@mui/material/Typography';
 import Alert from '@mui/material/Alert';
-import { UsersContext } from "../context/UserContex";
 import UserFinder from "../apis/UserFinder";
 
 
-const Register = () => {
+const Register = (props) => {
+
+  const myRole = props.role
 
   const [error, setError] = useState(null)
   
   const navigate = useNavigate();
   const [inputs, setInputs] = useState({
+    role: myRole,
     mail: "",
     password: "",
     name: "",
     surname: "",
+    security_key: "",
   });  
 
-  const { mail, name, surname,password } = inputs;
+  const { mail, name, surname,password, role, security_key } = inputs;
 
   function isValidEmail(email) {
     return /\S+@\S+\.\S+/.test(email);
@@ -51,15 +56,17 @@ const Register = () => {
           throw{fmessage: "Mail is invalid. Please check the mail field."}
         if(!isValidPass(password))
           throw{fmessage: "Password is invalid. Make sure your password is at least eight characters long."}
-        if(name.length == 0 || surname.length == 0)
+        if(name.length == 0 || surname.length == 0 || security_key.length == 0)
             throw{fmessage: "Please fill all the fields."}
 
 
       const response = await UserFinder.post("/users/", {
+        role: role,
         mail: mail, 
         name: name, 
         surname: surname, 
-        password: password
+        password: password,
+        security_key: security_key
       })
 
       console.log(response.data)
@@ -89,11 +96,13 @@ const Register = () => {
             alignItems: 'center',
           }}
         >
-          <img src="https://i.hizliresim.com/t6q9rs6.png" height="66" width="50" />          
+                  
           <Box m={1} pt={0}> </Box>
-          <Typography component="h3" variant="h5">
-            Register
-          </Typography>
+          { myRole == "TFF Admin" ? <Typography component="h3" variant="h5">
+                     Register for TFF Admin </Typography> : <Typography component="h3" variant="h5">
+                     Register </Typography> }
+          
+
           <Box component="form" noValidate onSubmit={onSubmitForm} sx={{ mt: 3 }}>
             <Grid container spacing={2}>
               <Grid item xs={12} sm={6}>
@@ -119,6 +128,38 @@ const Register = () => {
                   onChange={e => onChange(e)}
                 />
               </Grid>
+              <Grid item xs={12} sm={6}>
+              { myRole == "TFF Admin" ? 
+              <Select
+                  labelId="role-label"
+                  id="role"
+                  name="role"
+                  style={{ width: 400 }}
+                  value = {role}
+                  label="Select Role"
+                  onChange={e => onChange(e)}
+                  defaultValue="TFF Admin"
+                  >
+                <MenuItem value={"TFF Admin"}>TFF Admin</MenuItem>
+              </Select> : 
+              
+              <Select
+                  labelId="role-label"
+                  id="role"
+                  name="role"
+                  style={{ width: 400 }}
+                  value = {role}
+                  label="Select Role"
+                  onChange={e => onChange(e)}
+                  defaultValue="Reporter"
+                  >
+                <MenuItem value={"Reporter"}>Reporter</MenuItem>
+                <MenuItem value={"Retired Referee"}>Retired Referee</MenuItem>
+              </Select> }
+
+
+                
+              </Grid>
               <Grid item xs={12}>
                 <TextField
                   required
@@ -142,6 +183,18 @@ const Register = () => {
                   onChange={e => onChange(e)}
                 />
               </Grid>
+              <Grid item xs={12}>
+                <TextField
+                  required
+                  fullWidth
+                  name="security_key"
+                  label="Security Key given by TFF"
+                  type="password"
+                  id="secure_key"
+                  autoComplete="new-password"
+                  onChange={e => onChange(e)}
+                />
+              </Grid>
 
             </Grid>
             <Box m={1} pt={0}> </Box>
@@ -157,9 +210,12 @@ const Register = () => {
             </Button>
             <Grid container justifyContent="flex-end">
               <Grid item>
-                <Link href="/login" variant="body2">
+              { myRole == "TFF Admin" ? <Link href="/admin/login" variant="body2">
                   Already have an account? Sign in
-                </Link>
+                </Link> : <Link href="/login" variant="body2">
+                  Already have an account? Sign in
+                </Link> }
+                
               </Grid>
             </Grid>
           </Box>
