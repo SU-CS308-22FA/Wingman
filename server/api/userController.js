@@ -49,6 +49,7 @@ export default class userController{
       try {
         const salt = await bcrypt.genSalt(10);
         const hashed_password = await bcrypt.hash(req.body.password, salt);
+        
         console.log(`I have recived this data from request ${req.body} "Full request:${req}"`)
         const newUser = await db.query('INSERT INTO wingman.users (mail,name,surname, password) values ($1,$2,$3,$4) returning *'
         , [req.body.mail, req.body.name, req.body.surname, hashed_password])
