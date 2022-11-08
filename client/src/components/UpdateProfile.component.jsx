@@ -24,7 +24,6 @@ const UpdateProfile = ({}) => {
 
   const [inputs, setInputs] = useState({
     mail: "",
-    password: "",
     name: "",
     surname: "",
   });

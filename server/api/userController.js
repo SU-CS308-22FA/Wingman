@@ -49,7 +49,6 @@ export default class userController{
       try {
         const salt = await bcrypt.genSalt(10);
         const hashed_password = await bcrypt.hash(req.body.password, salt);
-        console.log(`I have recived this data from request ${req.body} "Full request:${req}"`)
         const newUser = await db.query('INSERT INTO wingman.users (mail,name,surname, password) values ($1,$2,$3,$4) returning *'
         , [req.body.mail, req.body.name, req.body.surname, hashed_password])
         res.status(200).json({
@@ -110,21 +109,9 @@ export default class userController{
   static async updateUser(req, res, next){
     try {
       const user_info = await db.query('SELECT password from wingman.users WHERE user_id = $1', [req.params.id])
-      let pass = req.params.password
-      let results = []
-      if(pass == "" || pass == null)
-      {
-        pass = user_info.rows[0].password
-        results = await db.query('UPDATE wingman.users SET mail = $1 ,name = $2 ,surname = $3, password = $4 WHERE user_id = $5 returning *'
-      , [req.body.mail, req.body.name, req.body.surname, pass, req.params.id])
-      }
-      else{
-        const salt = await bcrypt.genSalt(10);
-        const hashed_password = await bcrypt.hash(pass, salt);
-        results = await db.query('UPDATE wingman.users SET mail = $1 ,name = $2 ,surname = $3, password = $4 WHERE user_id = $5 returning *'
-      , [req.body.mail, req.body.name, req.body.surname, hashed_password, req.params.id])
-      } 
-      if(results.rows.length == 0)
+      let pass = req.body.password
+
+      if(user_info.rows.length == 0)
         {
           throw {
             detail: "User not found.",
@@ -134,8 +121,19 @@ export default class userController{
         }
 
 
-
-      res.status(200).json({data: results.rows[0]})
+      if(pass == "" || pass == null || pass == undefined)
+      {
+        const afterUpdate = await db.query('UPDATE wingman.users SET mail = $1 ,name = $2 ,surname = $3 WHERE user_id = $4 returning *'
+      , [req.body.mail, req.body.name, req.body.surname, req.params.id])
+        res.status(200).json({data: afterUpdate.rows[0]})
+      }
+      else{
+        const salt = await bcrypt.genSalt(10);
+        const hashed_password = await bcrypt.hash(pass, salt);
+        const afterUpdate = await db.query('UPDATE wingman.users SET mail = $1 ,name = $2 ,surname = $3, password = $4 WHERE user_id = $5 returning *'
+      , [req.body.mail, req.body.name, req.body.surname, hashed_password, req.params.id])
+        res.status(200).json({data: afterUpdate.rows[0]})
+      } 
     } catch (error) {
       console.log(`Failed to update user ${error}.`)
       if(String(error).includes("users_mail_key") )
