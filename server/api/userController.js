@@ -44,18 +44,45 @@ export default class userController{
     }
 
 
+    async check_then_delete_security_key(security_key, role) {
+      const key = await db.query('SELECT * FROM wingman.keys WHERE security_key = $1 key_for_role=$2', [security_key, role])
+      if(key.rows.length == 0){
+          throw {
+            detail: "Wrong key.",
+            code: 1,
+            error: new Error()
+          };
+        }
+        else{
+          result = await db.query('DELETE FROM wingman.keys WHERE security_key = $1', [security_key])
+        }
+    }
 
     static async createUser(req, res, next){
       try {
+        //Check and then delete sec key
+        const key = await db.query('SELECT * FROM wingman.keys WHERE security_key = $1 AND key_for_role=$2', [req.body.security_key, req.body.role])
+        if(key.rows.length == 0){
+            throw {
+              detail: "Wrong key.",
+              code: 1,
+              error: new Error()
+            };
+          }
+          else{
+            let result = await db.query('DELETE FROM wingman.keys WHERE security_key = $1', [req.body.security_key])
+          }
+
         const salt = await bcrypt.genSalt(10);
         const hashed_password = await bcrypt.hash(req.body.password, salt);
-        const newUser = await db.query('INSERT INTO wingman.users (mail,name,surname, password) values ($1,$2,$3,$4) returning *'
-        , [req.body.mail, req.body.name, req.body.surname, hashed_password])
+        const newUser = await db.query('INSERT INTO wingman.users (mail,name,surname, password, role) values ($1,$2,$3,$4, $5) returning *'
+        , [req.body.mail, req.body.name, req.body.surname, hashed_password, req.body.role])
         res.status(200).json({
           data: newUser.rows[0]
         })
 
       } catch (error) {
+        console.log(`Error when creating user ${JSON.stringify(error)}`)
         console.log(`Error when creating user ${error}`)
         if(String(error).includes("users_mail_key") )
         {
@@ -119,6 +146,22 @@ export default class userController{
             error: new Error()
           };
         }
+
+      if(req.body.role == "TFF Admin")
+      {
+         //Check and then delete sec key
+         const key = await db.query('SELECT * FROM wingman.keys WHERE security_key = $1 AND key_for_role=$2', [req.body.security_key, req.body.role])
+         if(key.rows.length == 0){
+             throw {
+               detail: "Wrong key.",
+               code: 2,
+               error: new Error()
+             };
+           }
+           else{
+             let result = await db.query('DELETE FROM wingman.keys WHERE security_key = $1', [req.body.security_key])
+           }
+      }
 
 
       if(pass == "" || pass == null || pass == undefined)

@@ -26,6 +26,7 @@ const UpdateProfile = ({}) => {
     mail: "",
     name: "",
     surname: "",
+    security_key: "",
   });
 
   useEffect(() => {
@@ -39,7 +40,7 @@ const UpdateProfile = ({}) => {
   }, []);
   
 
-  const { mail, name, surname,password } = inputs;
+  const { mail, name, surname,password, security_key } = inputs;
 
   function isValidEmail(email) {
     return /\S+@\S+\.\S+/.test(email);
@@ -74,7 +75,7 @@ const UpdateProfile = ({}) => {
         mail: mail, 
         name: name, 
         surname: surname, 
-        password: password
+        password: password,
       })
       .then(response =>{
         let val = {
@@ -171,7 +172,6 @@ const UpdateProfile = ({}) => {
                   onChange={e => onChange(e)}
                 />
               </Grid>
-
             </Grid>
             <Box m={1} pt={0}> </Box>
             {error &&<Alert variant="filled" severity="error"> {error} </Alert>}
