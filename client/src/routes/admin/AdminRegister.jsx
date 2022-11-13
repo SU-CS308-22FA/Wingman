@@ -4,14 +4,14 @@ import Register from "../../components/Register.component";
 import ResponsiveAppBar from '../../components/WelcomeWingmanBar';
 
 
-const RRRegisterPage = () => {
+const AdminRegisterPage = () => {
     return (
       <div>
         <ResponsiveAppBar/>
-        <Register role="Reporter"/>
+        <Register role="TFF Admin"/>
         <Copyright sx={{ mt: 5 }} />
       </div>
     );
   };
    
-  export default RRRegisterPage;
+  export default AdminRegisterPage;

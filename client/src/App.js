@@ -6,8 +6,9 @@ import { UsersContextProvider } from "./context/UserContex";
 import RRRegisterPage from "./routes/RR/RRRegister";
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 import RRLoginPage from "./routes/RR/RRLogin";
-import RRProfilePage from "./routes/RR/RRProfile";
+import ProfilePage from "./routes/ProfilePage";
 import RRUpdatePage from "./routes/RR/RRUpdate";
+import AdminRegisterPage from "./routes/admin/AdminRegister";
 
 const theme = createTheme({
   palette: {
@@ -46,8 +47,10 @@ class App extends Component {
               <Routes>
                     <Route path="/" element={<RRRegisterPage/>}/>        
                     <Route path="/register" element={<RRRegisterPage/>}/>
+                    <Route path="/admin/register" element={<AdminRegisterPage/>}/>
                     <Route path="/login" element={<RRLoginPage/>}/>
-                    <Route path="/profile/" element={<RRProfilePage/>}/>\
+                    <Route path="/admin/login" element={<RRLoginPage/>}/>
+                    <Route path="/profile/" element={<ProfilePage/>}/>\
                     <Route path="/update/" element={<RRUpdatePage/>}/>
                 </Routes> 
               </Router>       
