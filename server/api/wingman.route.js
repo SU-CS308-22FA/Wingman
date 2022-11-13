@@ -14,6 +14,7 @@ router.route("/test").get((req, res) => {
   })
 
 router.route("/users").get(userController.getAllUsers)
+router.route("/referees").get(userController.getAllReferees)
 router.route("/users/:id").get(userController.getUserById)
 router.route("/users/").post(userController.createUser)
 router.route("/users/:id").delete(userController.deleteById)

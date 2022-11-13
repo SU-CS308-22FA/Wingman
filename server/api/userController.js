@@ -17,6 +17,24 @@ export default class userController{
         }   
     }
 
+    static async getAllReferees(req, res, next) {
+      try {
+        const results = await db.query('SELECT * FROM wingman.referees')
+        
+        res.status(200).json({
+          lenght: results.rows.length,
+          data:{
+            users: results.rows
+          }
+          
+        })
+      } catch (error) {
+        console.log(`Error when getting all referees ${error.detail}`)
+        res.status(400).json({error:error, data:{users:[]}})
+      } 
+      }
+    
+
     static async getUserById(req, res, next){
       try {
         const result = await db.query('SELECT * FROM wingman.users WHERE user_id = $1', [req.params.id])
