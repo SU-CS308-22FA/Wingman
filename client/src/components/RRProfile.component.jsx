@@ -7,6 +7,7 @@ import {useNavigate} from "react-router-dom"
 import React, { useContext, useState, useEffect } from "react";
 import UserFinder from "../apis/UserFinder";
 import { UsersContext } from "../context/UserContex";
+import { AuthContext } from '../context/authContext';
 
 
 
@@ -14,13 +15,44 @@ import { UsersContext } from "../context/UserContex";
 const RRProfile = ({}) => {
   const navigate = useNavigate();
 
-  const [isLoading, setLoading] = useState(true)
+  const [isLoading, setLoading] = useState(false)
 
-  const {user} = useContext(UsersContext)
+  const {user, setUser} = useContext(UsersContext)
+  const {setAuth} = useContext(AuthContext)
+  const getData = async () => {
+    try {
+      const userData =  await UserFinder.get(`/users/1`, {headers: {'jwt_token': localStorage.token}})
+      let val = {
+        id: userData.data.data.user_id,
+        mail: userData.data.data.mail,
+        name: userData.data.data.name,
+        surname: userData.data.data.surname,
+      }   
+      return val;
+    } catch (err) {
+      console.error(err.message);
+    }
+  };
+
+  const checkAuthenticated = async () => {
+    try {
+      const res = await UserFinder.post("/verify", {}, {headers: {'jwt_token': localStorage.token}})
+      if (res.data.isAuth === true){
+        await setAuth(true);
+        const val = await getData();
+        await setUser(val)
+      }
+      else{
+        await setAuth(false);
+        navigate("/")
+      } 
+    } catch (err) {
+      console.error(err.message);
+    }
+  };
 
   useEffect(() => {
-    if(user)
-      setLoading(false)
+    checkAuthenticated();
   }, []);
   
 

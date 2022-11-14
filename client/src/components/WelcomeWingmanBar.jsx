@@ -1,12 +1,28 @@
-import * as React from 'react';
+import React, { useContext} from "react";
 import AppBar from '@mui/material/AppBar';
 import Box from '@mui/material/Box';
 import Toolbar from '@mui/material/Toolbar';
 import Typography from '@mui/material/Typography';
 import Container from '@mui/material/Container';
+import { AuthContext } from '../context/authContext';
+import {useNavigate} from "react-router-dom";
+
+
 
 function ResponsiveAppBar() {
+  const {isAuthenticated, setAuth} = useContext(AuthContext)
+  const navigate = useNavigate();
 
+  const logout = async e => {
+    e.preventDefault();
+    try {
+      localStorage.removeItem("token");
+      await setAuth(false);
+      navigate("/")
+    } catch (err) {
+      console.error(err.message);
+    }
+  };
   return (
     <AppBar position="static">
       <Container maxWidth="xl">
@@ -31,9 +47,10 @@ function ResponsiveAppBar() {
           >
             WINGMAN
           </Typography>
-
-
-
+          {isAuthenticated ? 
+          <button onClick={e => logout(e)} className="btn btn-primary">
+            Logout
+          </button>: <Container></Container>}
         </Toolbar>
       </Container>
     </AppBar>
