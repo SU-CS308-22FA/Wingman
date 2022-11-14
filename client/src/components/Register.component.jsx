@@ -12,15 +12,55 @@ import Container from '@mui/material/Container';
 import Typography from '@mui/material/Typography';
 import Alert from '@mui/material/Alert';
 import UserFinder from "../apis/UserFinder";
+import { AuthContext } from "../context/authContext";
 
 
 const Register = (props) => {
-
   const myRole = props.role
+  const navigate = useNavigate();
+  const {setUser} = useContext(UsersContext)
+  const {setAuth} = useContext(AuthContext)
+  
+  const getData = async () => {
+    try {
+              //TODO put request header
+      const userData =  await UserFinder.get(`/users/1`, {headers: {'jwt_token': localStorage.token}})
+      let val = {
+        id: userData.data.data.user_id,
+        mail: userData.data.data.mail,
+        name: userData.data.data.name,
+        surname: userData.data.data.surname,
+      }   
+      return val;
+    } catch (err) {
+      console.error(err.message);
+    }
+  };
+
+  const checkAuthenticated = async () => {
+    try {
+              //TODO put request header
+      const res = await UserFinder.post("/verify", {}, {headers: {'jwt_token': localStorage.token}})
+      if (res.data.isAuth === true){
+        await setAuth(true);
+        const val = await getData();
+        await setUser(val)
+        navigate("/profile/")
+      }
+      else{
+        await setAuth(false);
+      } 
+    } catch (err) {
+      console.error(err.message);
+    }
+  };
+
+  useEffect(() => {
+    checkAuthenticated();
+  }, []);
 
   const [error, setError] = useState(null)
   
-  const navigate = useNavigate();
   const [inputs, setInputs] = useState({
     role: myRole,
     mail: "",
@@ -72,7 +112,13 @@ const Register = (props) => {
       console.log(response.data)
       
       if(response.status==200){
-        navigate("/login")}
+        if (response.data.jwtToken) {
+          localStorage.setItem("token", response.data.jwtToken);
+          setAuth(true);
+        } else {
+          setAuth(false);
+        }
+        navigate("/profile/")}
 
     } catch (err) {
         if(err.fmessage)
