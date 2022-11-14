@@ -11,6 +11,8 @@ import RRUpdatePage from "./routes/RR/RRUpdate";
 import AdminRegisterPage from "./routes/admin/AdminRegister";
 import RRRefereeList from "./routes/RR/RRRefereeList"
 import TeamListPage from "./routes/Teams";
+import { AuthContextProvider } from "./context/authContext";
+
 
 const theme = createTheme({
   palette: {
@@ -41,7 +43,9 @@ class App extends Component {
       backgroundSize: 'cover',
   };
 
-    return (    
+  
+    return (
+      <AuthContextProvider>   
         <UsersContextProvider>
           <ThemeProvider theme={theme}>
             <div style = {myStyle}>
@@ -62,7 +66,7 @@ class App extends Component {
             </div>
           </ThemeProvider>
         </UsersContextProvider>
- 
+      </AuthContextProvider> 
     );
   }
 }
