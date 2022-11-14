@@ -7,7 +7,8 @@ import {useNavigate} from "react-router-dom"
 import React, { useContext, useState, useEffect } from "react";
 import UserFinder from "../apis/UserFinder";
 import { UsersContext } from "../context/UserContex";
-
+import { TwitterTimelineEmbed, TwitterShareButton, TwitterFollowButton, TwitterHashtagButton, TwitterMentionButton, TwitterTweetEmbed, TwitterMomentShare, TwitterDMButton, TwitterVideoEmbed, TwitterOnAirButton } from 'react-twitter-embed';
+import { Divider } from '@mui/material';
 
 
 
@@ -46,7 +47,7 @@ const AdminProfile = ({}) => {
           <main>
           <Box
             sx={{
-              bgcolor: 'background.paper',
+              bgcolor: '#F5F1ED',
               pt: 8,
               pb: 6,
             }}
@@ -55,10 +56,10 @@ const AdminProfile = ({}) => {
               <Typography
                 variant="h3"
                 align="center"
-                color="#70798C"
+                color="#252323"
                 gutterBottom
               >
-                Welcome {user.name}!
+            {user.name} {user.surname}
               </Typography>
               <Typography
                 variant="h5"
@@ -66,18 +67,18 @@ const AdminProfile = ({}) => {
                 color="#70798C"
                 gutterBottom
               >
-                {user.name} {user.surname}
+                TFF Authorized User
               </Typography>
               <Typography
                 variant="h6"
                 align="center"
-                color="#70798C"
+                color="#B3B5BD"
                 gutterBottom
               >
                   {user.mail}
               </Typography>
               <Typography variant="h6" align="center" color="text.secondary" paragraph>
-                  Welcome dear TFF Admin your page is uniqe, {user.name}! You will be able to see information about the user in the near future. For now, you can update your name if you did any mistake or you can delete your account to start again!
+                  Welcome to Wingman, {user.name}! You are now on your profile page. From here, you can perform settings related to your account and actions such as account deletion. You can also see the latest updates of TFF account. If you want to take action about referees or teams, you can go to the relevant pages using the menu above.
               </Typography>
               <Stack
                 sx={{ pt: 4 }}
@@ -88,6 +89,26 @@ const AdminProfile = ({}) => {
                 <Button onClick={onUpdate} color = 'fourth' variant="contained">UPDATE ACCOUNT</Button>
                 <Button onClick={onDelete} color = 'error' variant="contained">DELETE ACCOUNT</Button>
               </Stack>
+              <Divider variant="middle" />
+            </Container>
+            <Box m={0} pt={5}> </Box>
+
+            <Container maxWidth="sm">
+            <Typography
+                variant="h5"
+                align="center"
+                color="#70798C"
+                gutterBottom
+              >
+                Latest Updates From @TFF
+              </Typography>
+              <Box m={0} pt={5}> </Box>
+
+            <TwitterTimelineEmbed
+  sourceType="profile"
+  screenName="TFF_Org"
+  options={{height: 400}}
+/>
             </Container>
           </Box>
   

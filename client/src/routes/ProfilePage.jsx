@@ -1,7 +1,7 @@
 import Footer from "../components/Footer.component";
 import RRProfile from "../components/RRProfile.component";
 import AdminProfile from "../components/AdminProfile.component";
-import ResponsiveAppBar from '../components/WelcomeWingmanBar';
+import ResponsiveAppBar from '../components/LoggedInAppBar';
 import React, { useContext, useState, useEffect } from "react";
 import { UsersContext } from "../context/UserContex";
 
