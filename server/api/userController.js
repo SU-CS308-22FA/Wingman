@@ -19,6 +19,7 @@ export default class userController{
 
     static async getAllReferees(req, res, next) {
       try {
+        
         const results = await db.query('SELECT * FROM wingman.referees')
         
         res.status(200).json({
@@ -33,7 +34,33 @@ export default class userController{
         res.status(400).json({error:error, data:{users:[]}})
       } 
       }
-    
+
+      static async getRefereeById(req, res, next){
+        try {
+          
+          const result = await db.query('SELECT * FROM wingman.referees WHERE id = $1', [req.params.id])
+          if(result.rows.length == 0)
+          {
+            throw {
+              detail: "Referee not found.",
+              code: 1,
+              error: new Error()
+            };
+          }
+  
+          res.status(200).json({
+          data: result.rows[0]
+          })
+        } catch (err) {
+          console.log(`Error when getting one referee ${err}`)
+          if(err.code == 1)
+          {
+            res.status(404).json({detail:err.detail, data:[]})
+            return
+          }
+          res.status(400).json({detail:err, data:[]})
+        }   
+      }
 
     static async getUserById(req, res, next){
       try {

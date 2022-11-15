@@ -88,14 +88,14 @@ export const RefereeList = () => {
       <Table sx={{ minWidth: 100 }} aria-label="customized table">
         <TableHead>
           <TableRow>
-            <StyledTableCell>Referees</StyledTableCell>
+            <StyledTableCell>Referee ID</StyledTableCell>
             <StyledTableCell align="right">Profile</StyledTableCell>
-            <StyledTableCell align="right">Referee ID</StyledTableCell>
+            
             <StyledTableCell align="right">Referee Name</StyledTableCell>
             <StyledTableCell align="right">Referee surname</StyledTableCell>
-            <StyledTableCell align="right">Matches</StyledTableCell>
-            <StyledTableCell align="right">Yellow</StyledTableCell>
-            <StyledTableCell align="right">Red</StyledTableCell>
+            <StyledTableCell align="right">All Time Matches</StyledTableCell>
+            <StyledTableCell align="right">This Season Matches</StyledTableCell>
+           
             
           </TableRow>
         </TableHead>
@@ -113,12 +113,11 @@ export const RefereeList = () => {
                       {referee.name} {referee.surname}
                     </button>
                 </StyledTableCell>
-              <StyledTableCell align="right">{referee.id}</StyledTableCell>
+              
               <StyledTableCell align="right">{referee.name}</StyledTableCell>
               <StyledTableCell align="right">{referee.surname}</StyledTableCell>
               <StyledTableCell align="right">{referee.totalmatches}</StyledTableCell>
-              <StyledTableCell align="right">{referee.totalyellowcards}</StyledTableCell>
-              <StyledTableCell align="right">{referee.totalredcards}</StyledTableCell>
+              <StyledTableCell align="right">{referee.totalmatches}</StyledTableCell>
               
             </StyledTableRow>
           ))}

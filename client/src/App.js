@@ -10,6 +10,7 @@ import ProfilePage from "./routes/ProfilePage";
 import RRUpdatePage from "./routes/RR/RRUpdate";
 import AdminRegisterPage from "./routes/admin/AdminRegister";
 import RRRefereeList from "./routes/RR/RRRefereeList"
+import  RRRefereeProfile  from "./routes/RR/RRRefereeProfile";
 
 const theme = createTheme({
   palette: {
@@ -54,6 +55,7 @@ class App extends Component {
                     <Route path="/profile/" element={<ProfilePage/>}/>\
                     <Route path="/update/" element={<RRUpdatePage/>}/>
                     <Route path="/refereeList" element={<RRRefereeList/>}/>
+                    <Route path="/referee/:id" element={<RRRefereeProfile/>}/>
                 </Routes> 
               </Router>       
             </div>
