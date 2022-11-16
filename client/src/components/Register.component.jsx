@@ -13,6 +13,7 @@ import Typography from '@mui/material/Typography';
 import Alert from '@mui/material/Alert';
 import UserFinder from "../apis/UserFinder";
 import { AuthContext } from "../context/authContext";
+import { UsersContext } from "../context/UserContex";
 
 
 const Register = (props) => {
@@ -23,7 +24,6 @@ const Register = (props) => {
   
   const getData = async () => {
     try {
-              //TODO put request header
       const userData =  await UserFinder.get(`/users/1`, {headers: {'jwt_token': localStorage.token}})
       let val = {
         id: userData.data.data.user_id,
@@ -39,7 +39,6 @@ const Register = (props) => {
 
   const checkAuthenticated = async () => {
     try {
-              //TODO put request header
       const res = await UserFinder.post("/verify", {}, {headers: {'jwt_token': localStorage.token}})
       if (res.data.isAuth === true){
         await setAuth(true);

@@ -4,17 +4,18 @@ import AdminProfile from "../components/AdminProfile.component";
 import ResponsiveAppBar from '../components/LoggedInAppBar';
 import React, { useContext, useState, useEffect } from "react";
 import { UsersContext } from "../context/UserContex";
+import { AuthContext } from "../context/authContext";
 
 
 const ProfilePage = () => {
-  const {user} = useContext(UsersContext)
+  const {user, setUser} = useContext(UsersContext)
+  const {setAuth} = useContext(AuthContext)
   if(user == undefined)
   {
-    return(
-      <h1>Zort</h1>
-    )
+    setUser(JSON.parse(localStorage.getItem("user")))
+    setAuth(true)
   }
-  if(user.role == "TFF Admin")
+  else if(user.role == "TFF Admin")
   {
     return (
       <div>

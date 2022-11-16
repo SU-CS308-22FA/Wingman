@@ -21,14 +21,17 @@ const RRProfile = ({}) => {
   const {setAuth} = useContext(AuthContext)
   const getData = async () => {
     try {
-      const userData =  await UserFinder.get(`/users/1`, {headers: {'jwt_token': localStorage.token}})
-      let val = {
-        id: userData.data.data.user_id,
-        mail: userData.data.data.mail,
-        name: userData.data.data.name,
-        surname: userData.data.data.surname,
-      }   
-      return val;
+      await UserFinder.get(`/users/1`, {headers: {'jwt_token': localStorage.token}})
+      .then(userData =>{
+        let val = {
+          id: userData.data.data.user_id,
+          mail: userData.data.data.mail,
+          name: userData.data.data.name,
+          surname: userData.data.data.surname,
+          role: userData.data.data.role,
+        }
+        setUser(val)
+      })
     } catch (err) {
       console.error(err.message);
     }
@@ -36,11 +39,11 @@ const RRProfile = ({}) => {
 
   const checkAuthenticated = async () => {
     try {
+      console.log("in check auth")
       const res = await UserFinder.post("/verify", {}, {headers: {'jwt_token': localStorage.token}})
       if (res.data.isAuth === true){
+        await getData();
         await setAuth(true);
-        const val = await getData();
-        await setUser(val)
       }
       else{
         await setAuth(false);
@@ -53,7 +56,7 @@ const RRProfile = ({}) => {
 
   useEffect(() => {
     checkAuthenticated();
-  }, []);
+  }, [user]);
   
 
   function onDelete(){

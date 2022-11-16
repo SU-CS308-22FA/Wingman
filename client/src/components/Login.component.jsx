@@ -24,13 +24,13 @@ const Login = ({}) => {
 
     const getData = async () => {
       try {
-        //TODO put request header
         const userData =  await UserFinder.get(`/users/1`,{headers: {'jwt_token': localStorage.token}})
         let val = {
           id: userData.data.data.user_id,
           mail: userData.data.data.mail,
           name: userData.data.data.name,
           surname: userData.data.data.surname,
+          role: userData.data.data.role
         }   
         return val;
       } catch (err) {
@@ -114,6 +114,7 @@ const Login = ({}) => {
                 }
                 const val = await getData();
                 await setUser(val)
+                localStorage.setItem("user", JSON.stringify(val));
                 navigate("/profile/")
               }
               catch(err){

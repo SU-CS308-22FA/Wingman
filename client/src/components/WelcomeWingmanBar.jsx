@@ -17,6 +17,7 @@ function ResponsiveAppBar() {
     e.preventDefault();
     try {
       localStorage.removeItem("token");
+      localStorage.removeItem("user");
       await setAuth(false);
       navigate("/")
     } catch (err) {
