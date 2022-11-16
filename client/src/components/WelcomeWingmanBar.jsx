@@ -48,10 +48,6 @@ function ResponsiveAppBar() {
           >
             WINGMAN
           </Typography>
-          {isAuthenticated ? 
-          <button onClick={e => logout(e)} className="btn btn-primary">
-            Logout
-          </button>: <Container></Container>}
         </Toolbar>
       </Container>
     </AppBar>
