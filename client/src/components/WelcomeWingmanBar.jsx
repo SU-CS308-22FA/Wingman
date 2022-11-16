@@ -12,6 +12,7 @@ import {useNavigate} from "react-router-dom";
 function ResponsiveAppBar() {
   const {isAuthenticated, setAuth} = useContext(AuthContext)
   const navigate = useNavigate();
+  //new pages
 
   const logout = async e => {
     e.preventDefault();
