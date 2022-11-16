@@ -5,15 +5,26 @@ import ResponsiveAppBar from '../components/LoggedInAppBar';
 import React, { useContext, useState, useEffect } from "react";
 import { UsersContext } from "../context/UserContex";
 import { AuthContext } from "../context/authContext";
+import { useNavigate } from "react-router-dom";
 
 
 const ProfilePage = () => {
+  const navigate = useNavigate();
   const {user, setUser} = useContext(UsersContext)
   const {setAuth} = useContext(AuthContext)
+  const [isLoading, setLoading] = useState(true)
   if(user == undefined)
   {
-    setUser(JSON.parse(localStorage.getItem("user")))
-    setAuth(true)
+    try{
+      setUser(JSON.parse(localStorage.getItem("user"))).then(() =>{
+        setLoading(false)
+      })
+      setAuth(true)
+    }
+    catch{
+      navigate('/')
+    }
+
   }
   else if(user.role == "TFF Admin")
   {
@@ -25,7 +36,7 @@ const ProfilePage = () => {
       </div>
     );
   }
-  else
+  else if(user.role == "Reporter" || user.role=="Retired Referee")
   {
     return (
       <div>
@@ -34,6 +45,9 @@ const ProfilePage = () => {
         <Footer/>
       </div>
     );
+  }
+  else{
+    return (<h1>Loading...</h1>)
   }
 
     

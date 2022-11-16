@@ -8,7 +8,7 @@ import { AuthContext } from "../context/authContext";
 import { useState } from "react";
 
 
-const TeamListPage = () => {
+const PageName = () => {
   const navigate = useNavigate();
   const {user, setUser} = useContext(UsersContext)
   const {setAuth} = useContext(AuthContext)
@@ -31,6 +31,7 @@ const TeamListPage = () => {
     return (
       <div>
         <ResponsiveAppBar/>
+        
         <Box m={0} pt={34}> </Box>
 
         <center>             <img src="https://i.hizliresim.com/t6q9rs6.png" height="66" width="50" />          
@@ -54,4 +55,4 @@ const TeamListPage = () => {
   }
 }
    
-  export default TeamListPage;
+  export default PageName;

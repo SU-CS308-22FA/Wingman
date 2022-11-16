@@ -83,8 +83,10 @@ const UpdateProfile = ({}) => {
           mail: response.data.data.mail,
           name: response.data.data.name,
           surname: response.data.data.surname,
+          role: response.data.data.role
         }
         setUser(val)
+        localStorage.setItem("user", JSON.stringify(val));
         navigate("/profile/")
         }
       )
