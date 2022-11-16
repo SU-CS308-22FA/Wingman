@@ -9,7 +9,7 @@ import RRLoginPage from "./routes/RR/RRLogin";
 import ProfilePage from "./routes/ProfilePage";
 import RRUpdatePage from "./routes/Update";
 import AdminRegisterPage from "./routes/admin/AdminRegister";
-import RRRefereeList from "./routes/RR/RRRefereeList"
+import RRRefereeList from "./routes/RefereeList"
 import TeamListPage from "./routes/Teams";
 import { AuthContextProvider } from "./context/authContext";
 import WelcomePage from "./routes/Welcome";

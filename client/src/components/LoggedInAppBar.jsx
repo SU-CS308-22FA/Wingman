@@ -17,10 +17,12 @@ import LogoutIcon from '@mui/icons-material/Logout';
 import { AuthContext } from '../context/authContext';
 import PersonPinIcon from '@mui/icons-material/PersonPin';
 import SportsKabaddiIcon from '@mui/icons-material/SportsKabaddi';
+import { UsersContext } from "../context/UserContex";
 
 function ResponsiveAppBar() {
     const navigate = useNavigate();
     const {isAuthenticated, setAuth} = useContext(AuthContext)
+    const {user, setUser} = useContext(UsersContext)
     const onProfileClicked = (e) => {
         navigate("/profile");
       };
@@ -59,6 +61,7 @@ const tiers = [
       localStorage.removeItem("token");
       localStorage.removeItem("user");
       await setAuth(false);
+      await setUser(undefined)
       navigate("/")
     } catch (err) {
       console.error(err.message);
