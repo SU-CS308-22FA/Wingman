@@ -14,6 +14,7 @@ import TeamListPage from "./routes/Teams";
 import { AuthContextProvider } from "./context/authContext";
 import WelcomePage from "./routes/Welcome";
 
+import RefereeAssignPage from "./routes/AssignReferee";
 
 const theme = createTheme({
   palette: {
@@ -35,7 +36,7 @@ const theme = createTheme({
   },
 });
 class App extends Component {
- 
+
   render() {
     const myStyle={
       background: "#F5F1ED",
@@ -44,9 +45,9 @@ class App extends Component {
       backgroundSize: 'cover',
   };
 
-  
+
     return (
-      <AuthContextProvider>   
+      <AuthContextProvider>
         <UsersContextProvider>
           <ThemeProvider theme={theme}>
             <div style = {myStyle}>
@@ -61,15 +62,15 @@ class App extends Component {
                     <Route path="/update/" element={<RRUpdatePage/>}/>
                     <Route path="/refereeList" element={<RRRefereeList/>}/>
                     <Route path="/teams" element={<TeamListPage/>}/>
-
-                </Routes> 
-              </Router>       
+                    <Route path="/assign" element={<RefereeAssignPage/>}/>
+                </Routes>
+              </Router>
             </div>
           </ThemeProvider>
         </UsersContextProvider>
-      </AuthContextProvider> 
+      </AuthContextProvider>
     );
   }
 }
-    
+
 export default App;

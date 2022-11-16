@@ -122,6 +122,7 @@ const RRProfile = ({}) => {
               >
                 <Button onClick={onUpdate} color = 'fourth' variant="contained">UPDATE ACCOUNT</Button>
                 <Button onClick={onDelete} color = 'error' variant="contained">DELETE ACCOUNT</Button>
+                <Button onClick={onUpdate} color = 'fourth' variant="contained">REFEREE ASSIGNMENT</Button>
               </Stack>
             </Container>
           </Box>
