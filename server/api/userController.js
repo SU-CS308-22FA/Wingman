@@ -61,6 +61,36 @@ export default class userController{
           res.status(400).json({detail:err, data:[]})
         }   
       }
+      static async sortReferee(req, res, next){
+        try {
+          
+          const result = await db.query(`SELECT * FROM wingman.referees ORDER BY ${req.params.par} ASC`)
+          console.log(result.rows);
+          if(result.rows.length == 0)
+          {
+            throw {
+              detail: "Could not sort.",
+              code: 1,
+              error: new Error()
+            };
+          }
+  
+          res.status(200).json({
+            lenght: result.rows.length,
+            data:{
+              users: result.rows
+            }
+          })
+        } catch (err) {
+          console.log(`Error when sorting referees ${err}`)
+          if(err.code == 1)
+          {
+            res.status(404).json({detail:err.detail, data:[]})
+            return
+          }
+          res.status(400).json({detail:err, data:[]})
+        }   
+      }
 
     static async getUserById(req, res, next){
       try {

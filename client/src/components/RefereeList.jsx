@@ -28,6 +28,9 @@ import Typography from '@mui/material/Typography';
 import Container from '@mui/material/Container';
 import Link from '@mui/material/Link';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
+import Select from "react-dropdown-select";
+
+
 
 const StyledTableCell = styled(TableCell)(({ theme }) => ({
     [`&.${tableCellClasses.head}`]: {
@@ -70,7 +73,36 @@ export const RefereeList = () => {
     const handleRefereeSelect = (id) => {
         navigate(`/referee/${id}`);
       };
-    
+    const handleRefereeSort = (val) => {
+          const fetcData = async () => {
+            try {
+            
+            const response = await UserFinder.get(`/refereeSort/${val}`);
+            console.log("res:",response);
+            setReferees(response.data.data.users)
+            } catch (err) {}
+        };
+
+        fetcData();
+        console.log(val);
+      };
+      const options = [
+        { 
+          value: 1,
+          label: "Id",
+          col: "id"
+        },
+        {
+          value:  2,
+          label: "Name",
+          col: "name"
+        },
+        {
+          value:  3,
+          label: "Total Matches",
+          col: "totalmatches"
+        }
+      ];
 
     return (
         <>
@@ -84,7 +116,11 @@ export const RefereeList = () => {
             pb: 6,
           }}
         >
+          
           <Container maxWidth="sm">
+          <Typography variant="body1" align="center" color="text.secondary" component="p" > Sort By:</Typography>
+          <Select options={options} 
+          onChange={(values) => handleRefereeSort(values[0]["col"])} />
       <Table sx={{ minWidth: 100 }} aria-label="customized table">
         <TableHead>
           <TableRow>
@@ -125,6 +161,7 @@ export const RefereeList = () => {
       </Table>
 
           </Container>
+          
         </Box>
  
       </main>

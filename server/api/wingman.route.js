@@ -13,10 +13,10 @@ router.route("/test").get((req, res) => {
     res.json({ info: 'You request to WingmanApi has been received!' })
   })
 
-router.route("/referees/:id").get(userController.getRefereeById)
 router.route("/users").get(userController.getAllUsers)
 router.route("/referees").get(userController.getAllReferees)
-
+router.route("/referees/:id").get(userController.getRefereeById)
+router.route("/refereeSort/:par").get(userController.sortReferee)
 router.route("/users/:id").get(userController.getUserById)
 router.route("/users/").post(userController.createUser)
 router.route("/users/:id").delete(userController.deleteById)
