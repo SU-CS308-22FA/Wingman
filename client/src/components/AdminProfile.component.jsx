@@ -38,6 +38,9 @@ const AdminProfile = ({}) => {
   function onUpdate(){
     navigate("/update/")
   }
+  function onUpdate(){
+    navigate("/assign")
+  }
 
   return (
     <div>
@@ -81,13 +84,15 @@ const AdminProfile = ({}) => {
                   Welcome to Wingman, {user.name}! You are now on your profile page. From here, you can perform settings related to your account and actions such as account deletion. You can also see the latest updates of TFF account. If you want to take action about referees or teams, you can go to the relevant pages using the menu above.
               </Typography>
               <Stack
-                sx={{ pt: 4 }}
+                sx={{ pt: 3 }}
                 direction="row"
-                spacing={2}
+                spacing={1}
                 justifyContent="center"
               >
                 <Button onClick={onUpdate} color = 'fourth' variant="contained">UPDATE ACCOUNT</Button>
                 <Button onClick={onDelete} color = 'error' variant="contained">DELETE ACCOUNT</Button>
+                <Button onClick={onUpdate} color = 'third' variant="contained">REFEREE ASSIGNMENT</Button>
+
               </Stack>
               <Divider variant="middle" />
             </Container>
