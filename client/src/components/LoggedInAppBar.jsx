@@ -1,4 +1,4 @@
-import * as React from 'react';
+import React, { useContext} from "react";
 import AppBar from '@mui/material/AppBar';
 import Box from '@mui/material/Box';
 import Toolbar from '@mui/material/Toolbar';
@@ -13,13 +13,14 @@ import Tooltip from '@mui/material/Tooltip';
 import MenuItem from '@mui/material/MenuItem';
 import AdbIcon from '@mui/icons-material/Adb';
 import {useNavigate} from "react-router-dom"
-
-
-
+import LogoutIcon from '@mui/icons-material/Logout';
+import { AuthContext } from '../context/authContext';
+import PersonPinIcon from '@mui/icons-material/PersonPin';
+import SportsKabaddiIcon from '@mui/icons-material/SportsKabaddi';
 
 function ResponsiveAppBar() {
     const navigate = useNavigate();
-
+    const {isAuthenticated, setAuth} = useContext(AuthContext)
     const onProfileClicked = (e) => {
         navigate("/profile");
       };
@@ -52,6 +53,17 @@ const tiers = [
 
 
   ];
+  const logout = async e => {
+    e.preventDefault();
+    try {
+      localStorage.removeItem("token");
+      localStorage.removeItem("user");
+      await setAuth(false);
+      navigate("/")
+    } catch (err) {
+      console.error(err.message);
+    }
+  };
   
     
   const [anchorElNav, setAnchorElNav] = React.useState(null);
@@ -147,10 +159,20 @@ const tiers = [
           </Box>
 
           <Box sx={{ flexGrow: 0 }}>
+          <IconButton
+           sx={{ my: 2, color: 'white'}}
+           onClick={logout}
+          >
+            <LogoutIcon />
+          </IconButton>
+
             <Tooltip title="Open settings">
-              <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
-                <Avatar src="https://www.w3schools.com/howto/img_avatar.png" />
-              </IconButton>
+            <IconButton
+           sx={{ my: 2, color: 'white'}}
+           onClick={handleOpenUserMenu}
+          >
+            <PersonPinIcon />
+          </IconButton>
             </Tooltip>
             <Menu
               sx={{ mt: '45px' }}

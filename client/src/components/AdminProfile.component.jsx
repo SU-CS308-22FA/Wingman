@@ -38,7 +38,7 @@ const AdminProfile = ({}) => {
   function onUpdate(){
     navigate("/update/")
   }
-  function onUpdate(){
+  function onAssign(){
     navigate("/assign")
   }
 
@@ -91,7 +91,7 @@ const AdminProfile = ({}) => {
               >
                 <Button onClick={onUpdate} color = 'fourth' variant="contained">UPDATE ACCOUNT</Button>
                 <Button onClick={onDelete} color = 'error' variant="contained">DELETE ACCOUNT</Button>
-                <Button onClick={onUpdate} color = 'third' variant="contained">REFEREE ASSIGNMENT</Button>
+                <Button onClick={onAssign} color = 'third' variant="contained">REFEREE ASSIGNMENT</Button>
 
               </Stack>
               <Divider variant="middle" />

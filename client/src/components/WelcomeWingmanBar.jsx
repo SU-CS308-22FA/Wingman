@@ -14,17 +14,7 @@ function ResponsiveAppBar() {
   const navigate = useNavigate();
   //new pages
 
-  const logout = async e => {
-    e.preventDefault();
-    try {
-      localStorage.removeItem("token");
-      localStorage.removeItem("user");
-      await setAuth(false);
-      navigate("/")
-    } catch (err) {
-      console.error(err.message);
-    }
-  };
+
   return (
     <AppBar position="static">
       <Container maxWidth="xl">
