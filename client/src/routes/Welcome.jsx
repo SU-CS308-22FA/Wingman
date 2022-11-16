@@ -1,6 +1,6 @@
 import React from "react";
-import Landing from "../../components/WelcomePage.component";
-import ResponsiveAppBar from "../../components/WelcomeWingmanBar";
+import Landing from "../components/WelcomePage.component";
+import ResponsiveAppBar from "../components/WelcomeWingmanBar";
 
 
 const WelcomePage = () => {

@@ -12,6 +12,7 @@ import AdminRegisterPage from "./routes/admin/AdminRegister";
 import RRRefereeList from "./routes/RR/RRRefereeList"
 import TeamListPage from "./routes/Teams";
 import { AuthContextProvider } from "./context/authContext";
+import WelcomePage from "./routes/Welcome";
 
 
 const theme = createTheme({
@@ -51,7 +52,7 @@ class App extends Component {
             <div style = {myStyle}>
             <Router>
               <Routes>
-                    <Route path="/" element={<RRRegisterPage/>}/>        
+                    <Route path="/" element={<WelcomePage/>}/>        
                     <Route path="/register" element={<RRRegisterPage/>}/>
                     <Route path="/admin/register" element={<AdminRegisterPage/>}/>
                     <Route path="/login" element={<RRLoginPage/>}/>
