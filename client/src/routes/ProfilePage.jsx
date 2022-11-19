@@ -7,6 +7,7 @@ import { UsersContext } from "../context/UserContex";
 import { AuthContext } from "../context/authContext";
 import { useNavigate } from "react-router-dom";
 import { SuperAdminList } from "../components/SuperAdminList";
+import WellcomeAppBar from "../components/WelcomeBar";
 
 
 const ProfilePage = () => {
@@ -51,7 +52,7 @@ const ProfilePage = () => {
   {
     return (
       <div>
-        <ResponsiveAppBar/>
+        <WellcomeAppBar/>
         <SuperAdminList />
       </div>
     );

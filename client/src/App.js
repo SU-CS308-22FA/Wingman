@@ -32,6 +32,9 @@ const theme = createTheme({
     },
     fifth :{
       main : "#F5F1ED",
+    },
+    alertRed :{
+      main : "#dc143c",
     }
   },
 });
@@ -40,10 +43,16 @@ class App extends Component {
   render() {
     const myStyle={
       background: "#F5F1ED",
-      height:'100vh',
       fontSize:'24px',
       backgroundSize: 'cover',
   };
+  const myStyleBottom={
+    background: "#F5F1ED",
+    fontSize:'24px',
+    backgroundSize: 'cover',
+    heigt: "500px",
+    margin: "400px, 0, 0"
+};
 
 
     return (
@@ -67,6 +76,12 @@ class App extends Component {
                 </Routes>
               </Router>
             </div>
+            <div id="bottom" style= {myStyleBottom}>
+            <br /><br />
+              </div>
+              <div id="bottom" style= {myStyleBottom}>
+            <br /><br />
+              </div>
           </ThemeProvider>
         </UsersContextProvider>
       </AuthContextProvider>
