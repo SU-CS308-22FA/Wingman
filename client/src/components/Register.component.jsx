@@ -30,6 +30,7 @@ const Register = (props) => {
         mail: userData.data.data.mail,
         name: userData.data.data.name,
         surname: userData.data.data.surname,
+        role: userData.data.data.role
       }   
       return val;
     } catch (err) {

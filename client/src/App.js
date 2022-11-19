@@ -7,9 +7,9 @@ import RRRegisterPage from "./routes/RR/RRRegister";
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 import RRLoginPage from "./routes/RR/RRLogin";
 import ProfilePage from "./routes/ProfilePage";
-import RRUpdatePage from "./routes/RR/RRUpdate";
+import RRUpdatePage from "./routes/Update";
 import AdminRegisterPage from "./routes/admin/AdminRegister";
-import RRRefereeList from "./routes/RR/RRRefereeList"
+import RRRefereeList from "./routes/RefereeList"
 import TeamListPage from "./routes/Teams";
 import { AuthContextProvider } from "./context/authContext";
 import WelcomePage from "./routes/Welcome";
@@ -54,7 +54,7 @@ class App extends Component {
             <Router>
               <Routes>
                     <Route path="/" element={<WelcomePage/>}/>        
-                    <Route path="/register" element={<RRRegisterPage/>}/>
+                    <Route path="/reporter/register" element={<RRRegisterPage/>}/>
                     <Route path="/admin/register" element={<AdminRegisterPage/>}/>
                     <Route path="/login" element={<RRLoginPage/>}/>
                     <Route path="/admin/login" element={<RRLoginPage/>}/>
