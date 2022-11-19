@@ -63,6 +63,7 @@ class App extends Component {
                     <Route path="/refereeList" element={<RRRefereeList/>}/>
                     <Route path="/teams" element={<TeamListPage/>}/>
                     <Route path="/assign" element={<RefereeAssignPage/>}/>
+                    <Route path="/team/:id" element={<RRRefereeList/>}/>
                 </Routes>
               </Router>
             </div>

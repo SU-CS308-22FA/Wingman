@@ -35,6 +35,24 @@ export default class userController{
         res.status(400).json({error:error, data:{users:[]}})
       } 
       }
+
+    
+      static async getAllTeams(req, res, next) {
+        try {
+          const results = await db.query('SELECT * FROM wingman.teams')
+          
+          res.status(200).json({
+            lenght: results.rows.length,
+            data:{
+              users: results.rows
+            }
+            
+          })
+        } catch (error) {
+          console.log(`Error when getting all teams ${error.detail}`)
+          res.status(400).json({error:error, data:{users:[]}})
+        } 
+        }
     
 
     static async getUserById(req, res, next){

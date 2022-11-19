@@ -8,8 +8,7 @@ import React, { useContext, useState, useEffect } from "react";
 import UserFinder from "../apis/UserFinder";
 import { UsersContext } from "../context/UserContex";
 import { TwitterTimelineEmbed, TwitterShareButton, TwitterFollowButton, TwitterHashtagButton, TwitterMentionButton, TwitterTweetEmbed, TwitterMomentShare, TwitterDMButton, TwitterVideoEmbed, TwitterOnAirButton } from 'react-twitter-embed';
-import { Divider } from '@mui/material';
-
+import { Avatar, Divider } from '@mui/material';
 
 
 const AdminProfile = ({}) => {
@@ -55,6 +54,13 @@ const AdminProfile = ({}) => {
               pb: 6,
             }}
           >
+                          <center>
+            <Avatar
+              alt="Remy Sharp"
+              src="https://mui.com/static/images/avatar/1.jpg"
+              sx={{ width: 100, height: 100 }}
+
+            /></center>
             <Container maxWidth="sm">
               <Typography
                 variant="h3"
