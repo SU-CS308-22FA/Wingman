@@ -6,6 +6,7 @@ import React, { useContext, useState, useEffect } from "react";
 import { UsersContext } from "../context/UserContex";
 import { AuthContext } from "../context/authContext";
 import { useNavigate } from "react-router-dom";
+import { SuperAdminList } from "../components/SuperAdminList";
 
 
 const ProfilePage = () => {
@@ -43,6 +44,15 @@ const ProfilePage = () => {
         <ResponsiveAppBar/>
         <RRProfile />
         <Footer/>
+      </div>
+    );
+  }
+  else if(user.role == "Super Admin")
+  {
+    return (
+      <div>
+        <ResponsiveAppBar/>
+        <SuperAdminList />
       </div>
     );
   }
