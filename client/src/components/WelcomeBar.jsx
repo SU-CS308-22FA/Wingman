@@ -3,14 +3,36 @@ import AppBar from '@mui/material/AppBar';
 import Box from '@mui/material/Box';
 import Toolbar from '@mui/material/Toolbar';
 import Typography from '@mui/material/Typography';
-import Container from '@mui/material/Container';
 import { AuthContext } from '../context/authContext';
 import {useNavigate} from "react-router-dom";
+import IconButton from '@mui/material/IconButton';
+import Menu from '@mui/material/Menu';
+import MenuIcon from '@mui/icons-material/Menu';
+import Container from '@mui/material/Container';
+import Button from '@mui/material/Button';
+import Tooltip from '@mui/material/Tooltip';
+import MenuItem from '@mui/material/MenuItem';
+import LogoutIcon from '@mui/icons-material/Logout';
+import PersonPinIcon from '@mui/icons-material/PersonPin';
+import { UsersContext } from "../context/UserContex";
 
-function ResponsiveAppBar() {
+function WellcomeAppBar() {
+  const {user, setUser} = useContext(UsersContext)
   const {isAuthenticated, setAuth} = useContext(AuthContext)
   const navigate = useNavigate();
   //new pages
+   const logout = async e => {
+    e.preventDefault();
+    try {
+      localStorage.removeItem("token");
+      localStorage.removeItem("user");
+      await setAuth(false);
+      await setUser(undefined)
+      navigate("/")
+    } catch (err) {
+      console.error(err.message);
+    }
+  };
 
 
   return (
@@ -37,9 +59,17 @@ function ResponsiveAppBar() {
           >
             WINGMAN
           </Typography>
+          <Box sx={{ flexGrow: 0 }}>
+          <IconButton
+           sx={{ my: 2, color: 'white'}}
+           onClick={logout}
+          >
+            <LogoutIcon />
+          </IconButton>
+          </Box>
         </Toolbar>
       </Container>
     </AppBar>
   );
 }
-export default ResponsiveAppBar;
+export default WellcomeAppBar;
