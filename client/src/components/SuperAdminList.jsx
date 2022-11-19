@@ -38,6 +38,7 @@ import MenuItem from '@mui/material/MenuItem';
 import FormControl from '@mui/material/FormControl';
 import Select from '@mui/material/Select';
 import Chip from '@mui/material/Chip';
+import { Avatar } from "@mui/material";
 
 
 const ITEM_HEIGHT = 48;
@@ -114,7 +115,56 @@ export const SuperAdminList = () => {
       };
 
         const columns = [
-          { field: 'user_id', headerName: 'ID', width: 90, disableColumnMenu: true },
+          { field: 'user_id', headerName: 'ID', width: 90, disableColumnMenu: true, 
+          renderCell : (params) => {
+            if(params.row.role == "Super Admin")
+            {
+              return(
+                <Grid container spacing={2}>
+                  <Grid item xs={2}><Typography sx={{ textAlign: 'Center', ml:1}}>{params.row.user_id}</Typography></Grid>
+                  <Grid item xs={8}>
+            <Avatar
+              alt="Remy Sharp"
+              src="https://thumbs.dreamstime.com/b/well-organized-fully-editable-antivirus-protection-security-icon-any-use-like-print-media-web-commercial-use-any-kind-158454387.jpg"
+              sx={{ width: 25, height: 25 , ml:3}}
+            /></Grid>
+                </Grid>
+                
+              );
+            }
+            else if(params.row.role == "TFF Admin")
+            {
+              return(
+                <Grid container spacing={2}>
+                  <Grid item xs={2}><Typography sx={{ textAlign: 'Center', ml:1}}>{params.row.user_id}</Typography></Grid>
+                  <Grid item xs={8}>
+            <Avatar
+              alt="Remy Sharp"
+              src="https://mir-s3-cdn-cf.behance.net/projects/404/bf49ef66942191.Y3JvcCwxNTUzLDEyMTUsNDM0LDEzNA.png"
+              sx={{ width: 25, height: 25 , ml:3}}
+            /></Grid>
+                </Grid>
+                
+              );
+            }
+            else
+            {
+              return(
+                <Grid container spacing={2}>
+                  <Grid item xs={2}><Typography sx={{ textAlign: 'Center', ml:1}}>{params.row.user_id}</Typography></Grid>
+                  <Grid item xs={8}>
+            <Avatar
+              alt="Remy Sharp"
+              src="https://cdn.xxl.thumbs.canstockphoto.com/soccer-referee-icon-soccer-referee-flat-circular-icon-on-a-green-playground-referee-tools-used-in-eps-vector_csp40662385.jpg"
+              sx={{ width: 25, height: 25 , ml:3}}
+            /></Grid>
+                </Grid>
+                
+              );
+            }
+          
+  
+          }},
           {
             field: 'name',
             headerName: 'First name',
@@ -190,18 +240,21 @@ export const SuperAdminList = () => {
       {!isLoading
         ? 
         <Box sx={{ width: 700, height: 1000, width: '100%' }}>
-          <Typography
+          <Grid container spacing={2}>
+  <Grid item xs={6}>
+  <Typography
         variant="h5"
         component="h5"
-        sx={{ textAlign: 'center', mt: 3 }}
+        sx={{ textAlign: 'Left', mt: 5.5, ml: 34 }}
       >
         Manage Registered Users
       </Typography>
-
-          <Container>
+  </Grid>
+  <Grid item xs={6}>
+  <Container>
         <center>
       <div>
-      <FormControl sx={{ mt: 3, mb:2, width: 300 }}>
+      <FormControl sx={{ mt: 4.5, mb:2, mr:15, width: 300 }}>
         <InputLabel id="demo-multiple-chip-label">Role</InputLabel>
         <Select
           labelId="demo-multiple-chip-label"
@@ -233,9 +286,9 @@ export const SuperAdminList = () => {
     </div>
         </center>
         </Container>
-
-          
-      <Container>
+  </Grid>
+  <Grid item xs={12}>
+  <Container>
         <center>
       <Paper component={Box} width={1000} height={500}>
       <DataGrid
@@ -254,6 +307,11 @@ export const SuperAdminList = () => {
         </Paper>
         </center>
         </Container>
+  </Grid>
+</Grid>
+          
+          
+      
 
       
     </Box>
