@@ -15,7 +15,7 @@ import Link from '@mui/material/Link';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 import { DataGrid,gridClasses } from '@mui/x-data-grid';
 import { grey } from '@mui/material/colors';
-import { Button, Paper } from "@mui/material";
+import { Button, CircularProgress, Paper } from "@mui/material";
 
 export const TeamList = () => {
     const  [isLoading, setLoading] = useState(true);
@@ -102,8 +102,6 @@ export const TeamList = () => {
   return (
       <>
     <CssBaseline />
-    {!isLoading
-      ?
       <Box
       sx={{
         height: 1200,
@@ -135,9 +133,6 @@ export const TeamList = () => {
         </Container>
 
   </Box>
-      : <h1> Loading </h1>
-    }
-       
     </>
 );
 
