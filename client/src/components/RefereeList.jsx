@@ -77,7 +77,7 @@ export const RefereeList = () => {
         {
           field: 'name',
           headerName: 'Name',
-          width: 100,
+          width: 150,
           disableColumnMenu: true
 
 
@@ -142,7 +142,7 @@ export const RefereeList = () => {
     <Container>
         <center>
     <Toolbar/>
-      <Paper component={Box} width={700} height={600}>
+      <Paper component={Box} width={700} height={800}>
     <DataGrid
       
       rows={rows}
