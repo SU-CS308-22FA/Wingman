@@ -19,17 +19,9 @@ import EmailIcon from '@mui/icons-material/Email';
  
 const AdminProfile = ({}) => {
   const navigate = useNavigate();
- 
-  const [isLoading, setLoading] = useState(true)
- 
+
   const {user} = useContext(UsersContext)
- 
-  useEffect(() => {
-    if(user)
-      setLoading(false)
-  }, []);
- 
- 
+  
   function onDelete(){
     try {
       const response = UserFinder.delete(`/users/${user.id}`)
@@ -46,12 +38,10 @@ const AdminProfile = ({}) => {
   function onAssign(){
     navigate("/assign")
   }
- 
+
+
   return (
     <div>
-      {isLoading?
-            <h1>Loading...</h1>
-          :
           <main>
           <Box
             sx={{
@@ -124,7 +114,6 @@ const AdminProfile = ({}) => {
           </Box>
  
         </main>
-          }
     </div>
   );
 }
