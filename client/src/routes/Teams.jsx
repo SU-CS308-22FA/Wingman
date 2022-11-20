@@ -71,7 +71,7 @@ const TeamListPage = () => {
       </div>
     );
   }
-  else if(user.role == "TFF Admin" || user.role == "Reporter" || user.role == "Retired Referee"){
+  else if(user.role == "TFF Admin"){
     return (
       <div style = {myStyle}>
         <ResponsiveAppBar/>
@@ -79,6 +79,9 @@ const TeamListPage = () => {
         <Box m={0} pt={10}> </Box>
       </div>
     );
+  }
+  else if(user.role == "Reporter" || user.role == "Retired Referee"){
+    navigate("/profile/")
   }
   else{
     return (

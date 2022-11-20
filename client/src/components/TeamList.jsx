@@ -102,8 +102,6 @@ export const TeamList = () => {
   return (
       <>
     <CssBaseline />
-    {!isLoading
-      ?
       <Box
       sx={{
         height: 1200,
@@ -135,11 +133,6 @@ export const TeamList = () => {
         </Container>
 
   </Box>
-      :       <div>
-      <center> <CircularProgress /></center>
-    </div>
-    }
-       
     </>
 );
 
