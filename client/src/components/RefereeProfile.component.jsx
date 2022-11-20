@@ -82,7 +82,7 @@ export const RefereeProfile = () => {
               <center>
               <Avatar
               src={referee.avatarurl}
-          	sx={{ width: 80, height: 80 }}
+          	sx={{ width: 200, height: 200 }}
  
             /></center>
                 <Typography
