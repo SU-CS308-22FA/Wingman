@@ -142,13 +142,13 @@ export const RefereeList = () => {
     <Container>
         <center>
     <Toolbar/>
-      <Paper component={Box} width={700} height={800}>
+      <Paper component={Box} width={750} height={800}>
     <DataGrid
       
       rows={rows}
       columns={columns}
       getRowId={(row) => row.id}
-      pageSize={20}
+      pageSize={25}
       onPageSizeChange={(newPageSize) => setPageSize(newPageSize)}
       disableSelectionOnClick
       experimentalFeatures={{ newEditingApi: true }}

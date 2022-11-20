@@ -28,7 +28,7 @@ export default class userController{
     static async getAllReferees(req, res, next) {
       try {
         
-        const results = await db.query('SELECT * FROM wingman.referees')
+        const results = await db.query('SELECT * FROM wingman.referees order by id')
         
         res.status(200).json({
           lenght: results.rows.length,
