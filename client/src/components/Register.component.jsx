@@ -92,7 +92,7 @@ const Register = (props) => {
         if(err.fmessage)
             setError(err.fmessage)
         else if(err.response.status == 401)
-            setError("Selected mail is already in use, please change it.")
+            setError("Selected mail is already in use, please change your mail.")
         else if(err.response.status == 402)
             setError("Invalid security key. Please make sure you are using a correct key that matches your role.")
         else
