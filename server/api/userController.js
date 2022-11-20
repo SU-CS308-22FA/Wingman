@@ -187,8 +187,8 @@ export default class userController{
           var transporter = nodemailer.createTransport({
             service: 'gmail',
             auth: {
-              user: "tffwingman@gmail.com",
-              pass: "xfgbnakqnhydlqzr",
+              user: process.env.MAIL_MAIL,
+              pass: process.env.MAIL_PASS,
             }
           });
           
@@ -244,7 +244,7 @@ export default class userController{
         const key = await db.query('SELECT * FROM wingman.keys WHERE security_key = $1 AND key_for_role=$2 ANd email=$3', [req.body.security_key, req.body.role, req.body.mail])
         if(key.rows.length == 0){
             throw {
-              detail: "Wrong key.",
+              detail: "Invalied security key.",
               code: 1,
               error: new Error()
             };
@@ -271,6 +271,11 @@ export default class userController{
         if(String(error).includes("users_mail_key") )
         {
           res.status(401).json({error:error, data:{users:[]}})
+        }
+        else if(error.code == 1)
+        {
+          res.status(402).json({detail:error.detail, data:[]})
+          return
         }
         else{
           res.status(400).json({error:error, data:{users:[]}})

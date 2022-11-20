@@ -93,6 +93,8 @@ const Register = (props) => {
             setError(err.fmessage)
         else if(err.response.status == 401)
             setError("Selected mail is already in use, please change it.")
+        else if(err.response.status == 402)
+            setError("Invalid security key. Please make sure you are using a correct key that matches your role.")
         else
             setError("There was an unknown problem")
         console.error('onSubmit form error: ', err);
