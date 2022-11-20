@@ -8,6 +8,8 @@ import { useNavigate } from "react-router-dom";
 import UserFinder from "../apis/UserFinder";
 import CircularProgress from '@mui/material/CircularProgress';
 import Box from '@mui/material/Box';
+import RefAppBar from "../components/RetiredRefReporterAppBar";
+
 
 const RRUpdatePage = () => {
   const navigate = useNavigate();
@@ -58,13 +60,12 @@ const RRUpdatePage = () => {
   if(isLoading || user === undefined){
     return (
       <div>
-        <ResponsiveAppBar/>
         <Box m={0} pt={34}> </Box>
         <center> <CircularProgress /></center>
       </div>
     );
   }
-  else if(user.role == "TFF Admin" || user.role == "Reporter" || user.role == "Retired Referee"){
+  else if(user.role == "TFF Admin" ){
     return (
       <div>
         <ResponsiveAppBar/>
@@ -73,10 +74,18 @@ const RRUpdatePage = () => {
       </div>
     );
   }
+  else if(user.role == "Reporter" || user.role == "Retired Referee"){
+    return (
+      <div>
+        <RefAppBar/>
+        <UpdateProfile />
+        <Copyright sx={{ mt: 5 }} />
+      </div>
+    );
+  }
   else{
     return (
       <div>
-        <ResponsiveAppBar/>
         <Box m={0} pt={34}> </Box>
         <center> <CircularProgress /></center>
       </div>

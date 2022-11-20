@@ -19,7 +19,7 @@ import PersonPinIcon from '@mui/icons-material/PersonPin';
 import SportsKabaddiIcon from '@mui/icons-material/SportsKabaddi';
 import { UsersContext } from "../context/UserContex";
 
-function ResponsiveAppBar() {
+function RefAppBar() {
     const navigate = useNavigate();
     const {isAuthenticated, setAuth} = useContext(AuthContext)
     const {user, setUser} = useContext(UsersContext)
@@ -32,9 +32,7 @@ function ResponsiveAppBar() {
       const onRefereeClicked = (e) => {
         navigate("/refereeList");
       };
-      const onTeamsClicked = (e) => {
-        navigate("/teams");
-      };
+
 const tiers = [
     {
         pageName:"Profile",
@@ -47,10 +45,6 @@ const tiers = [
     {
         pageName:"Referees",
         onClick: onRefereeClicked
-    },
-    {
-        pageName:"Teams",
-        onClick: onTeamsClicked
     },
 
 
@@ -173,12 +167,8 @@ const tiers = [
            sx={{ my: 2, color: 'white'}}
            onClick={handleOpenUserMenu}
           >
-     <Avatar
-              src="https://i.imgur.com/BsA4g28.png"
-          	sx={{ width: 29, height: 29 }}
- 
-            />
-                      </IconButton>
+            <PersonPinIcon />
+          </IconButton>
             </Tooltip>
             <Menu
               sx={{ mt: '45px' }}
@@ -208,4 +198,4 @@ const tiers = [
     </AppBar>
   );
 }
-export default ResponsiveAppBar;
+export default RefAppBar;

@@ -69,6 +69,33 @@ export default class userController{
           res.status(400).json({detail:err, data:[]})
         }   
       }
+
+      static async getTeamById(req, res, next){
+        try {
+          
+          const result = await db.query('SELECT * FROM wingman.teams WHERE teamid = $1', [req.params.id])
+          if(result.rows.length == 0)
+          {
+            throw {
+              detail: "Team not found.",
+              code: 1,
+              error: new Error()
+            };
+          }
+  
+          res.status(200).json({
+          data: result.rows[0]
+          })
+        } catch (err) {
+          console.log(`Error when getting one team ${err}`)
+          if(err.code == 1)
+          {
+            res.status(404).json({detail:err.detail, data:[]})
+            return
+          }
+          res.status(400).json({detail:err, data:[]})
+        }   
+      }
       static async sortReferee(req, res, next){
         try {
           

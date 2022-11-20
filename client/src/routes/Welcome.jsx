@@ -58,7 +58,6 @@ const WelcomePage = () => {
     if(isLoading){
       return (
         <div>
-          <ResponsiveAppBar/>
           <Box m={0} pt={34}> </Box>
           <center> <CircularProgress /></center>
         </div>
@@ -67,7 +66,6 @@ const WelcomePage = () => {
     else{
     return (
       <div>
-        <ResponsiveAppBar/>
         <Landing/>
       </div>
     );

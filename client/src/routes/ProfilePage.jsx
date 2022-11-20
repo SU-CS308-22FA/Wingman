@@ -12,6 +12,7 @@ import { GenerateKey } from "../components/KeyGeneration.component";
 import UserFinder from "../apis/UserFinder";
 import CircularProgress from '@mui/material/CircularProgress';
 import Box from '@mui/material/Box';
+import RefAppBar from "../components/RetiredRefReporterAppBar";
 
 
 const ProfilePage = () => {
@@ -64,7 +65,6 @@ const ProfilePage = () => {
   if(isLoading || user === undefined){
     return (
       <div>
-        <ResponsiveAppBar/>
         <Box m={0} pt={34}> </Box>
         <center> <CircularProgress /></center>
       </div>
@@ -84,7 +84,7 @@ const ProfilePage = () => {
   {
     return (
       <div>
-        <ResponsiveAppBar/>
+        <RefAppBar/>
         <RRProfile />
         <Footer/>
       </div>
@@ -103,7 +103,6 @@ const ProfilePage = () => {
   else{
     return (
       <div>
-        <ResponsiveAppBar/>
         <center> <CircularProgress /></center>
       </div>
     );

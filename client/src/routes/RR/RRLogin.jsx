@@ -59,7 +59,6 @@ const RRLoginPage = () => {
     if(isLoading){
       return (
         <div>
-          <ResponsiveAppBar/>
           <Box m={0} pt={34}> </Box>
           <center> <CircularProgress /></center>
         </div>

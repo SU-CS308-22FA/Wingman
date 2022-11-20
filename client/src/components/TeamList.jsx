@@ -39,7 +39,7 @@ export const TeamList = () => {
     }, []);
 
     const handleTeamSelect = (id) => {
-        navigate(`/team/${id}`);
+        navigate(`/teams/${id}`);
       };
     
       const columns = [

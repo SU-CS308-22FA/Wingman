@@ -10,7 +10,7 @@ import { useState } from "react";
 import UserFinder from "../apis/UserFinder";
 import { useEffect } from "react";
 import CircularProgress from '@mui/material/CircularProgress';
-
+import RefAppBar from "../components/RetiredRefReporterAppBar";
 
 const RRRefereeList = () => {
   const navigate = useNavigate();
@@ -62,13 +62,12 @@ const RRRefereeList = () => {
   if(isLoading || user === undefined){
     return (
       <div>
-        <ResponsiveAppBar/>
         <Box m={0} pt={34}> </Box>
         <center> <CircularProgress /></center>
       </div>
     );
   }
-  else if(user.role == "TFF Admin" || user.role == "Reporter" || user.role == "Retired Referee"){
+  else if(user.role == "TFF Admin"){
     return (
       <div>
         <ResponsiveAppBar/>
@@ -81,10 +80,24 @@ const RRRefereeList = () => {
       </div>
     );
   }
+  else if(user.role == "Reporter" || user.role == "Retired Referee"){
+    return (
+      <div>
+        <RefAppBar/>
+        <RefereeList />
+        <Box m={0} pt={34}> </Box>
+
+        <center>             <img src="https://i.hizliresim.com/t6q9rs6.png" height="66" width="50" />          
+</center>
+        <Copyright sx={{ mt: 5 }} />
+      </div>
+    );
+  }
+
+
   else{
     return (
       <div>
-        <ResponsiveAppBar/>
         <Box m={0} pt={34}> </Box>
         <center> <CircularProgress /></center>
       </div>

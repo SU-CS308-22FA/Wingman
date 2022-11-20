@@ -60,7 +60,6 @@ const RefereeAssignPage = () => {
   if(isLoading || user === undefined){
     return (
       <div>
-        <ResponsiveAppBar/>
         <Box m={0} pt={34}> </Box>
         <center> <CircularProgress /></center>
       </div>
@@ -69,7 +68,6 @@ const RefereeAssignPage = () => {
   else if(user.role == "TFF Admin")
     return (
       <div>
-        <ResponsiveAppBar/>
         <Box m={0} pt={34}> </Box>
 
         <center>             <img src="https://i.hizliresim.com/t6q9rs6.png" height="66" width="50" />          

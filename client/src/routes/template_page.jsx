@@ -57,7 +57,6 @@ const PageName = () => {
   if(isLoading || user === undefined){
     return (
       <div>
-        <ResponsiveAppBar/>
         <Box m={0} pt={34}> </Box>
         <center> <CircularProgress /></center>
       </div>
@@ -74,7 +73,6 @@ const PageName = () => {
   else{
     return (
       <div>
-        <ResponsiveAppBar/>
         <Box m={0} pt={34}> </Box>
         <center> <CircularProgress /></center>
       </div>

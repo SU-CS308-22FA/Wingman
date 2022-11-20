@@ -16,6 +16,7 @@ import { AuthContextProvider } from "./context/authContext";
 import WelcomePage from "./routes/Welcome";
 
 import RefereeAssignPage from "./routes/AssignReferee";
+import ATeamProfile from "./routes/admin/TeamProfile";
 
 const theme = createTheme({
   palette: {
@@ -74,7 +75,7 @@ class App extends Component {
                     <Route path="/referee/:id" element={<RRRefereeProfile/>}/>     
                     <Route path="/teams" element={<TeamListPage/>}/>
                     <Route path="/assign" element={<RefereeAssignPage/>}/>
-                    <Route path="/team/:id" element={<RRRefereeList/>}/>
+                    <Route path="/teams/:id" element={<ATeamProfile/>}/>
                 </Routes>
               </Router>
             </div>
