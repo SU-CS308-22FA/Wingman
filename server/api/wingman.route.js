@@ -16,6 +16,8 @@ router.route("/test").get((req, res) => {
 
 router.route("/users").get(userController.getAllUsers)
 router.route("/referees").get(userController.getAllReferees)
+router.route("/referees/:id").get(userController.getRefereeById)
+router.route("/refereeSort/:par").get(userController.sortReferee)
 router.route("/teams").get(userController.getAllTeams)
 router.route("/users/:id").get(authorize, userController.getUserById)
 router.route("/users/").post(userController.createUser)

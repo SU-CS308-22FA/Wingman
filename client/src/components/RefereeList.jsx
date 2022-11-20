@@ -4,21 +4,6 @@ import { useEffect } from "react";
 import { useContext } from "react";
 import { useNavigate } from "react-router-dom";
 import UserFinder from "../apis/UserFinder";
-
-import { styled } from '@mui/material/styles';
-import Table from '@mui/material/Table';
-import TableBody from '@mui/material/TableBody';
-import TableCell, { tableCellClasses } from '@mui/material/TableCell';
-import TableContainer from '@mui/material/TableContainer';
-import TableHead from '@mui/material/TableHead';
-import TableRow from '@mui/material/TableRow';
-import Paper from '@mui/material/Paper';
-import Button from '@mui/material/Button';
-import CameraIcon from '@mui/icons-material/PhotoCamera';
-import Card from '@mui/material/Card';
-import CardActions from '@mui/material/CardActions';
-import CardContent from '@mui/material/CardContent';
-import CardMedia from '@mui/material/CardMedia';
 import CssBaseline from '@mui/material/CssBaseline';
 import Grid from '@mui/material/Grid';
 import Stack from '@mui/material/Stack';
@@ -28,30 +13,13 @@ import Typography from '@mui/material/Typography';
 import Container from '@mui/material/Container';
 import Link from '@mui/material/Link';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
-
-const StyledTableCell = styled(TableCell)(({ theme }) => ({
-    [`&.${tableCellClasses.head}`]: {
-      backgroundColor: theme.palette.common.black,
-      color: theme.palette.common.white,
-    },
-    [`&.${tableCellClasses.body}`]: {
-      fontSize: 14,
-    },
-  }));
- 
- 
-  const StyledTableRow = styled(TableRow)(({ theme }) => ({
-    '&:nth-of-type(odd)': {
-      backgroundColor: theme.palette.action.hover,
-    },
-    // hide last border
-    '&:last-child td, &:last-child th': {
-      border: 0,
-    },
-  }));
-
+import { DataGrid,gridClasses } from '@mui/x-data-grid';
+import { grey } from '@mui/material/colors';
+import { Button, Paper } from "@mui/material";
 
 export const RefereeList = () => {
+    const  [isLoading, setLoading] = useState(true);
+    const [pageSize, setPageSize] = useState(10);
     const  [referees, setReferees] = useState([]);
     const navigate = useNavigate();
 
@@ -71,67 +39,129 @@ export const RefereeList = () => {
         navigate(`/referee/${id}`);
       };
     
+      const options = [
+        { 
+          value: 1,
+          label: "Id",
+          col: "id"
+        },
+        {
+          value:  2,
+          label: "Name",
+          col: "name"
+        },
+        {
+          value:  3,
+          label: "Total Matches",
+          col: "totalmatches"
+        }
+      ];
+      const columns = [
+        { field: 'id', headerName: 'refereeid', width: 90 ,
+        disableColumnMenu: true,
 
-    return (
-        <>
-      <CssBaseline />
-      <main>
-        {/* Hero unit */}
-        <Box
-          sx={{
-            bgcolor: 'background.paper',
-            pt: 8,
-            pb: 6,
-          }}
-        >
-          <Container maxWidth="sm">
-      <Table sx={{ minWidth: 100 }} aria-label="customized table">
-        <TableHead>
-          <TableRow>
-            <StyledTableCell>Referees</StyledTableCell>
-            <StyledTableCell align="right">Profile</StyledTableCell>
-            <StyledTableCell align="right">Referee ID</StyledTableCell>
-            <StyledTableCell align="right">Referee Name</StyledTableCell>
-            <StyledTableCell align="right">Referee surname</StyledTableCell>
-            <StyledTableCell align="right">Matches</StyledTableCell>
-            <StyledTableCell align="right">Yellow</StyledTableCell>
-            <StyledTableCell align="right">Red</StyledTableCell>
-            
-          </TableRow>
-        </TableHead>
-        <TableBody>
-          {referees.map((referee) => (
-            <StyledTableRow key={referee.id}>
-              <StyledTableCell component="th" scope="row">
-                {referee.id}
-              </StyledTableCell>
-              <StyledTableCell align="center">
-              <button
-                      onClick={() => handleRefereeSelect(referee.id)}
-                      className="btn"
-                    >
-                      {referee.name} {referee.surname}
-                    </button>
-                </StyledTableCell>
-              <StyledTableCell align="right">{referee.id}</StyledTableCell>
-              <StyledTableCell align="right">{referee.name}</StyledTableCell>
-              <StyledTableCell align="right">{referee.surname}</StyledTableCell>
-              <StyledTableCell align="right">{referee.totalmatches}</StyledTableCell>
-              <StyledTableCell align="right">{referee.totalyellowcards}</StyledTableCell>
-              <StyledTableCell align="right">{referee.totalredcards}</StyledTableCell>
-              
-            </StyledTableRow>
-          ))}
-        </TableBody>
-      </Table>
+        renderCell : (params) => {
+        return(
+            <Button
+            variant = "contained"
+            color = "secondary"
+            onClick={() => handleRefereeSelect(params.row.id)}
+            >
+                {params.row.id}
+            </Button>
+        );
 
-          </Container>
-        </Box>
+        }
+
+        },
+        {
+          field: 'name',
+          headerName: 'Name',
+          width: 150,
+          disableColumnMenu: true
+
+
+        },
+        {
+            field: 'surname',
+            headerName: 'Surname',
+            width: 100,
+            disableColumnMenu: true
+
+          },
+        {
+            field: 'totalmatches',
+            headerName: 'Matches',
+            width: 100,
+            disableColumnMenu: true
+
+          },
+          {
+            field: 'age',
+            headerName: 'Age',
+            width: 100,
+            disableColumnMenu: true
+
+          },
+          
+          {
+            field: 'currentseasonmatches',
+            headerName: 'Matches This Season',
+            width: 200,
+            disableColumnMenu: true
+
+          },
+          
+
+
+      ];
+     
+      const rows = referees;
+   
+
+   
  
-      </main>
-      
-      </>
-  );
 
+  return (
+      <>
+    <CssBaseline />
     
+      <Box
+      sx={{
+        height: 1200,
+        width: '100%',
+      }}
+    >
+      <Typography
+        variant="h3"
+        component="h3"
+        sx={{ textAlign: 'center', mt: 3, mb: 3 }}
+      >
+      </Typography>
+
+    <Container>
+        <center>
+    <Toolbar/>
+      <Paper component={Box} width={700} height={800}>
+    <DataGrid
+      
+      rows={rows}
+      columns={columns}
+      getRowId={(row) => row.id}
+      pageSize={20}
+      onPageSizeChange={(newPageSize) => setPageSize(newPageSize)}
+      disableSelectionOnClick
+      experimentalFeatures={{ newEditingApi: true }}
+    />
+        </Paper>
+        </center>
+        </Container>
+
+  </Box>
+    
+       
+    </>
+);
+
+ 
 }

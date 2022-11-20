@@ -9,6 +9,7 @@ import RRLoginPage from "./routes/RR/RRLogin";
 import ProfilePage from "./routes/ProfilePage";
 import RRUpdatePage from "./routes/Update";
 import AdminRegisterPage from "./routes/admin/AdminRegister";
+import  RRRefereeProfile  from "./routes/RR/RRRefereeProfile";
 import RRRefereeList from "./routes/RefereeList"
 import TeamListPage from "./routes/Teams";
 import { AuthContextProvider } from "./context/authContext";
@@ -70,6 +71,7 @@ class App extends Component {
                     <Route path="/profile/" element={<ProfilePage/>}/>\
                     <Route path="/update/" element={<RRUpdatePage/>}/>
                     <Route path="/refereeList" element={<RRRefereeList/>}/>
+                    <Route path="/referee/:id" element={<RRRefereeProfile/>}/>     
                     <Route path="/teams" element={<TeamListPage/>}/>
                     <Route path="/assign" element={<RefereeAssignPage/>}/>
                     <Route path="/team/:id" element={<RRRefereeList/>}/>
