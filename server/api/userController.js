@@ -1,5 +1,7 @@
 import db from "../db.js"
 import bcrypt from "bcrypt"
+import jwtGenerator from "../utils/jwtGenerator.js"
+import authorize from "../middleware/authorize.js"
 
 export default class userController{
     static async getAllUsers(req, res, next){
@@ -91,6 +93,24 @@ export default class userController{
           res.status(400).json({detail:err, data:[]})
         }   
       }
+    
+      static async getAllTeams(req, res, next) {
+        try {
+          const results = await db.query('SELECT * FROM wingman.teams')
+          
+          res.status(200).json({
+            lenght: results.rows.length,
+            data:{
+              users: results.rows
+            }
+            
+          })
+        } catch (error) {
+          console.log(`Error when getting all teams ${error.detail}`)
+          res.status(400).json({error:error, data:{users:[]}})
+        } 
+        }
+    
 
     static async getUserById(req, res, next){
       try {
@@ -152,8 +172,12 @@ export default class userController{
         const hashed_password = await bcrypt.hash(req.body.password, salt);
         const newUser = await db.query('INSERT INTO wingman.users (mail,name,surname, password, role) values ($1,$2,$3,$4, $5) returning *'
         , [req.body.mail, req.body.name, req.body.surname, hashed_password, req.body.role])
+
+        const jwtToken = jwtGenerator(newUser.rows[0].user_id);
+
         res.status(200).json({
-          data: newUser.rows[0]
+          data: newUser.rows[0],
+          jwtToken: jwtToken
         })
 
       } catch (error) {
@@ -193,8 +217,11 @@ export default class userController{
           error: new Error()
         }
       }
+      const jwtToken = jwtGenerator(resolvedUser.rows[0].user_id);
+
       res.status(200).json({
-        data: resolvedUser.rows[0]
+        data: resolvedUser.rows[0],
+        jwtToken: jwtToken
       })
 
     } catch (err) {
@@ -208,6 +235,17 @@ export default class userController{
        
       }   
 }
+static async verify(req, res, next){
+  try {
+    res.status(200).json({
+      isAuth: true
+    })
+  } catch (err) {
+    console.error(err.message);
+    res.status(500).send("Server error");
+  }
+}
+
   static async updateUser(req, res, next){
     try {
       const user_info = await db.query('SELECT password from wingman.users WHERE user_id = $1', [req.params.id])

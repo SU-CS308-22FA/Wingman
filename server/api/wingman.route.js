@@ -1,4 +1,5 @@
 import express from "express";
+import authorize from "../middleware/authorize.js";
 import userController from './userController.js';
 
 
@@ -17,11 +18,13 @@ router.route("/users").get(userController.getAllUsers)
 router.route("/referees").get(userController.getAllReferees)
 router.route("/referees/:id").get(userController.getRefereeById)
 router.route("/refereeSort/:par").get(userController.sortReferee)
-router.route("/users/:id").get(userController.getUserById)
+router.route("/teams").get(userController.getAllTeams)
+router.route("/users/:id").get(authorize, userController.getUserById)
 router.route("/users/").post(userController.createUser)
 router.route("/users/:id").delete(userController.deleteById)
 router.route("/users/:id").patch(userController.updateUser)
 router.route("/auth").put(userController.userAuthTemp)
+router.route("/verify").post(authorize, userController.verify)
 
 
 

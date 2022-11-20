@@ -7,6 +7,7 @@ import {useNavigate} from "react-router-dom"
 import React, { useContext, useState, useEffect } from "react";
 import UserFinder from "../apis/UserFinder";
 import { UsersContext } from "../context/UserContex";
+import { AuthContext } from '../context/authContext';
 
 
 
@@ -14,14 +15,48 @@ import { UsersContext } from "../context/UserContex";
 const RRProfile = ({}) => {
   const navigate = useNavigate();
 
-  const [isLoading, setLoading] = useState(true)
+  const [isLoading, setLoading] = useState(false)
 
-  const {user} = useContext(UsersContext)
+  const {user, setUser} = useContext(UsersContext)
+  const {setAuth} = useContext(AuthContext)
+  const getData = async () => {
+    try {
+      await UserFinder.get(`/users/1`, {headers: {'jwt_token': localStorage.token}})
+      .then(userData =>{
+        let val = {
+          id: userData.data.data.user_id,
+          mail: userData.data.data.mail,
+          name: userData.data.data.name,
+          surname: userData.data.data.surname,
+          role: userData.data.data.role,
+        }
+        setUser(val)
+      })
+    } catch (err) {
+      console.error(err.message);
+    }
+  };
+
+  const checkAuthenticated = async () => {
+    try {
+      console.log("in check auth")
+      const res = await UserFinder.post("/verify", {}, {headers: {'jwt_token': localStorage.token}})
+      if (res.data.isAuth === true){
+        await getData();
+        await setAuth(true);
+      }
+      else{
+        await setAuth(false);
+        navigate("/")
+      } 
+    } catch (err) {
+      console.error(err.message);
+    }
+  };
 
   useEffect(() => {
-    if(user)
-      setLoading(false)
-  }, []);
+    checkAuthenticated();
+  }, [user]);
   
 
   function onDelete(){

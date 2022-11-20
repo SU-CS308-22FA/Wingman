@@ -7,10 +7,15 @@ import RRRegisterPage from "./routes/RR/RRRegister";
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 import RRLoginPage from "./routes/RR/RRLogin";
 import ProfilePage from "./routes/ProfilePage";
-import RRUpdatePage from "./routes/RR/RRUpdate";
+import RRUpdatePage from "./routes/Update";
 import AdminRegisterPage from "./routes/admin/AdminRegister";
-import RRRefereeList from "./routes/RR/RRRefereeList"
 import  RRRefereeProfile  from "./routes/RR/RRRefereeProfile";
+import RRRefereeList from "./routes/RefereeList"
+import TeamListPage from "./routes/Teams";
+import { AuthContextProvider } from "./context/authContext";
+import WelcomePage from "./routes/Welcome";
+
+import RefereeAssignPage from "./routes/AssignReferee";
 
 const theme = createTheme({
   palette: {
@@ -28,42 +33,62 @@ const theme = createTheme({
     },
     fifth :{
       main : "#F5F1ED",
+    },
+    alertRed :{
+      main : "#dc143c",
     }
   },
 });
 class App extends Component {
- 
+
   render() {
     const myStyle={
       background: "#F5F1ED",
-      height:'100vh',
       fontSize:'24px',
       backgroundSize: 'cover',
   };
+  const myStyleBottom={
+    background: "#F5F1ED",
+    fontSize:'24px',
+    backgroundSize: 'cover',
+    heigt: "500px",
+    margin: "400px, 0, 0"
+};
 
-    return (    
+
+    return (
+      <AuthContextProvider>
         <UsersContextProvider>
           <ThemeProvider theme={theme}>
             <div style = {myStyle}>
             <Router>
               <Routes>
-                    <Route path="/" element={<RRRegisterPage/>}/>        
-                    <Route path="/register" element={<RRRegisterPage/>}/>
+                    <Route path="/" element={<WelcomePage/>}/>        
+                    <Route path="/reporter/register" element={<RRRegisterPage/>}/>
                     <Route path="/admin/register" element={<AdminRegisterPage/>}/>
                     <Route path="/login" element={<RRLoginPage/>}/>
                     <Route path="/admin/login" element={<RRLoginPage/>}/>
                     <Route path="/profile/" element={<ProfilePage/>}/>\
                     <Route path="/update/" element={<RRUpdatePage/>}/>
                     <Route path="/refereeList" element={<RRRefereeList/>}/>
-                    <Route path="/referee/:id" element={<RRRefereeProfile/>}/>
-                </Routes> 
-              </Router>       
+                    <Route path="/referee/:id" element={<RRRefereeProfile/>}/>     
+                    <Route path="/teams" element={<TeamListPage/>}/>
+                    <Route path="/assign" element={<RefereeAssignPage/>}/>
+                    <Route path="/team/:id" element={<RRRefereeList/>}/>
+                </Routes>
+              </Router>
             </div>
+            <div id="bottom" style= {myStyleBottom}>
+            <br /><br />
+              </div>
+              <div id="bottom" style= {myStyleBottom}>
+            <br /><br />
+              </div>
           </ThemeProvider>
         </UsersContextProvider>
- 
+      </AuthContextProvider>
     );
   }
 }
-    
+
 export default App;

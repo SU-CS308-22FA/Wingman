@@ -11,12 +11,55 @@ import Typography from '@mui/material/Typography';
 import Alert from '@mui/material/Alert';
 import UserFinder from "../apis/UserFinder";
 import { UsersContext } from "../context/UserContex";
+import { AuthContext } from "../context/authContext";
 
 
 
 const Login = ({}) => {
     const navigate = useNavigate();
     const {setUser} = useContext(UsersContext)
+    const {setAuth} = useContext(AuthContext)
+    
+    
+
+    const getData = async () => {
+      try {
+        const userData =  await UserFinder.get(`/users/1`,{headers: {'jwt_token': localStorage.token}})
+        let val = {
+          id: userData.data.data.user_id,
+          mail: userData.data.data.mail,
+          name: userData.data.data.name,
+          surname: userData.data.data.surname,
+          role: userData.data.data.role
+        }   
+        return val;
+      } catch (err) {
+        console.error(err.message);
+      }
+    };
+
+    const checkAuthenticated = async () => {
+      try {
+                //TODO put request header
+        const res = await UserFinder.post("/verify", {}, {headers: {'jwt_token': localStorage.token}})
+        if (res.data.isAuth === true){
+          setAuth(true);
+          const val = await getData();
+          setUser(val)
+          navigate("/profile/")
+        }
+        else{
+          await setAuth(false);
+        } 
+      } catch (err) {
+        console.error(err.message);
+      }
+    };
+  
+    useEffect(() => {
+      checkAuthenticated();
+    }, []);
+
 
     const [inputs, setInputs] = useState({
       mail: "",
@@ -56,23 +99,23 @@ const Login = ({}) => {
             mail: mail, 
             password: password
         })
+
         //auth user first
         if(response.status==200){
             let id = response.data.data.user_id
+            
             //then set global user user context as user data
             try {
-                const userData =  UserFinder.get(`/users/${id}`)
-                .then(userData =>{
-                  let val = {
-                    id: userData.data.data.user_id,
-                    mail: userData.data.data.mail,
-                    name: userData.data.data.name,
-                    surname: userData.data.data.surname,
-                    role: userData.data.data.role,
-                  }
-                  setUser(val)
-                  navigate("/profile/")
-                })
+                if (response.data.jwtToken) {
+                  localStorage.setItem("token", response.data.jwtToken);
+                  await setAuth(true);
+                } else {
+                  await setAuth(false);
+                }
+                const val = await getData();
+                await setUser(val)
+                localStorage.setItem("user", JSON.stringify(val));
+                navigate("/profile/")
               }
               catch(err){
                 console.error('profile get error: ', err);
