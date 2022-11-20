@@ -33,7 +33,7 @@ export const GenerateKey = () => {
       }
   
       function isValidRole(role) {
-        if(role != null)
+        if(role != "")
         {
           return true;
         } else{
