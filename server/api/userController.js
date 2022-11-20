@@ -138,9 +138,36 @@ export default class userController{
       }   
     }
 
+    static async createKey(req, res, next){
+      try {
+        const salt = await bcrypt.genSalt(10);
+        const hashed_mail = await bcrypt.hash(req.body.mail, salt);
+        const securityKey = hashed_mail.slice(0, 32);
+        const isUserExist = await db.query('SELECT * FROM wingman.users WHERE mail = $1', [req.body.mail])
+        if (isUserExist.rows.length !== 0)
+        {
+          res.status(406).json({error:"The user already registered", data:{users:[]}})
+        }
+        else{
+          const key = await db.query('INSERT INTO wingman.keys (security_key, key_for_role, email) values ($1, $2, $3) returning *', [securityKey, req.body.role, req.body.mail])
+          res.status(200).json({
+          data: key.rows[0],
+        })
+        }
+      } catch (error) {
+        if(String(error).includes("keys_email_key") )
+        {
+          res.status(401).json({error:error, data:{users:[]}})
+        }
+        else{
+          res.status(400).json({error:error, data:{users:[]}})
+          console.log(`Error when creating key ${JSON.stringify(error)}`)
+        }
+      }   
+  }
 
-    async check_then_delete_security_key(security_key, role) {
-      const key = await db.query('SELECT * FROM wingman.keys WHERE security_key = $1 key_for_role=$2', [security_key, role])
+    async check_then_delete_security_key(security_key, role, email) {
+      const key = await db.query('SELECT * FROM wingman.keys WHERE security_key = $1 AND key_for_role=$2 AND email =$3', [security_key, role, email])
       if(key.rows.length == 0){
           throw {
             detail: "Wrong key.",
@@ -156,7 +183,7 @@ export default class userController{
     static async createUser(req, res, next){
       try {
         //Check and then delete sec key
-        const key = await db.query('SELECT * FROM wingman.keys WHERE security_key = $1 AND key_for_role=$2', [req.body.security_key, req.body.role])
+        const key = await db.query('SELECT * FROM wingman.keys WHERE security_key = $1 AND key_for_role=$2 ANd email=$3', [req.body.security_key, req.body.role, req.body.mail])
         if(key.rows.length == 0){
             throw {
               detail: "Wrong key.",

@@ -38,29 +38,6 @@ const Login = ({}) => {
       }
     };
 
-    const checkAuthenticated = async () => {
-      try {
-                //TODO put request header
-        const res = await UserFinder.post("/verify", {}, {headers: {'jwt_token': localStorage.token}})
-        if (res.data.isAuth === true){
-          setAuth(true);
-          const val = await getData();
-          setUser(val)
-          navigate("/profile/")
-        }
-        else{
-          await setAuth(false);
-        } 
-      } catch (err) {
-        console.error(err.message);
-      }
-    };
-  
-    useEffect(() => {
-      checkAuthenticated();
-    }, []);
-
-
     const [inputs, setInputs] = useState({
       mail: "",
       password: "",
@@ -109,13 +86,12 @@ const Login = ({}) => {
                 if (response.data.jwtToken) {
                   localStorage.setItem("token", response.data.jwtToken);
                   await setAuth(true);
+                  const val = await getData();
+                  await setUser(val)
+                  navigate("/profile/")
                 } else {
                   await setAuth(false);
                 }
-                const val = await getData();
-                await setUser(val)
-                localStorage.setItem("user", JSON.stringify(val));
-                navigate("/profile/")
               }
               catch(err){
                 console.error('profile get error: ', err);

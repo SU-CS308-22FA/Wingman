@@ -59,7 +59,6 @@ const tiers = [
     e.preventDefault();
     try {
       localStorage.removeItem("token");
-      localStorage.removeItem("user");
       await setAuth(false);
       await setUser(undefined)
       navigate("/")
