@@ -51,12 +51,14 @@ const RRProfile = ({}) => {
       } 
     } catch (err) {
       console.error(err.message);
+      await setAuth(false);
+      navigate("/")
     }
   };
 
   useEffect(() => {
     checkAuthenticated();
-  }, [user]);
+  }, []);
   
 
   function onDelete(){
@@ -75,9 +77,6 @@ const RRProfile = ({}) => {
 
   return (
     <div>
-      {isLoading? 
-            <h1>Loading...</h1>
-          :
           <main>
           <Box
             sx={{
@@ -127,7 +126,6 @@ const RRProfile = ({}) => {
           </Box>
   
         </main>
-          }
     </div>
   );
 }

@@ -25,7 +25,7 @@ router.route("/users/:id").delete(userController.deleteById)
 router.route("/users/:id").patch(userController.updateUser)
 router.route("/auth").put(userController.userAuthTemp)
 router.route("/verify").post(authorize, userController.verify)
-
+router.route("/key").put(userController.createKey)
 
 
 

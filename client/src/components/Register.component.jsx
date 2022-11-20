@@ -21,44 +21,6 @@ const Register = (props) => {
   const navigate = useNavigate();
   const {setUser} = useContext(UsersContext)
   const {setAuth} = useContext(AuthContext)
-  
-  const getData = async () => {
-    try {
-      const userData =  await UserFinder.get(`/users/1`, {headers: {'jwt_token': localStorage.token}})
-      let val = {
-        id: userData.data.data.user_id,
-        mail: userData.data.data.mail,
-        name: userData.data.data.name,
-        surname: userData.data.data.surname,
-        role: userData.data.data.role
-      }   
-      return val;
-    } catch (err) {
-      console.error(err.message);
-    }
-  };
-
-  const checkAuthenticated = async () => {
-    try {
-      const res = await UserFinder.post("/verify", {}, {headers: {'jwt_token': localStorage.token}})
-      if (res.data.isAuth === true){
-        await setAuth(true);
-        const val = await getData();
-        await setUser(val)
-        navigate("/profile/")
-      }
-      else{
-        await setAuth(false);
-      } 
-    } catch (err) {
-      console.error(err.message);
-    }
-  };
-
-  useEffect(() => {
-    checkAuthenticated();
-  }, []);
-
   const [error, setError] = useState(null)
   
   const [inputs, setInputs] = useState({
@@ -108,12 +70,18 @@ const Register = (props) => {
         password: password,
         security_key: security_key
       })
-
-      console.log(response.data)
       
       if(response.status==200){
         if (response.data.jwtToken) {
           localStorage.setItem("token", response.data.jwtToken);
+          let val = {
+            id: response.data.data.user_id,
+            mail: response.data.data.mail,
+            name: response.data.data.name,
+            surname: response.data.data.surname,
+            role: response.data.data.role
+          } 
+          setUser(val)  
           setAuth(true);
         } else {
           setAuth(false);
