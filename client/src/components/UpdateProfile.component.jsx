@@ -106,9 +106,6 @@ const UpdateProfile = ({}) => {
     <div>
       <Container component="main" maxWidth="xs">
         <CssBaseline />
-        {isLoading? 
-            <h1>Loading...</h1>
-          :
           <Box
           sx={{
             marginTop: 8,
@@ -187,8 +184,7 @@ const UpdateProfile = ({}) => {
               Update Info
             </Button>
           </Box>
-        </Box>
-          }    
+        </Box>  
       </Container>
       
     </div>
