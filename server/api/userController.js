@@ -2,6 +2,12 @@ import db from "../db.js"
 import bcrypt from "bcrypt"
 import jwtGenerator from "../utils/jwtGenerator.js"
 import authorize from "../middleware/authorize.js"
+import nodemailer from "nodemailer"
+import dotenv from "dotenv"
+
+dotenv.config({
+    path: '../../.env'
+})
 
 export default class userController{
     static async getAllUsers(req, res, next){
@@ -150,6 +156,31 @@ export default class userController{
         }
         else{
           const key = await db.query('INSERT INTO wingman.keys (security_key, key_for_role, email) values ($1, $2, $3) returning *', [securityKey, req.body.role, req.body.mail])
+
+          var transporter = nodemailer.createTransport({
+            service: 'gmail',
+            auth: {
+              user: "tffwingman@gmail.com",
+              pass: "xfgbnakqnhydlqzr",
+            }
+          });
+          
+          var mailOptions = {
+            from: process.env.MAIL_MAIL,
+            to: req.body.mail,
+            subject: 'Invitation from TFF',
+            text: `Dear ${req.body.role},\n\nYou have been selected by TFF to use our referee managment system Wingman! You can register to the platform using security key given below.\n\nKey: ${securityKey}`
+          };
+          
+          transporter.sendMail(mailOptions, function(error, info){
+            if (error) {
+              console.log(error);
+            } else {
+              console.log('Email sent: ' + info.response);
+            }
+          });
+
+
           res.status(200).json({
           data: key.rows[0],
         })

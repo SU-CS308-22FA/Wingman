@@ -38,7 +38,7 @@ import MenuItem from '@mui/material/MenuItem';
 import FormControl from '@mui/material/FormControl';
 import Select from '@mui/material/Select';
 import Chip from '@mui/material/Chip';
-import { Avatar } from "@mui/material";
+import { Avatar, CircularProgress } from "@mui/material";
 
 
 const ITEM_HEIGHT = 48;
@@ -315,7 +315,10 @@ export const SuperAdminList = () => {
 
       
     </Box>
-        : <h1> Loading </h1>
+        : <div>
+        <Box m={0} pt={34}> </Box>
+        <center> <CircularProgress /></center>
+      </div>
       }
         
       
