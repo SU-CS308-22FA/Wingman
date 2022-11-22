@@ -66,6 +66,7 @@ const WelcomePage = () => {
     else{
     return (
       <div>
+        <ResponsiveAppBar/>
         <Landing/>
       </div>
     );
