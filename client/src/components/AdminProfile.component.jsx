@@ -24,8 +24,9 @@ const AdminProfile = ({}) => {
   
   function onDelete(){
     try {
-      const response = UserFinder.delete(`/users/${id}`,  { data: { id: "5" }})
-      .then(navigate("/login/"))
+      const response = UserFinder.delete(`/users/${user.id}`,  { data: { id: user.id }})
+      .then(() => 
+      navigate("/login/"))
 	}
     catch(err){
       console.error('profile delete  error: ', err);

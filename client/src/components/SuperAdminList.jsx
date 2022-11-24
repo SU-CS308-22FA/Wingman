@@ -106,7 +106,7 @@ export const SuperAdminList = () => {
 
     const handelDelete = (id) => {
       try {
-        const response = UserFinder.delete(`/users/${id}`,  { data: { id: id }})
+        const response = UserFinder.delete(`/users/${id}`,  { data: { id: "5" }})
         .then(fetcData)
       }
       catch(err){
