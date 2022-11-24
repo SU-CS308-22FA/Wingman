@@ -394,6 +394,28 @@ static async verify(req, res, next){
 
   static async deleteById(req, res, next){
     try {
+      const user_info = await db.query('SELECT * from wingman.users WHERE user_id = $1', [req.body.id])
+      if(user_info.rows.length == 0)
+        {
+          throw {
+            detail: "Deleter not found.",
+            code: 1,
+            error: new Error()
+          };
+        }
+      if(user_info.rows[0].user_id != req.params.id)
+      {
+        if(user_info.rows[0].role == "Super Admin")
+        {
+          console.log("Admin")
+        }
+        else
+        {
+          res.status(401).json({detail:"Unuthorized", data:[]})
+          return
+        } 
+      }
+
       const results = await db.query("DELETE FROM wingman.users WHERE user_id = $1 returning *", [req.params.id])
       if(results.rows.length == 0)
         {

@@ -106,8 +106,8 @@ export const SuperAdminList = () => {
 
     const handelDelete = (id) => {
       try {
-        const response = UserFinder.delete(`/users/${id}`)
-        .then(fetcData())
+        const response = UserFinder.delete(`/users/${id}`,  { data: { id: id }})
+        .then(fetcData)
       }
       catch(err){
         console.error('profile delete  error: ', err);

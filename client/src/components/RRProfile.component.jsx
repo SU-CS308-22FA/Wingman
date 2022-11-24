@@ -63,7 +63,7 @@ const RRProfile = ({}) => {
 
   function onDelete(){
     try {
-      const response = UserFinder.delete(`/users/${user.id}`)
+      const response = UserFinder.delete(`/users/${id}`,  { data: { id: id }})
       .then(navigate("/login/"))
     }
     catch(err){
