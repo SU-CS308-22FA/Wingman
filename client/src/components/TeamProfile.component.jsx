@@ -1,12 +1,28 @@
 import React, { useState } from "react";
 import { useEffect } from "react";
 import { useContext } from "react";
-import Container from '@mui/material/Container';
-import Box from '@mui/material/Box';
-import Typography from '@mui/material/Typography';
 import { useNavigate } from "react-router-dom";
 import UserFinder from "../apis/UserFinder";
-import { Avatar, Chip, Divider } from '@mui/material';
+import {
+  Avatar,
+  AvatarGroup,
+  Box,
+  Button,
+  Grid,
+  List,
+  ListItemAvatar,
+  ListItemButton,
+  ListItemSecondaryAction,
+  ListItemText,
+  MenuItem,
+  Stack,
+  TextField,
+  Typography
+} from '@mui/material';
+import MainCard from "./MainCard";
+
+import TeamAreaChart from "./TeamAreaChart.component";
+import SmallCard from './SmallCard';
 
 export const TeamProfile = () => {
   const [team, setTeam] = useState(null);
@@ -32,42 +48,38 @@ export const TeamProfile = () => {
       fetchData();
     }
   }, [id]);
-
   return (
-    team !== null ? (
-      <div>
-        <main>
-          <Box
-            sx={{
-              bgcolor: 'background.paper',
-              pt: 8,
-              pb: 6,
-            }}
-          >
-            <Container maxWidth="md">
-              <Typography
-                variant="h3"
-                align="center"
-                color="#70798C"
-                gutterBottom
-              >
-                {team.length}
-                {team[9].teamname}
+    team !== null ?  <Grid container rowSpacing={4.5} columnSpacing={2.75}>
+    {/* row 1 */}
+    <Grid item ml = {2} mt = {4} xs={12} sm={6} md={4} lg={2.5}>
+        {console.log(team)}
+        <SmallCard title="Team Name" subtitle = {team[0].teamname} />
+    </Grid>
+    <Grid item xs={12} mt = {4} sm={6} md={4} lg={3}>
+        <SmallCard title="Total Number of Yellow Cards" subtitle = {team[0].totalyellowcards}/>
+    </Grid>
+    <Grid item xs={12} mt = {4} sm={6} md={4} lg={3}>
+    <SmallCard title="Total Number of Red Cards" subtitle = {team[0].totalredcards}/>
+    </Grid>
+    <Grid item xs={12} mt = {4} sm={6} md={4} lg={3}>
+    <SmallCard title="Tension Metric" subtitle={((((team[0].totalredcards)/team[0].totalmatches)*10 + ((team[0].totalyellowcards)/team[0].totalmatches) * 3) * 10).toFixed(2)} value = {((((team[0].totalredcards)/team[0].totalmatches)*10 + ((team[0].totalyellowcards)/team[0].totalmatches) * 3) * 10)}/>
+    </Grid>
 
-              </Typography>
-              <Typography
-                variant="h5"
-                align="center"
-                color="#70798C"
-                gutterBottom
-              >
-                This profile with full details will be implemented in the next sprint.
-              </Typography>
-            </Container>
-          </Box>
-        </main>
-      </div>
-    ) : null
+    <Grid item md={8} sx={{ display: { sm: 'none', md: 'block', lg: 'none' } }} />
+
+    {/* row 2 */}
+
+    <Grid item ml = {2}  mr = {2} xs={12} md={12} lg={12}>
+  
+
+        <MainCard content={false} sx={{ mt: 1}}>
+        <Box sx={{ pt: 1, pr: 2, ml:2}}>
+            <TeamAreaChart data={team} />
+            </Box>
+        </MainCard>
+    </Grid>
+
+</Grid> : null
   )
 }
 
