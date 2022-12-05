@@ -1,5 +1,6 @@
 import express from "express";
 import authorize from "../middleware/authorize.js";
+import verify from "../middleware/verify.js";
 import userController from './userController.js';
 
 
