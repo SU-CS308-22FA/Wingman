@@ -51,6 +51,7 @@ const TeamAreaChart = ({ data }) => {
     useEffect(() => {
         setOptions((prevState) => ({
             ...prevState,
+            colors: ["#780000" ,"#ffb703" ,"#335c67", "#2d6a4f", "#CC0000", "#FFCB47","#A99985"],
             xaxis: {
                 categories: data.map(team => team.ref_name),
                 offsetX: 9,
