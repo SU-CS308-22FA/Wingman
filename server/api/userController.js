@@ -73,7 +73,7 @@ export default class userController{
       static async getTeamById(req, res, next){
         try {
           
-          const result = await db.query('SELECT * FROM wingman.teams WHERE teamid = $1', [req.params.id])
+          const result = await db.query('SELECT DISTINCT * FROM wingman.teams t, wingman.teamref R WHERE teamid = $1 AND  t.teamname = R.teamname', [req.params.id])
           if(result.rows.length == 0)
           {
             throw {
@@ -82,9 +82,10 @@ export default class userController{
               error: new Error()
             };
           }
-  
           res.status(200).json({
-          data: result.rows[0]
+            data:{
+              data: result.rows
+            }
           })
         } catch (err) {
           console.log(`Error when getting one team ${err}`)
@@ -111,10 +112,7 @@ export default class userController{
           }
   
           res.status(200).json({
-            lenght: result.rows.length,
-            data:{
-              users: result.rows
-            }
+            data: result.rows
           })
         } catch (err) {
           console.log(`Error when sorting referees ${err}`)
