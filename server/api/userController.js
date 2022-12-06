@@ -97,6 +97,41 @@ export default class userController{
           res.status(400).json({detail:err, data:[]})
         }   
       }
+      // static async doubleQueryForFutureReference(req, res, next) {
+      //   try {
+      //     // First, get the team data
+      //     const teamQuery = await db.query('SELECT DISTINCT * FROM wingman.teams t, wingman.teamref R WHERE teamid = $1 AND  t.teamname = R.teamname', [req.params.id]);
+      
+      //     // Then, get the referees data
+      //     const refereesQuery = await db.query('SELECT id FROM wingman.referees');
+      
+      //     // Use Promise.all() to wait for both queries to finish
+      //     const [teamData, refereesData] = await Promise.all([teamQuery, refereesQuery]);
+      
+      //     if (teamData.rows.length == 0) {
+      //       throw {
+      //         detail: "Team not found.",
+      //         code: 1,
+      //         error: new Error()
+      //       };
+      //     }
+      
+      //     res.status(200).json({
+      //       data: {
+      //         team: teamData.rows,
+      //         referees: refereesData.rows
+      //       }
+      //     });
+      //   } catch (err) {
+      //     console.log(`Error when getting one team ${err}`);
+      
+      //     if (err.code == 1) {
+      //       res.status(404).json({detail: err.detail, data: []});
+      //       return;
+      //     }
+      //     res.status(400).json({detail: err, data: []});
+      //   }
+      // }
       static async sortReferee(req, res, next){
         try {
           
@@ -282,6 +317,34 @@ export default class userController{
         
       }   
   }
+
+  static async createReferee(req, res, next){
+    try {
+      const newReferee = await db.query('INSERT INTO wingman.referees (name,surname, totalmatches, totalyellowcards,totalredcards,age, currentseasonmatches,totalfoulspg,currentyel,currentred,currentfoulspg,totalpenpg,totalyelpg, totalredpg,currentpenpg,avatarurl) values ($1,$2,$3,$4, $5, $6,$7,$8,$9,$10,$11,$12,$13,$14,$15,$16) returning *'
+      , [req.body.name,req.body.surname, req.body.totalmatches, req.body.totalyellowcards,req.body.totalredcards,req.body.age, req.body.currentseasonmatches,req.body.totalfoulspg,req.body.currentyel,req.body.currentred,req.body.currentfoulspg,req.body.totalpenpg,req.body.totalyelpg, req.body.totalredpg,req.body.currentpenpg,req.body.avatarurl])
+      res.status(200).json({
+        data: newReferee.rows[0],
+      })
+
+    } catch (error) {
+      console.log(`Error when creating referee ${JSON.stringify(error)}`)
+      console.log(`Error when creating referee ${error}`)
+      if(String(error).includes("users_mail_key") )
+      {
+        res.status(401).json({error:error, data:{users:[]}})
+      }
+      else if(error.code == 1)
+      {
+        res.status(402).json({detail:error.detail, data:[]})
+        return
+      }
+      else{
+        res.status(400).json({error:error, data:{users:[]}})
+      }
+
+      
+    }   
+}
 
   static async userAuthTemp(req, res, next){
     try {
