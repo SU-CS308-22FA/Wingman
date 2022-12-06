@@ -17,6 +17,7 @@ import WelcomePage from "./routes/Welcome";
 
 import RefereeAssignPage from "./routes/AssignReferee";
 import ATeamProfile from "./routes/admin/TeamProfile";
+import CreateReferee from "./components/CreateReferee.component";
 
 const theme = createTheme({
   palette: {
@@ -74,6 +75,7 @@ class App extends Component {
                     <Route path="/refereeList" element={<RRRefereeList/>}/>
                     <Route path="/referee/:id" element={<RRRefereeProfile/>}/>     
                     <Route path="/teams" element={<TeamListPage/>}/>
+                    <Route path="/deneme" element={<CreateReferee/>}/>
                     <Route path="/assign" element={<RefereeAssignPage/>}/>
                     <Route path="/teams/:id" element={<ATeamProfile/>}/>
                 </Routes>
