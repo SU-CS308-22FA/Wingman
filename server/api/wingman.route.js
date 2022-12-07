@@ -31,6 +31,9 @@ router.route("/auth").put(userController.userAuthTemp)
 router.route("/verify").post(authorize, userController.verify)
 router.route("/key").put(userController.createKey)
 router.route("/match/:id").get(matchController.getMatchDataById)
+router.route("/rate/").post(matchController.rateMatch)
+router.route("/rate/").get(matchController.getRate)
+
 
 
 
