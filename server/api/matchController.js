@@ -1,6 +1,22 @@
 import db from "../db.js"
 
 export default class matchController{
+  static async getMatchDatas(req, res, next) {
+    try {
+      
+      const results = await db.query('SELECT * ,t.teamname AS HomeTeamName, t1.teamname AS AwayTeamName, t.teamlogo AS HomeTeamLogo, t1.teamlogo AS AwayTeamLogo FROM wingman.matches m, wingman.referees r, wingman.teams t, wingman.teams t1 WHERE  m.home_id = t.teamid AND m.away_id = t1.teamid  AND m.referee_id = r.id;  ')
+      res.status(200).json({
+        lenght: results.rows.length,
+        data:{
+          users: results.rows
+        }
+        
+      })
+    } catch (error) {
+      console.log(`Error when getting all referees ${error.detail}`)
+      res.status(400).json({error:error, data:{users:[]}})
+    } 
+    }
     static async getMatchDataById(req, res, next){
         try {
           const result = await db.query('SELECT m.*, r.name, r.surname, r.age, r.currentseasonmatches,r.avatarurl, t.teamname as home_teamname, t.teamlogo as home_logo, t1.teamname as away_teamname, t1.teamlogo as away_logo FROM wingman.matches m, wingman.referees r, wingman.teams t, wingman.teams t1 WHERE m.match_id = $1 AND  t.teamid = m.home_id AND t1.teamid = m.away_id AND m.referee_id = r.id', [req.params.id])

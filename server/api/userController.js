@@ -29,7 +29,6 @@ export default class userController{
       try {
         
         const results = await db.query('SELECT * FROM wingman.referees order by id')
-        
         res.status(200).json({
           lenght: results.rows.length,
           data:{
