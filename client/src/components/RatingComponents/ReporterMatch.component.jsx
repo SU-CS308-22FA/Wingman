@@ -110,7 +110,7 @@ export default function ReporterMatch() {
   const [matchData, setMatchData] = useState();
   const [isLoading, setLoading] = useState(true);
   const [isAvalible, setAvalible] = useState(true);
-  const [hasRated, setRated] = useState(false);
+  const [hasRated, setRated] = useState(true);
   const {user} = useContext(UsersContext)
   const [value, setValue] = React.useState(5);
   const [hover, setHover] = React.useState(5);
@@ -220,13 +220,25 @@ alignItems="center">
 
   function handleSubmit(){
     setRated(true);
-    console.log(user)
-    console.log(value)
+    UserFinder.post("/rate", {
+      "rate": value,
+      "user_id": user.id,
+      "match_id": matchData.match_id,
+      "referee_id": matchData.referee_id
+    });
   }
 
   useEffect(() => {
     const queryString = window.location.href;
     id = queryString.match(/match\/(\d+)/)[1];
+    let response = UserFinder.get(`/rate/?uid=${user.id}&mid=${id}`)
+    .then(function(response) {
+        if(response.status != 200)
+        {
+          setRated(false)
+        }
+    });
+    
     fetcData();
   }, []);
 
