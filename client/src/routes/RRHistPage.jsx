@@ -6,9 +6,10 @@ import { UsersContext } from "../context/UserContex";
 import { useNavigate } from "react-router-dom";
 import { AuthContext } from "../context/authContext";
 import UserFinder from "../apis/UserFinder";
+import RRHistory from "../components/RRHistory.component";
 import { CircularProgress } from "@mui/material";
 
-const PageName = () => {
+const RRHistPage = () => {
   const navigate = useNavigate();
   const [isLoading, setLoading] = useState(true)
 
@@ -62,13 +63,18 @@ const PageName = () => {
       </div>
     );
   }
-  else if(user.role == "TFF Admin" || user.role == "Reporter" || user.role == "Retired Referee"){
+  else if(user.role == "Reporter" || user.role == "Retired Referee"){
     return (
       <div>
         <ResponsiveAppBar/>
+        <RRHistory/>
         <Copyright sx={{ mt: 5 }} />
       </div>
     );
+  }
+  else if(user.role == "TFF Admin")
+  {
+    navigate("/profile")
   }
   else{
     return (
@@ -80,4 +86,4 @@ const PageName = () => {
   }
 }
    
-  export default PageName;
+  export default RRHistPage;
