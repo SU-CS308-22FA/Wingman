@@ -1,5 +1,6 @@
 import express from "express";
 import authorize from "../middleware/authorize.js";
+import matchController from "./matchController.js";
 import userController from './userController.js';
 
 
@@ -27,6 +28,8 @@ router.route("/users/:id").patch(userController.updateUser)
 router.route("/auth").put(userController.userAuthTemp)
 router.route("/verify").post(authorize, userController.verify)
 router.route("/key").put(userController.createKey)
+router.route("/fixture").get(matchController.getMatchDatas)
+
 
 
 
