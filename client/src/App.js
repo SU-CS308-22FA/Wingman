@@ -22,6 +22,7 @@ import RefereeCreatePage from "./routes/RefereeCreation";
 import RefereeDashboard from "./components/RefereeDashboard";
 import RefereeDashboardPage from "./routes/RefereeDashboardPage";
 import MatchPage from "./routes/MatchPage";
+import RRHistPage from "./routes/RRHistPage";
 
 const theme = createTheme({
   palette: {
@@ -83,6 +84,7 @@ class App extends Component {
                     <Route path="/assign" element={<RefereeAssignPage/>}/>
                     <Route path="/teams/:id" element={<ATeamProfile/>}/>
                     <Route path="/match/:id" element={<MatchPage/>}/>
+                    <Route path="/history/" element={<RRHistPage/>}/>
                 </Routes>
               </Router>
             </div>
