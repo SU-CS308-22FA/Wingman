@@ -17,6 +17,7 @@ import WelcomePage from "./routes/Welcome";
 
 import RefereeAssignPage from "./routes/AssignReferee";
 import ATeamProfile from "./routes/admin/TeamProfile";
+import MatchPage from "./routes/MatchPage";
 
 const theme = createTheme({
   palette: {
@@ -76,6 +77,7 @@ class App extends Component {
                     <Route path="/teams" element={<TeamListPage/>}/>
                     <Route path="/assign" element={<RefereeAssignPage/>}/>
                     <Route path="/teams/:id" element={<ATeamProfile/>}/>
+                    <Route path="/match/:id" element={<MatchPage/>}/>
                 </Routes>
               </Router>
             </div>
