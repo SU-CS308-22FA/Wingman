@@ -14,6 +14,7 @@ import RRRefereeList from "./routes/RefereeList"
 import TeamListPage from "./routes/Teams";
 import { AuthContextProvider } from "./context/authContext";
 import WelcomePage from "./routes/Welcome";
+import FixturePage from "./routes/fixturePage";
 
 import RefereeAssignPage from "./routes/AssignReferee";
 import ATeamProfile from "./routes/admin/TeamProfile";
@@ -74,8 +75,10 @@ class App extends Component {
                     <Route path="/refereeList" element={<RRRefereeList/>}/>
                     <Route path="/referee/:id" element={<RRRefereeProfile/>}/>     
                     <Route path="/teams" element={<TeamListPage/>}/>
-                    <Route path="/assign" element={<RefereeAssignPage/>}/>
+                    <Route path="/assign/:id" element={<RefereeAssignPage/>}/>
                     <Route path="/teams/:id" element={<ATeamProfile/>}/>
+                    <Route path="/fixture" element={<FixturePage/>}/>
+
                 </Routes>
               </Router>
             </div>

@@ -1,17 +1,16 @@
-import React, { useState } from "react";
-import Copyright from "./../components/Copyright.component";
-import ResponsiveAppBar from './../components/LoggedInAppBar';
+import React, { useContext, useState, useEffect } from "react";
+import Copyright from "../components/Copyright.component";
+import ResponsiveAppBar from '../components/LoggedInAppBar';
 import Box from '@mui/material/Box';
-import { useNavigate } from "react-router-dom";
-import { useContext } from "react";
 import { UsersContext } from "../context/UserContex";
+import { useNavigate } from "react-router-dom";
 import { AuthContext } from "../context/authContext";
 import UserFinder from "../apis/UserFinder";
-import { useEffect } from "react";
-import CircularProgress from '@mui/material/CircularProgress';
-import  {AdminRefAssign}  from "../components/AdminRefAssign";
+import Fixtures from "../components/Fixtures";
+import { CircularProgress } from "@mui/material";
+import RRFixtures from "../components/RRFixtures";
 
-const RefereeAssignPage = () => {
+const FixturePage = () => {
   const navigate = useNavigate();
   const [isLoading, setLoading] = useState(true)
 
@@ -65,21 +64,33 @@ const RefereeAssignPage = () => {
       </div>
     );
   }
-  else if(user.role == "TFF Admin")
+  else if(user.role == "TFF Admin" || user.role == "Reporter" || user.role == "Retired Referee"){
     return (
       <div>
         <ResponsiveAppBar/>
-        <AdminRefAssign/>
-        <Box m={0} pt={34}> </Box>
-        <center>             <img src="https://i.hizliresim.com/t6q9rs6.png" height="66" width="50" />          
-</center>
+        <Fixtures/>
         <Copyright sx={{ mt: 5 }} />
       </div>
     );
-
-  else{
-    navigate("/profile/")
   }
-  };
+
+  else if (user.role == "Reporter" || user.role == "Retired Referee"){
+    return (
+      <div>
+        <ResponsiveAppBar/>
+        <RRFixtures/>
+        <Copyright sx={{ mt: 5 }} />
+      </div>
+    );
+  }
+  else{
+    return (
+      <div>
+        <Box m={0} pt={34}> </Box>
+        <center> <CircularProgress /></center>
+      </div>
+    );
+  }
+}
    
-  export default RefereeAssignPage;
+  export default FixturePage;
