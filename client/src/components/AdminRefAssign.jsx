@@ -24,13 +24,20 @@ export const AdminRefAssign = () => {
     const  [isLoading, setLoading] = useState(true);
     const [pageSize, setPageSize] = useState(10);
     const  [referees, setReferees] = useState([]);
+    const  [match, setMacth] = useState();
     const navigate = useNavigate();
+    const queryString = window.location.href;
+    const index = queryString.search("assign")
+    const id = queryString.substring(index + 7)
 
     useEffect( () => {
         const fetcData = async () => {
             try {
             const response = await UserFinder.get("/referees");
             console.log("res:",response);
+            const response2 = await UserFinder.get(`/fixture/${id}`)
+            console.log("res2:",response2);
+            
             setReferees(response.data.data.users)
             } catch (err) {}
         };
@@ -181,7 +188,6 @@ export const AdminRefAssign = () => {
         </Grid> 
         <Grid item xs = {6}>
           <Container>
-            <mt></mt>
             
             <Card sx={{ padding: 3, justifyContent: 'center', mt: 11 }} >
                   <div className="card-body">
@@ -219,7 +225,7 @@ export const AdminRefAssign = () => {
                   </div>
                   </Grid>
                   <h5 className="card-title">
-                    alaa
+                    
                   </h5>
                   
                   </Grid>

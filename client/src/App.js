@@ -91,6 +91,7 @@ class App extends Component {
                     <Route path="/reporters" element={<ReporterListPage />} />
                   <Route path="/requests" element={<DeleteRequestPage />} />
                     <Route path="/fixture" element={<FixturePage/>}/>
+                    <Route path="/fixture/:week" element={<FixturePage/>}/>
 
                 </Routes>
               </Router>

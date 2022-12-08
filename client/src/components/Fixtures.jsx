@@ -16,13 +16,18 @@ const FixturesComponent = ({}) => {
   const [pageSize, setPageSize] = useState(10);
   const [matches, setMacthes] = useState(null);
   const navigate = useNavigate();
+  const queryString = window.location.href;
+  const index = queryString.search("fixture")
+  const week = queryString.substring(index + 8)
 
   const handleAssign = (id) => {
     navigate(`/assign/${id}`);
   };
-  console.log(11111);
+
+  const handleChange = (week) => {
+    navigate(`/fixture/${week}`);
+  };
   useEffect(() => {
-    console.log(222222);
     const fetcData = async () => {
       try {
         const response = await UserFinder.get("/fixture");
@@ -39,13 +44,13 @@ const FixturesComponent = ({}) => {
   return (
     <center>
       <Stack alignItems="center">
-      <Typography>Week: {1}</Typography>
-      <Pagination count={16} page={1}  />
+      <Typography>Week: {week}</Typography>
+      <Pagination count={16} page={week} onChange={(e, value) => handleChange(value)} />
       </Stack>
       
-      <Card sx={{ height: 200, width: 1500, mt: 4 }}> 
+      <Card sx={{ height: 200, width: 1500, mt: 4 }}  > 
         <CardContent>
-          <Grid container spacing={2}>
+          <Grid container spacing={2} >
             <Grid item xs={12} sm container>
               <Grid item xs container direction="column" spacing={2}>
                 <Grid item xs>
@@ -54,7 +59,7 @@ const FixturesComponent = ({}) => {
                   src={matches && matches[0].hometeamlogo}
                   sx={{ width: 60, height: 80, mt: 1 }}/>
                   <Typography>
-                    Fener
+                  {matches && matches[0].hometeamname}
                   </Typography>
                 </Grid>
               </Grid>
@@ -87,7 +92,7 @@ const FixturesComponent = ({}) => {
                     </Typography>
                   </Grid>
                   <Grid item>
-                    <Button size="medium" onClick={() => handleAssign(1)}>
+                    <Button size="medium" onClick={() => handleAssign(2)}>
                     Assign Referee
                     </Button>
                   </Grid>
@@ -100,10 +105,10 @@ const FixturesComponent = ({}) => {
                 <Grid item xs>
                   <Avatar
                   alt=""
-                  src={matches && matches[0].hometeamlogo}
+                  src={matches && matches[0].awayteamlogo}
                   sx={{ width: 60, height: 80, mt: 1 }}/>
                   <Typography >
-                    Fener
+                  {matches && matches[0].awayteamname}
                   </Typography>
                 </Grid>
               </Grid>
@@ -120,10 +125,10 @@ const FixturesComponent = ({}) => {
                 <Grid item xs>
                   <Avatar
                   alt=""
-                  src={matches && matches[0].hometeamlogo}
+                  src={matches && matches[1].hometeamlogo}
                   sx={{ width: 60, height: 80, mt: 1 }}/>
                   <Typography>
-                    Fener
+                  {matches && matches[1].hometeamname}
                   </Typography>
                 </Grid>
               </Grid>
@@ -136,7 +141,7 @@ const FixturesComponent = ({}) => {
                     alignItems="center">
                     <Grid item>
                     <Typography sx = {{mt: 5}} style={{ fontSize: 30 }}>
-                      {matches && matches[0].home_score} 
+                      {matches && matches[1].home_score} 
                     </Typography>
                     </Grid>
                     <Grid item>
@@ -146,7 +151,7 @@ const FixturesComponent = ({}) => {
                     </Grid>
                     <Grid item>
                     <Typography sx = {{mt: 5}} style={{ fontSize: 30 }}>
-                      {matches && matches[0].away_score} 
+                      {matches && matches[1].away_score} 
                     </Typography>
                     </Grid>
                   </Grid>
@@ -156,8 +161,13 @@ const FixturesComponent = ({}) => {
                     </Typography>
                   </Grid>
                   <Grid item>
+                    <Typography>
+                    {matches && matches[1].name} {matches && matches[1].surname} 
+                    </Typography>
+                  </Grid>
+                  <Grid item>
                     <Button size="medium" onClick={() => handleAssign(1)}>
-                    Assign Referee
+                    Rate Referee
                     </Button>
                   </Grid>
                 </Grid>
@@ -169,10 +179,10 @@ const FixturesComponent = ({}) => {
                 <Grid item xs>
                   <Avatar
                   alt=""
-                  src={matches && matches[0].hometeamlogo}
-                  sx={{ width: 60, height: 80, mt: 1 }}/>
+                  src={matches && matches[1].awayteamlogo}
+                  sx={{ width: 70, height: 80, mt: 1 }}/>
                   <Typography >
-                    Fener
+                  {matches && matches[1].awayteamname}
                   </Typography>
                 </Grid>
               </Grid>

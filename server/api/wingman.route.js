@@ -39,6 +39,8 @@ router.route("/request").post(userController.createDeleteRequest)
 router.route("/request").put(userController.acceptDeleteRequest)
 router.route("/request").patch(userController.rejectDeleteRequest)
 router.route("/fixture").get(matchController.getMatchDatas)
+router.route("/fixture/:id").get(matchController.getMatchById)
+
 
 
 
