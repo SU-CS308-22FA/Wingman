@@ -29,6 +29,8 @@ router.route("/auth").put(userController.userAuthTemp)
 router.route("/verify").post(authorize, userController.verify)
 router.route("/key").put(userController.createKey)
 router.route("/fixture").get(matchController.getMatchDatas)
+router.route("/fixture/:id").get(matchController.getMatchById)
+
 
 
 
