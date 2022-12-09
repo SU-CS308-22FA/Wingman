@@ -15,10 +15,27 @@ export default class matchController{
         
       })
     } catch (error) {
-      console.log(`Error when getting all referees ${error.detail}`)
+      console.log(`Error when getting all matches ${error.detail}`)
       res.status(400).json({error:error, data:{users:[]}})
     } 
     }
+
+    static async getMatchDatasByWeek(req, res, next) {
+      try {
+        
+        const results = await db.query('SELECT * ,t.teamname AS HomeTeamName, t1.teamname AS AwayTeamName, t.teamlogo AS HomeTeamLogo, t1.teamlogo AS AwayTeamLogo FROM wingman.matches m, wingman.referees r, wingman.teams t, wingman.teams t1 WHERE  m.home_id = t.teamid AND m.away_id = t1.teamid  AND m.referee_id = r.id AND m.week = $1;  ', [req.params.id])
+        res.status(200).json({
+          lenght: results.rows.length,
+          data:{
+            users: results.rows
+          }
+          
+        })
+      } catch (error) {
+        console.log(`Error when getting matches for a week ${error.detail}`)
+        res.status(400).json({error:error, data:{users:[]}})
+      } 
+      }
 
 
     static async getMatchById(req, res, next){
