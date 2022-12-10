@@ -50,7 +50,7 @@ const FixturesComponent = ({}) => {
   if (week == maxWeek) {
     return (<center>
       <Stack alignItems="center">
-      <Typography>Week: {week}</Typography>
+      <Typography sx = {{mt: 2}}>Week: {week}</Typography>
       <Pagination count={maxWeek} page={week} onChange={(e, value) => handleChange(value)} />
       </Stack>
       
@@ -597,7 +597,7 @@ const FixturesComponent = ({}) => {
   return (
     <center>
       <Stack alignItems="center">
-      <Typography>Week: {week}</Typography>
+      <Typography sx = {{mt: 2}}>Week: {week}</Typography>
       <Pagination count={maxWeek} page={week} onChange={(e, value) => handleChange(value)} />
       </Stack>
       
@@ -642,6 +642,11 @@ const FixturesComponent = ({}) => {
                   <Grid item>
                     <Typography>
                       22.12.22
+                    </Typography>
+                  </Grid>
+                  <Grid item>
+                    <Typography>
+                    {matches && matches[0].name} {matches && matches[0].surname}
                     </Typography>
                   </Grid>
                   <Grid item>
