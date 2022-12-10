@@ -24,29 +24,33 @@ export const AdminRefAssign = () => {
     const  [isLoading, setLoading] = useState(true);
     const [pageSize, setPageSize] = useState(10);
     const  [referees, setReferees] = useState([]);
-    const  [match, setMacth] = useState();
+    const  [match, setMatch] = useState();
     const navigate = useNavigate();
     const queryString = window.location.href;
     const index = queryString.search("assign")
     const id = queryString.substring(index + 7)
 
-    useEffect( () => {
-        const fetcData = async () => {
-            try {
-            const response = await UserFinder.get("/referees");
-            console.log("res:",response);
-            const response2 = await UserFinder.get(`/fixture/${id}`)
-            console.log("res2:",response2);
-            
-            setReferees(response.data.data.users)
-            } catch (err) {}
-        };
 
+    const fetcData = async () => {
+      try {
+      const response = await UserFinder.get("/referees");
+      console.log("res:",response);
+      const response2 = await UserFinder.get(`/assign/${id}`)
+      console.log("res2:",response2);
+      
+      setReferees(response.data.data.users);
+      setMatch(response2.data.data);
+      } catch (err) {}
+  };
+
+    useEffect( () => {
         fetcData();
     }, []);
 
-    const handleRefereeSelect = (id) => {
-        navigate(`/referee/${id}`);
+    const handleRefereeSelect = async (refid, matchid) => {
+        const response = await UserFinder.patch(`/assign/${matchid}/${refid}`);
+        console.log("update:", response);
+        fetcData();
       };
     
       const options = [
@@ -75,7 +79,7 @@ export const AdminRefAssign = () => {
             <Button
             variant = "contained"
             color = "secondary"
-            onClick={() => handleRefereeSelect(params.row.id)}
+            onClick={() => handleRefereeSelect(params.row.id, id)}
             >
                 Assign
             </Button>
@@ -189,52 +193,62 @@ export const AdminRefAssign = () => {
         <Grid item xs = {6}>
           <Container>
             
-            <Card sx={{ padding: 3, justifyContent: 'center', mt: 11 }} >
-                  <div className="card-body">
-                  <Grid container spacing={2}
-                justifyContent="center"
-                alignItems="center"
-                >
-                
-                <Grid item xs={4} >
-                  <div className="avatar">
-                    <img
-                      src={"https://i.hizliresim.com/t6q9rs6.png" }
-                      alt=""
-                      height="66" width="50"
-                    />
-                  </div>
-                  </Grid>
-                  <Grid item xs={1} >
-                    <p>3</p>
-                  </Grid>
-                  <Grid item xs={2} >
-                    <p>-</p>
-                  </Grid>
-                  <Grid item xs={1} >
-                    <p>3</p>
-                  </Grid>
-                  <Grid item xs={4} >
-                  <div className="avatar">
-                    <img
-                      src={"https://i.hizliresim.com/t6q9rs6.png"}
-                      
-                      alt=""
-                      height="66" width="50"
-                    />
-                  </div>
-                  </Grid>
-                  <h5 className="card-title">
-                    
-                  </h5>
+          <Card sx={{ height: 200, width: 700, mt: 11 }}  > 
+        <CardContent>
+          <Grid container spacing={14} >
+            <Grid item xs={12} sm container>
+              <Grid item xs container direction="column" spacing={4}>
+                <Grid item xs>
+                  <Avatar
+                  alt=""
+                  src={match && match.hometeamlogo}
+                  sx={{ width: 60, height: 80, mt: 1, ml: 5}}/>
+                  <Typography sx ={{ml : 3.5}}>
+                  {match && match.hometeamname}
+                  </Typography>
+                </Grid>
+              </Grid>
+            </Grid>
+
+            <Grid item xs={12} sm container>
+              <Grid item xs container direction="column" spacing={4}>
+                <Grid item xs>
                   
+                  <Grid item>
+                    <Typography sx = {{mt: 3, ml: 3}}>
+                      22.12.22
+                    </Typography>
                   </Grid>
-                    </div>
-                  </Card>
+                  <Grid item>
+                    <Typography sx = {{mt:3, ml:3}}>
+                      {match && match.name} {match && match.surname}
+                    </Typography>
+                  </Grid>
+                  
+                </Grid>
+              </Grid>
+            </Grid>
+
+            <Grid item xs={12} sm container>
+              <Grid item xs container direction="column" spacing={4}>
+                <Grid item xs>
+                  <Avatar
+                  alt=""
+                  src={match && match.awayteamlogo}
+                  sx={{ width: 60, height: 80, mt: 1, ml:2 }} />
+                  <Typography >
+                  {match && match.awayteamname}
+                  </Typography>
+                </Grid>
+              </Grid>
+            </Grid>
+          </Grid>
+        </CardContent>
+      </Card>
                   <center>
               <Avatar
-              
-          	sx={{ width: 200, height: 200,mt: 11  }}
+              src= {match && match.avatarurl}
+          	  sx={{ width: 200, height: 200,mt: 11  }}
  
             /></center>
                 <Typography
@@ -243,7 +257,7 @@ export const AdminRefAssign = () => {
                   color="#70798C"
                   gutterBottom
                 >
-                   Berk Sezer
+                   {match && match.name} {match && match.surname}
                 </Typography>
           </Container>
         </Grid>

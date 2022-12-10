@@ -40,7 +40,6 @@ export default class matchController{
 
     static async getMatchById(req, res, next){
       try {
-        
         const result = await db.query('SELECT * ,t.teamname AS HomeTeamName, t1.teamname AS AwayTeamName, t.teamlogo AS HomeTeamLogo, t1.teamlogo AS AwayTeamLogo FROM wingman.matches m, wingman.referees r, wingman.teams t, wingman.teams t1 WHERE m.match_id = $1 AND m.home_id = t.teamid AND m.away_id = t1.teamid  AND m.referee_id = r.id;  ', [req.params.id])
         if(result.rows.length == 0)
         {
@@ -64,5 +63,59 @@ export default class matchController{
         res.status(400).json({detail:err, data:[]})
       }   
     }
+
+    static async getMaxWeek(req, res, next){
+      try {
+        const result = await db.query('SELECT MAX(week) FROM wingman.matches')
+        if(result.rows.length == 0)
+        {
+          throw {
+            detail: "Match not found.",
+            code: 1,
+            error: new Error()
+          };
+        }
+
+        res.status(200).json({
+        data: result.rows[0]
+        })
+      } catch (err) {
+        console.log(`Error when getting one match ${err}`)
+        if(err.code == 1)
+        {
+          res.status(404).json({detail:err.detail, data:[]})
+          return
+        }
+        res.status(400).json({detail:err, data:[]})
+      }   
+    }
+
+    static async updateReferee(req, res, next){
+      try {
+        const result = await db.query('UPDATE wingman.matches SET referee_id = $2 WHERE match_id = $1 returning *', [req.params.matchid, req.params.refid])
+        if(result.rows.length == 0)
+        {
+          throw {
+            detail: "Update not found.",
+            code: 1,
+            error: new Error()
+          };
+        }
+
+        res.status(200).json({
+        data: result.rows[0]
+        })
+      } catch (err) {
+        console.log(`Error when updating one match ${err}`)
+        if(err.code == 1)
+        {
+          res.status(404).json({detail:err.detail, data:[]})
+          return
+        }
+        res.status(400).json({detail:err, data:[]})
+      }   
+    }
+
+
     
 }
