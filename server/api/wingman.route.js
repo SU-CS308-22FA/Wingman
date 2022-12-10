@@ -28,9 +28,11 @@ router.route("/users/:id").patch(userController.updateUser)
 router.route("/auth").put(userController.userAuthTemp)
 router.route("/verify").post(authorize, userController.verify)
 router.route("/key").put(userController.createKey)
-router.route("/fixture").get(matchController.getMatchDatas)
-//router.route("/fixture/:id").get(matchController.getMatchById)
+router.route("/fixture").get(matchController.getMaxWeek)
+router.route("/assign/:id").get(matchController.getMatchById)
 router.route("/fixture/:id").get(matchController.getMatchDatasByWeek)
+router.route("/assign/:matchid/:refid").patch(matchController.updateReferee)
+
 
 
 
