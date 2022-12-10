@@ -38,9 +38,11 @@ router.route("/request").get(userController.getAllRequests)
 router.route("/request").post(userController.createDeleteRequest)
 router.route("/request").put(userController.acceptDeleteRequest)
 router.route("/request").patch(userController.rejectDeleteRequest)
-router.route("/fixture").get(matchController.getMatchDatas)
-//router.route("/fixture/:id").get(matchController.getMatchById)
+router.route("/fixture").get(matchController.getMaxWeek)
+router.route("/assign/:id").get(matchController.getMatchById)
 router.route("/fixture/:id").get(matchController.getMatchDatasByWeek)
+router.route("/assign/:matchid/:refid").patch(matchController.updateReferee)
+
 
 
 
