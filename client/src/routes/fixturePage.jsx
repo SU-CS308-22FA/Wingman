@@ -64,16 +64,26 @@ const FixturePage = () => {
       </div>
     );
   }
-  else if(user.role == "TFF Admin" || user.role == "Reporter" || user.role == "Retired Referee"){
+  else if(user.role == "TFF Admin" ){
     return (
       <div>
         <ResponsiveAppBar/>
         <Fixtures/>
         <Copyright sx={{ mt: 5 }} />
       </div>
-    );
+    ); 
   }
 
+  else if(user.role == "Reporter" || user.role == "Retired Referee" ){
+    return (
+      <div>
+        <ResponsiveAppBar/>
+        <RRFixtures/>
+        <Copyright sx={{ mt: 5 }} />
+      </div>
+    ); 
+  }
+  
  
   else{
     return (
