@@ -45,7 +45,7 @@ export default class matchController{
               code: 1,
             };
           }
-          const match = await db.query('SELECT match_id FROM wingman.matches WHERE match_id = $1', [req.body.match_id])
+          const match = await db.query('SELECT * FROM wingman.matches WHERE match_id = $1', [req.body.match_id])
           if(match.rows.length == 0)
           {
             throw {
@@ -53,14 +53,8 @@ export default class matchController{
               code: 1,
             };
           }
-          const ref = await db.query('SELECT id FROM wingman.referees WHERE id = $1', [req.body.referee_id])
-          if(ref.rows.length == 0)
-          {
-            throw {
-              detail: "Referee not found.",
-              code: 1,
-            };
-          }
+          let r_id = match.rows[0].referee_id;
+        
           if(req.body.rate <= 0 || req.body.rate >= 11)
           {
             throw {
@@ -68,7 +62,7 @@ export default class matchController{
               code: 1,
             };
           }
-          const result = await db.query('SELECT * FROM wingman.ratings WHERE referee_id = $1 AND user_id = $2 AND match_id = $3', [req.body.referee_id, req.body.user_id, req.body.match_id])
+          const result = await db.query('SELECT * FROM wingman.ratings WHERE user_id = $1 AND match_id = $2', [req.body.user_id, req.body.match_id])
           if(result.rows.length != 0)
           {
             throw {
@@ -77,7 +71,7 @@ export default class matchController{
             };
           }
 
-          const newInsert = await db.query('INSERT INTO wingman.ratings (referee_id, user_id, match_id, rate) VALUES ($1, $2, $3, $4) returning *', [req.body.referee_id, req.body.user_id, req.body.match_id, req.body.rate])
+          const newInsert = await db.query('INSERT INTO wingman.ratings (referee_id, user_id, match_id, rate) VALUES ($1, $2, $3, $4) returning *', [r_id, req.body.user_id, req.body.match_id, req.body.rate])
           if(newInsert.rows.length == 0)
           {
             throw {
