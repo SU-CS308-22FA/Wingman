@@ -14,13 +14,11 @@ import RRRefereeList from "./routes/RefereeList"
 import TeamListPage from "./routes/Teams";
 import { AuthContextProvider } from "./context/authContext";
 import WelcomePage from "./routes/Welcome";
-
-import RefereeAssignPage from "./routes/AssignReferee";
 import ATeamProfile from "./routes/admin/TeamProfile";
-import CreateReferee from "./components/CreateReferee.component";
-import RefereeCreatePage from "./routes/RefereeCreation";
 import RefereeDashboard from "./components/RefereeDashboard";
 import RefereeDashboardPage from "./routes/RefereeDashboardPage";
+import MatchPage from "./routes/MatchPage";
+import RRHistPage from "./routes/RRHistPage";
 
 const theme = createTheme({
   palette: {
@@ -78,9 +76,10 @@ class App extends Component {
                     <Route path="/refereeList" element={<RRRefereeList/>}/>
                     <Route path="/referee/:id" element={<RefereeDashboardPage/>}/>     
                     <Route path="/teams" element={<TeamListPage/>}/>
-                    <Route path="/add/referee" element={<RefereeCreatePage/>}/>
                     <Route path="/assign" element={<RefereeAssignPage/>}/>
                     <Route path="/teams/:id" element={<ATeamProfile/>}/>
+                    <Route path="/match/:id" element={<MatchPage/>}/>
+                    <Route path="/history/" element={<RRHistPage/>}/>
                 </Routes>
               </Router>
             </div>
