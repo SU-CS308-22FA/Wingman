@@ -46,7 +46,8 @@ export default class userController{
       static async getRefereeById(req, res, next){
         try {
           
-          const result = await db.query('SELECT * FROM wingman.referees WHERE id = $1', [req.params.id])
+          const result = await db.query('SELECT wingman.referees.*, COALESCE(AVG(rate), 11) AS avg_rate FROM wingman.referees LEFT JOIN wingman.ratings ON id = referee_id  WHERE id = $1 GROUP BY(id, referee_id)', [req.params.id])
+
           if(result.rows.length == 0)
           {
             throw {
