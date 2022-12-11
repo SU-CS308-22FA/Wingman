@@ -12,7 +12,7 @@ export default class matchController{
               error: new Error()
             };
           }
-          const timeline = await db.query('SELECT * FROM wingman.matchtimelines WHERE match_id = $1', [req.params.id])
+          const timeline = await db.query('SELECT * FROM wingman.matchtimelines WHERE match_id = $1 ORDER BY event_time::int ASC', [req.params.id])
           res.status(200).json({
           data: result.rows[0],
           timeline: timeline.rows
@@ -61,7 +61,7 @@ export default class matchController{
               code: 1,
             };
           }
-          if(req.body.rate <= 0 || req.body.rate >= 10)
+          if(req.body.rate <= 0 || req.body.rate >= 11)
           {
             throw {
               detail: "Rate range wrong.",
