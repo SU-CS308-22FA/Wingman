@@ -102,7 +102,7 @@ function getIconSrcFromType(eventType) {
   } else if (eventType == "Change") {
     return "https://cdn1.iconfinder.com/data/icons/soccer-flat-color/64/Soccer_Flat_Color_soccer_football_sports_transfer_player-512.png";
   } else if (eventType == "Goal") {
-    return "https://cdn.icon-icons.com/icons2/716/PNG/512/Goal_icon-icons.com_62267.png";
+    return "https://cdn-icons-png.flaticon.com/512/1801/1801248.png";
   }
 }
 
@@ -232,12 +232,15 @@ alignItems="center">
     const queryString = window.location.href;
     id = queryString.match(/match\/(\d+)/)[1];
     let response = UserFinder.get(`/rate/?uid=${user.id}&mid=${id}`)
-    .then(function(response) {
-        if(response.status != 200)
-        {
-          setRated(false)
-        }
-    });
+  .then(function(response) {
+    if(response.status != 200) {
+      setRated(true)
+    }
+  })
+  .catch(function(error) {
+    // Handle the error
+    setRated(false)
+  });
     
     fetcData();
   }, []);
