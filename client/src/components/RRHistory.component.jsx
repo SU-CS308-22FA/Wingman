@@ -9,7 +9,15 @@ import UserFinder from "../apis/UserFinder";
 import { UsersContext } from "../context/UserContex";
 import { AuthContext } from "../context/authContext";
 import Chart from "react-apexcharts";
-import { Avatar, Divider, Grid } from "@mui/material";
+import {
+  Avatar,
+  Dialog,
+  DialogActions,
+  DialogContent,
+  DialogTitle,
+  Divider,
+  Grid,
+} from "@mui/material";
 import SmallCard from "./SmallCard";
 import { useTheme } from "@mui/material/styles";
 import OutlinedInput from "@mui/material/OutlinedInput";
@@ -18,61 +26,20 @@ import MenuItem from "@mui/material/MenuItem";
 import FormControl from "@mui/material/FormControl";
 import Select from "@mui/material/Select";
 import Chip from "@mui/material/Chip";
-import { styled } from "@mui/material/styles";
-import Table from "@mui/material/Table";
-import TableBody from "@mui/material/TableBody";
-import TableCell, { tableCellClasses } from "@mui/material/TableCell";
-import TableContainer from "@mui/material/TableContainer";
-import TableHead from "@mui/material/TableHead";
-import TableRow from "@mui/material/TableRow";
-
-//Chip data
-const MenuProps = {
-  PaperProps: {
-    style: {
-      maxHeight: 500,
-      width: 250,
-    },
-  },
-};
-
-const names = ["TFF Admin", "Reporter", "Retired Referee", "Super Admin"];
-
-function getStyles(name, personName, theme) {
-  return {
-    fontWeight:
-      personName.indexOf(name) === -1
-        ? theme.typography.fontWeightRegular
-        : theme.typography.fontWeightMedium,
-  };
-}
-
-const StyledTableCell = styled(TableCell)(({ theme }) => ({
-  [`&.${tableCellClasses.head}`]: {
-    backgroundColor: theme.palette.common.black,
-    color: theme.palette.common.white,
-  },
-  [`&.${tableCellClasses.body}`]: {
-    fontSize: 14,
-  },
-}));
-
-const StyledTableRow = styled(TableRow)(({ theme }) => ({
-  "&:nth-of-type(odd)": {
-    backgroundColor: theme.palette.action.hover,
-  },
-  // hide last border
-  "&:last-child td, &:last-child th": {
-    border: 0,
-  },
-}));
+import DialogSelect from "./DialogSelect";
 
 let options = {
   chart: {
     id: "basic-bar",
   },
+  yaxis: {
+    show: false,
+  },
+  grid: {
+    show: false, // you can either change hear to disable all grids
+  },
   xaxis: {
-    categories: [1991, 1992, 1993, 1994, 1995, 1996, 1997, 1998, 1999],
+    categories: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10],
   },
   theme: {
     monochrome: {
@@ -86,24 +53,57 @@ let options = {
     colors: ["#c7a52c"],
   },
 };
-let series = [
-  {
-    name: "series-1",
-    data: [30, 40, 45, 50, 49, 60, 70, 91],
-  },
-];
 
 const RRHistory = ({}) => {
   const navigate = useNavigate();
 
   const [isLoading, setLoading] = useState(false);
+  const [rates, setRates] = useState([0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]);
+  const [stats, setStats] = useState({ total: 0, avg: 0 });
+  const [refStats, setRefStats] = useState({ total: 0, avg: 0 });
+  const [referees, setReferees] = useState([{}]);
+  const [referee, setReferee] = React.useState({
+    name: "Please",
+    surname: "Select Referee",
+    currentseasonmatches: 0,
+    avatarurl:"",
+    id: "4000",
+  });
+  const [open, setOpen] = React.useState(false);
+
+  const handleChangeDialog = (event) => {
+    let refid = event.target.value
+    UserFinder.get(`/rate/?uid=${user.id}&rid=${refid}`).then(function (response) {
+      let refRateList = response.data.data;
+      setRefStats({ total: refRateList.length, avg: response.data.avg.avg })
+    });
+    UserFinder.get(`/referees/${refid}`).then(function (response) {
+      setReferee(response.data.data)
+    });
+  };
+
+  const handleClickOpen = () => {
+    setOpen(true);
+  };
+
+  const handleClose = (event, reason) => {
+    if (reason !== "backdropClick") {
+      setOpen(false);
+    }
+  };
+
+  let series = [
+    {
+      name: "Ratings",
+      data: rates,
+    },
+  ];
 
   const { user } = useContext(UsersContext);
 
   const theme = useTheme();
 
   const [personName, setPersonName] = React.useState([]);
-  console.log(personName);
 
   const handleChange = (event) => {
     const {
@@ -115,7 +115,38 @@ const RRHistory = ({}) => {
     );
   };
 
-  useEffect(() => {}, []);
+  useEffect(() => {
+    let response = UserFinder.get(`/rate/?uid=${user.id}`).then(function (
+      response
+    ) {
+      let rateList = response.data.data;
+      const data = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0];
+      const ratingsCount = rateList.map((rating) => {
+        const index = rating.rate - 1;
+        data[index]++;
+      });
+      setRates(data);
+      setStats({ total: rateList.length, avg: response.data.avg.avg });
+
+      const ids = rateList.map((rating) => rating.referee_id);
+      const uniqueIds = [...new Set(ids)];
+      let refList = [];
+      uniqueIds.forEach((id) => {
+        UserFinder.get(`/referees/${id}`).then((response) => {
+          refList.push(response.data.data);
+          //setReferee(response.data.data)
+        });
+      });
+      
+      setReferees(refList);
+      
+    }).then(function () {
+      UserFinder.get(`/rate/?uid=${user.id}&rid=${referee.id}`).then(function (response) {
+        let refRateList = response.data.data;
+        setRefStats({ total: refRateList.length, avg: response.data.avg.avg })
+      });
+    })
+  }, []);
 
   return (
     <Grid
@@ -136,14 +167,11 @@ const RRHistory = ({}) => {
           <Grid item>
             <SmallCard
               title={"Total Matches Rated"}
-              subtitle={"12"}
+              subtitle={stats.total}
             ></SmallCard>
           </Grid>
           <Grid item>
-            <SmallCard
-              title={"Total Referees Rated"}
-              subtitle={"4"}
-            ></SmallCard>
+            <SmallCard title={"Avreage Rate"} subtitle={stats.avg}></SmallCard>
           </Grid>
         </Grid>
       </Grid>
@@ -157,69 +185,103 @@ const RRHistory = ({}) => {
         </div>
       </Grid>
       <Grid item>
-        <Grid container spacing={10}
-  direction="row"
-  justifyContent="space-between"
-  alignItems="center">
+        <Grid
+          container
+          spacing={10}
+          direction="row"
+          justifyContent="space-between"
+          alignItems="center"
+        >
+          <Grid item></Grid>
           <Grid item>
-            <FormControl sx={{ width: 300 }}>
-              <InputLabel id="demo-multiple-chip-label">Role</InputLabel>
-              <Select
-                labelId="demo-multiple-chip-label"
-                id="demo-multiple-chip"
-                multiple
-                value={personName}
-                onChange={handleChange}
-                input={<OutlinedInput id="select-multiple-chip" label="Chip" />}
-                renderValue={(selected) => (
-                  <Box sx={{ display: "flex", flexWrap: "wrap", gap: 0.5 }}>
-                    {selected.map((value) => (
-                      <Chip key={value} label={value} />
-                    ))}
-                  </Box>
-                )}
-                MenuProps={MenuProps}
-              >
-                {names.map((name) => (
-                  <MenuItem
-                    key={name}
-                    value={name}
-                    style={getStyles(name, personName, theme)}
-                  >
-                    {name}
-                  </MenuItem>
-                ))}
-              </Select>
-            </FormControl>
-          </Grid>
-          <Grid item>
-          <Container maxWidth="md">
-              <center>
-              <Avatar
-              variant="square"
-              src="https://resources.premierleague.com/photos/2022/08/08/2ab10666-b34d-4b11-9d49-ce5b7924a6cf/Anthony-Taylor-referee.png?width=930&height=620"
-          	sx={{ width: 120, height: 120 }}
- 
-            /></center>
+            <Container
+              container
+              direction="column"
+              justifyContent="center"
+              alignItems="center"
+            >
+              <Grid item>
+                <center>
+                  <Avatar
+                    variant="square"
+                    src={referee.avatarurl}
+                    sx={{ width: 120, height: 120, mb: 2 }}
+                  />
+                </center>
+              </Grid>
+              <Grid item>
                 <Typography
                   variant="h6"
                   align="center"
                   color="#70798C"
                   gutterBottom
                 >
-                   Hasan Sabbah
+                  {referee.name + " " + referee.surname}
                 </Typography>
-                
-              </Container>
+              </Grid>
+
+              <Grid item>
+                <div>
+                  <Button onClick={handleClickOpen}>Select New Referee</Button>
+                  <Dialog
+                    disableEscapeKeyDown
+                    open={open}
+                    onClose={handleClose}
+                  >
+                    <DialogTitle>Select New Referee</DialogTitle>
+                    <DialogContent>
+                      <Box
+                        component="form"
+                        sx={{ display: "flex", flexWrap: "wrap" }}
+                      >
+                        <FormControl sx={{ m: 1, minWidth: 120 }}>
+                          <InputLabel htmlFor="demo-dialog-native">
+                            Referee
+                          </InputLabel>
+                          <Select
+                            native
+                            value={referee.id}
+                            onChange={handleChangeDialog}
+                            input={
+                              <OutlinedInput
+                                label="Referee"
+                                id="demo-dialog-native"
+                              />
+                            }
+                          >
+                            {referees.map((referee) => (
+                              <option key={referee.id} value={referee.id}>
+                                {referee.name + " " + referee.surname}
+                              </option>
+                            ))}
+                          </Select>
+                        </FormControl>
+                      </Box>
+                    </DialogContent>
+                    <DialogActions>
+                      <Button onClick={handleClose}>Cancel</Button>
+                      <Button onClick={handleClose}>Ok</Button>
+                    </DialogActions>
+                  </Dialog>
+                </div>
+              </Grid>
+            </Container>
           </Grid>
           <Grid item>
-          <div className="app">
-          <div className="row">
-            <div className="mixed-chart">
-              <Chart options={options} series={series} type="bar" width="450" />
-            </div>
-          </div>
-        </div>
+            <Grid container spacing={2}>
+              <Grid item>
+                <SmallCard
+                  title={"Avrage Rating"}
+                  subtitle={refStats.avg+"/10"}
+                ></SmallCard>
+              </Grid>
+              <Grid item>
+                <SmallCard
+                  title={"Matches Rated / Total Matches"}
+                  subtitle={refStats.total + "/" + referee.currentseasonmatches}
+                ></SmallCard>
+              </Grid>
+            </Grid>
           </Grid>
         </Grid>
       </Grid>
