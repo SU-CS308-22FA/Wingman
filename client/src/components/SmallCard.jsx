@@ -8,7 +8,7 @@ import MainCard from './MainCard';
 // assets
 
 
-const SmallCard = ({ title, subtitle,value,percdif}) => (
+const SmallCard = ({ title, subtitle,value,percdif,reftens}) => (
     <MainCard contentSX={{ p: 2.25 }}>
         <Stack spacing={0.5}>
             <Typography variant="h6" color="#252323" font fontWeight="bold">
@@ -38,6 +38,16 @@ const SmallCard = ({ title, subtitle,value,percdif}) => (
                     sx={{ ml: 1.25, mb:1, pl: 0 }}
                     size="small" />  
                 </Grid>      
+                }
+                {reftens &&
+                <Grid item>
+                <Chip
+                    label={(reftens < 60 ? "Fair" : reftens <= 80 ? "Mediocre" : "Severe")}
+                    color={ reftens < 60 ? "success" : reftens <= 80 ? "secondary" : "error"}
+                    sx={{ ml: 1.25, mb:1, pl: 0 }}
+                    size="small"
+                />         
+                </Grid>         
                 }
 
             
