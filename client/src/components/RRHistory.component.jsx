@@ -184,7 +184,7 @@ const RRHistory = ({}) => {
           </div>
         </div>
       </Grid>
-      <Grid item>
+      {stats.total > 0  ? <Grid item>
         <Grid
           container
           spacing={10}
@@ -284,7 +284,8 @@ const RRHistory = ({}) => {
             </Grid>
           </Grid>
         </Grid>
-      </Grid>
+      </Grid> : <div></div>}
+      
     </Grid>
   );
 };
