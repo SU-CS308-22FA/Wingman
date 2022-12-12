@@ -13,7 +13,7 @@ import Typography from '@mui/material/Typography';
 import Container from '@mui/material/Container';
 import Link from '@mui/material/Link';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
-import { DataGrid,gridClasses } from '@mui/x-data-grid';
+import { DataGrid,gridClasses,GridToolbar  } from '@mui/x-data-grid';
 import { grey } from '@mui/material/colors';
 import { Button, Paper } from "@mui/material";
 import { Card, CardContent, CardHeader, Divider } from '@mui/material';
@@ -25,15 +25,24 @@ export const AdminRefAssign = () => {
     const [pageSize, setPageSize] = useState(10);
     const  [referees, setReferees] = useState([]);
     const  [match, setMatch] = useState();
+    //const  [week, setWeek] = useState();
     const navigate = useNavigate();
     const queryString = window.location.href;
     const index = queryString.search("assign")
-    const id = queryString.substring(index + 7)
+    const weekid = queryString.substring(index + 7)
+    const indexslash = weekid.search("/")
+    const id = weekid.substring(0,indexslash)
 
+    const indexW = queryString.search("week")
+    const wid = queryString.substring(indexW + 5)
+    console.log(id)
+    console.log(wid)
 
     const fetcData = async () => {
       try {
-      const response = await UserFinder.get("/referees");
+      //const response = await UserFinder.get("/referees");
+      //console.log("res:",response);
+      const response = await UserFinder.get(`/referees/week/${wid}`);
       console.log("res:",response);
       const response2 = await UserFinder.get(`/assign/${id}`)
       console.log("res2:",response2);
@@ -62,12 +71,12 @@ export const AdminRefAssign = () => {
         {
           value:  2,
           label: "Name",
-          col: "name"
+          col: "name", showFilterPanel: true
         },
         {
           value:  3,
           label: "Total Matches",
-          col: "totalmatches"
+          col: "totalmatches",filterable: true
         }
       ];
       const columns = [
@@ -100,14 +109,16 @@ export const AdminRefAssign = () => {
             field: 'surname',
             headerName: 'Surname',
             width: 100,
-            disableColumnMenu: true
+            disableColumnMenu: false
 
           },
         {
             field: 'currentseasonmatches',
             headerName: 'Current Season Matches',
             width: 100,
-            disableColumnMenu: true
+            disableColumnMenu: false,
+            filterable: true,
+            type: 'number',
 
           },
           {
@@ -170,13 +181,17 @@ export const AdminRefAssign = () => {
         component="h3"
         sx={{ textAlign: 'center', mt: 3, mb: 3 }}
       >
+        
       </Typography>
       <left>
     <Container>
     <Toolbar/>
       <Paper component={Box} width={750} height={800}>
     <DataGrid
-      
+      components={{
+        Toolbar: GridToolbar,
+      }}
+      density = "compact"
       rows={rows}
       columns={columns}
       getRowId={(row) => row.id}
@@ -246,9 +261,16 @@ export const AdminRefAssign = () => {
         </CardContent>
       </Card>
                   <center>
+                  
+              <Typography variant="h3"
+                  align="center"
+                  color="#70798C"
+                  gutterBottom sx ={{mt:4}}>
+                Assigned Referee
+              </Typography>
               <Avatar
               src= {match && match.avatarurl}
-          	  sx={{ width: 200, height: 200,mt: 11  }}
+          	  sx={{ width: 200, height: 200,mt: 6  }}
  
             /></center>
                 <Typography
@@ -259,6 +281,12 @@ export const AdminRefAssign = () => {
                 >
                    {match && match.name} {match && match.surname}
                 </Typography>
+                <center>
+                <Button size="medium" sx={{mt:5}}>
+                    See System Recommendation
+                    </Button>
+                </center>
+                
           </Container>
         </Grid>
   </Grid>

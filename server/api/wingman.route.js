@@ -33,6 +33,9 @@ router.route("/assign/:id").get(matchController.getMatchById)
 router.route("/fixture/:id").get(matchController.getMatchDatasByWeek)
 router.route("/assign/:matchid/:refid").patch(matchController.updateReferee)
 
+router.route("/referees/week/:wid").get(userController.getNonAssignedReferees)
+
+
 
 
 

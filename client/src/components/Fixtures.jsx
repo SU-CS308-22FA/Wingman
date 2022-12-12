@@ -22,8 +22,12 @@ const FixturesComponent = ({}) => {
   const index = queryString.search("fixture")
   const week = queryString.substring(index + 8)
   
-  const handleAssign = (id) => {
-    navigate(`/assign/${id}`);
+  const handleAssign = (id,week) => {
+    navigate(`/assign/${id}/week/${week}`);
+  };
+
+  const handleDetails = (id) => {
+    navigate(`/match/${id}`);
   };
 
   const handleChange = (week) => {
@@ -650,8 +654,8 @@ const FixturesComponent = ({}) => {
                     </Typography>
                   </Grid>
                   <Grid item>
-                    <Button size="medium" onClick={() => handleAssign(matches && matches[0].match_id)}>
-                    Assign Referee
+                    <Button size="medium" onClick={() => handleAssign(matches && matches[0].match_id, matches && matches[0].week)}>
+                    Assign Ref
                     </Button>
                   </Grid>
                 </Grid>
@@ -724,8 +728,8 @@ const FixturesComponent = ({}) => {
                     </Typography>
                   </Grid>
                   <Grid item>
-                    <Button size="medium" onClick={() => handleAssign(1)}>
-                    Rate Referee
+                    <Button size="medium" onClick={() => handleDetails(matches && matches[1].match_id)}>
+                    Match Details
                     </Button>
                   </Grid>
                 </Grid>
@@ -797,6 +801,11 @@ const FixturesComponent = ({}) => {
                     <Typography>
                     {matches && matches[2].name} {matches && matches[2].surname} 
                     </Typography>
+                  </Grid>
+                  <Grid item>
+                    <Button size="medium" onClick={() => handleDetails(matches && matches[2].match_id)}>
+                    Match Details
+                    </Button>
                   </Grid>
                   
                 </Grid>
@@ -870,6 +879,11 @@ const FixturesComponent = ({}) => {
                     {matches && matches[3].name} {matches && matches[3].surname} 
                     </Typography>
                   </Grid>
+                  <Grid item>
+                    <Button size="medium" onClick={() => handleDetails(matches && matches[3].match_id)}>
+                    Match Details
+                    </Button>
+                  </Grid>
                   
                 </Grid>
               </Grid>
@@ -939,6 +953,11 @@ const FixturesComponent = ({}) => {
                     <Typography>
                     {matches && matches[4].name} {matches && matches[4].surname} 
                     </Typography>
+                  </Grid>
+                  <Grid item>
+                    <Button size="medium" onClick={() => handleDetails(matches && matches[4].match_id)}>
+                    Match Details
+                    </Button>
                   </Grid>
                   
                 </Grid>
@@ -1010,6 +1029,11 @@ const FixturesComponent = ({}) => {
                     {matches && matches[5].name} {matches && matches[5].surname} 
                     </Typography>
                   </Grid>
+                  <Grid item>
+                    <Button size="medium" onClick={() => handleDetails(matches && matches[5].match_id)}>
+                    Match Details
+                    </Button>
+                  </Grid>
                   
                 </Grid>
               </Grid>
@@ -1079,6 +1103,11 @@ const FixturesComponent = ({}) => {
                     <Typography>
                     {matches && matches[6].name} {matches && matches[6].surname} 
                     </Typography>
+                  </Grid>
+                  <Grid item>
+                    <Button size="medium" onClick={() => handleDetails(matches && matches[6].match_id)}>
+                    Match Details
+                    </Button>
                   </Grid>
                   
                 </Grid>
@@ -1150,6 +1179,11 @@ const FixturesComponent = ({}) => {
                     {matches && matches[7].name} {matches && matches[7].surname} 
                     </Typography>
                   </Grid>
+                  <Grid item>
+                    <Button size="medium" onClick={() => handleDetails(matches && matches[7].match_id)}>
+                    Match Details
+                    </Button>
+                  </Grid>
                   
                 </Grid>
               </Grid>
@@ -1219,6 +1253,11 @@ const FixturesComponent = ({}) => {
                     <Typography>
                     {matches && matches[8].name} {matches && matches[8].surname} 
                     </Typography>
+                  </Grid>
+                  <Grid item>
+                    <Button size="medium" onClick={() => handleDetails(matches && matches[8].match_id)}>
+                    Match Details
+                    </Button>
                   </Grid>
                   
                 </Grid>
