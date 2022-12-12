@@ -41,18 +41,26 @@ export default class userController{
         res.status(400).json({error:error, data:{users:[]}})
       } 
       }
-      /**
-       * Gets a referee by ID from the database.
-       *
-       * @param {Object} req - The request object.
-       * @param {Object} res - The response object.
-       * @param {function} next - The next middleware function in the route.
-       *
-       * @throws {Error} If the referee cannot be found.
-       *
-       * @returns {Object} The response object, containing the data for the found referee.
-       */
-  
+
+      static async getNonAssignedReferees(req, res, next) {
+        
+        try {
+          
+          const results = await db.query('SELECT * FROM wingman.referees WHERE id != 0 EXCEPT SELECT name, surname, r.totalmatches, r.totalyellowcards, r.totalredcards, age, currentseasonmatches, totalfoulspg, totalfoulsdivtackles, totalpenpg, totalyelpg,totalredpg, currentfoulspg, currentfoulsdivtackles, currentpenpg, currentyelpg, currentyel, currentredpg, currentred, avatarurl, id  FROM wingman.matches m, wingman.referees r, wingman.teams t, wingman.teams t1 WHERE  m.home_id = t.teamid AND m.away_id = t1.teamid  AND m.referee_id = r.id AND m.week = $1;', [req.params.wid])
+          console.log(results)
+          res.status(200).json({
+            lenght: results.rows.length,
+            data:{
+              users: results.rows
+            }
+            
+          })
+        } catch (error) {
+          console.log(`Error when getting non-assigned referees for a week ${error.detail}`)
+          res.status(400).json({error:error, data:{users:[]}})
+        } 
+        }
+
       static async getRefereeById(req, res, next){
         try {
           

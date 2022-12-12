@@ -84,7 +84,7 @@ class App extends Component {
                     <Route path="/refereeList" element={<RRRefereeList/>}/>
                     <Route path="/referee/:id" element={<RefereeDashboardPage/>}/>     
                     <Route path="/teams" element={<TeamListPage/>}/>
-                    <Route path="/assign/:id" element={<RefereeAssignPage/>}/>
+                    <Route path="/assign/:id/week/:week" element={<RefereeAssignPage/>}/>
                     <Route path="/teams/:id" element={<ATeamProfile/>}/>
                     <Route path="/match/:id" element={<MatchPage/>}/>
                     <Route path="/history/" element={<RRHistPage/>}/>
