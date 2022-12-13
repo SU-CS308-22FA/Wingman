@@ -531,7 +531,8 @@ static async verify(req, res, next){
                                        from wingman.users u 
                                          left join wingman.ratings r using(user_id) 
                                          left join wingman.delete_requests d on d.requested_id = u.user_id
-                                       where role in ('Reporter', 'Retired Referee') group by 1, 2, 3, 4, 5, requester_id`);
+                                       where role in ('Reporter', 'Retired Referee') group by 1, 2, 3, 4, 5, requester_id
+                                       order by 1, 2`);
       res.status(200).json({
         lenght: results.rows.length,
         data: {
@@ -612,7 +613,7 @@ static async verify(req, res, next){
       );
       const admin = await db.query(
         "Select * FROM wingman.users WHERE user_id = $1",
-        [req.body.requested_id]
+        [req.body.requester_id]
       );
       if (results.rows.length != 2) {
         throw {
@@ -688,8 +689,8 @@ static async verify(req, res, next){
   static async rejectDeleteRequest(req, res, next) {
     try {
       const admin = await db.query(
-        "Select * FROM wingman.delete_requests WHERE requester_id = $1 and requested_id = $2",
-        [req.body.requester_id, req.body.requested_id]
+        "Select * FROM wingman.users WHERE user_id = $1",
+        [req.body.requester_id]
       );
       if (admin.rows.length == 0) {
         throw {
@@ -709,6 +710,7 @@ static async verify(req, res, next){
           pass: process.env.MAIL_PASS,
         },
       });
+      console.log(admin.rows[0].mail)
       var mailOptionsAdmin = {
         from: process.env.MAIL_MAIL,
         to: admin.rows[0].mail,
@@ -752,7 +754,8 @@ static async verify(req, res, next){
                                 left join wingman.users u on d.requested_id = u.user_id
                                 left join wingman.users uu on d.requester_id = uu.user_id
                                 left join wingman.ratings r on r.user_id = d.requested_id 
-                                group by 1, 2, 3, 4, 5, 8, 9, 10, 11, 12`);
+                                group by 1, 2, 3, 4, 5, 8, 9, 10, 11, 12
+                                order by 2, 3;`);
       res.status(200).json({
         lenght: results.rows.length,
         data: {
