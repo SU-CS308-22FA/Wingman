@@ -30,7 +30,7 @@ export const RefereeDashboard = () => {
   const [infoText, setInfoText] = useState('');
 
   const [referee, setReferee] = useState(null);
-  
+  const [isAvailable, setAvailable] = useState(true);
   const queryString = window.location.href;
   const id = queryString.match(/referee\/(\d+)/)[1];
   useEffect(() => {
@@ -44,6 +44,7 @@ export const RefereeDashboard = () => {
         }
 
       } catch (err) {
+        setAvailable(false);
         setReferee(prevReferee => []);
       }
     }
@@ -53,7 +54,18 @@ export const RefereeDashboard = () => {
     }
   }, [id]);
   {console.log(referee)}
-
+  if(!isAvailable)
+  {
+    return (
+    <center>
+                <Box m={30} pt={0}> </Box>
+      <Typography variant="h3" color="#A99985" font fontWeight="600">
+      Referee not found.
+      </Typography></center>
+    
+    );
+  }
+  else{
   return (
     referee !== null  ? 
      <Grid container rowSpacing={4.5} columnSpacing={2.75}>
@@ -147,5 +159,5 @@ export const RefereeDashboard = () => {
     null
   )
 }
-
+}
 export default RefereeDashboard;
