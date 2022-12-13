@@ -27,6 +27,7 @@ export const RefereeList = () => {
         const fetcData = async () => {
             try {
             const response = await UserFinder.get("/referees");
+            
             console.log("res:",response);
             setReferees(response.data.data.users)
             } catch (err) {}

@@ -75,6 +75,14 @@ export default class matchController{
       }   
     }
 
+    /**
+     * This function gets match data for a given week.
+     * @param {Object} req - The request object containing information about the request.
+     * @param {Object} res - The response object used to send a response to the client.
+     * @param {function} next - The next middleware function in the application's request-response cycle.
+     * @returns {JSON} An object containing the length of the match data and the match data itself.
+     */
+
     static async getMaxWeek(req, res, next){
       try {
         const result = await db.query('SELECT MAX(week) FROM wingman.matches')

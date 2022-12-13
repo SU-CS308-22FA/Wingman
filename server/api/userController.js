@@ -41,6 +41,16 @@ export default class userController{
         res.status(400).json({error:error, data:{users:[]}})
       } 
       }
+      
+      /**
+     * Retrieves all non-assigned referees for a given week.
+     *
+     * @param {Object} req - The request object.
+     * @param {Object} res - The response object.
+     * @param {function} next - The next middleware function.
+     *
+     * @returns {JSON} - A JSON object containing the length of the results and the data itself.
+     */
 
       static async getNonAssignedReferees(req, res, next) {
         
