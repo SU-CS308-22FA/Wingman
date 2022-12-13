@@ -1,16 +1,16 @@
-import React, { Component } from "react"
-import "bootstrap/dist/css/bootstrap.min.css"
-import {BrowserRouter as Router, Routes, Route} from "react-router-dom";
-import './App.css';
+import React, { Component } from "react";
+import "bootstrap/dist/css/bootstrap.min.css";
+import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
+import "./App.css";
 import { UsersContextProvider } from "./context/UserContex";
 import RRRegisterPage from "./routes/RR/RRRegister";
-import { createTheme, ThemeProvider } from '@mui/material/styles';
+import { createTheme, ThemeProvider } from "@mui/material/styles";
 import RRLoginPage from "./routes/RR/RRLogin";
 import ProfilePage from "./routes/ProfilePage";
 import RRUpdatePage from "./routes/Update";
 import AdminRegisterPage from "./routes/admin/AdminRegister";
-import  RRRefereeProfile  from "./routes/RR/RRRefereeProfile";
-import RRRefereeList from "./routes/RefereeList"
+import RRRefereeProfile from "./routes/RR/RRRefereeProfile";
+import RRRefereeList from "./routes/RefereeList";
 import TeamListPage from "./routes/Teams";
 import { AuthContextProvider } from "./context/authContext";
 import WelcomePage from "./routes/Welcome";
@@ -24,44 +24,45 @@ import RefereeDashboardPage from "./routes/RefereeDashboardPage";
 import MatchPage from "./routes/MatchPage";
 import RRHistPage from "./routes/RRHistPage";
 import RefereeCreatePage from "./routes/RefereeCreation";
+import ReporterListPage from "./routes/admin/ReporterList";
+import DeleteRequestPage from "./routes/SuperAdmin/DeleteRequestsPage";
+
 const theme = createTheme({
   palette: {
     primary: {
-      main: '#A99985',
+      main: "#A99985",
     },
     secondary: {
-      main: '#70798C',
+      main: "#70798C",
     },
-    third : {
-      main : "#9297A5",
+    third: {
+      main: "#9297A5",
     },
-    fourth:{
+    fourth: {
       main: "#DAD2BC",
     },
-    fifth :{
-      main : "#F5F1ED",
+    fifth: {
+      main: "#F5F1ED",
     },
-    alertRed :{
-      main : "#dc143c",
-    }
+    alertRed: {
+      main: "#dc143c",
+    },
   },
 });
 class App extends Component {
-
   render() {
-    const myStyle={
+    const myStyle = {
       background: "#F5F1ED",
-      fontSize:'24px',
-      backgroundSize: 'cover',
-  };
-  const myStyleBottom={
-    background: "#F5F1ED",
-    fontSize:'24px',
-    backgroundSize: 'cover',
-    heigt: "500px",
-    margin: "400px, 0, 0"
-};
-
+      fontSize: "24px",
+      backgroundSize: "cover",
+    };
+    const myStyleBottom = {
+      background: "#F5F1ED",
+      fontSize: "24px",
+      backgroundSize: "cover",
+      heigt: "500px",
+      margin: "400px, 0, 0",
+    };
 
     return (
       <AuthContextProvider>
@@ -82,20 +83,23 @@ class App extends Component {
                     <Route path="/refereeList" element={<RRRefereeList/>}/>
                     <Route path="/referee/:id" element={<RefereeDashboardPage/>}/>     
                     <Route path="/teams" element={<TeamListPage/>}/>
-                    <Route path="/add/referee" element={<RefereeCreatePage/>}/>
                     <Route path="/assign" element={<RefereeAssignPage/>}/>
                     <Route path="/teams/:id" element={<ATeamProfile/>}/>
                     <Route path="/match/:id" element={<MatchPage/>}/>
                     <Route path="/history/" element={<RRHistPage/>}/>
+                    <Route path="/reporters" element={<ReporterListPage />} />
+                  <Route path="/requests" element={<DeleteRequestPage />} />
                 </Routes>
               </Router>
             </div>
-            <div id="bottom" style= {myStyleBottom}>
-            <br /><br />
-              </div>
-              <div id="bottom" style= {myStyleBottom}>
-            <br /><br />
-              </div>
+            <div id="bottom" style={myStyleBottom}>
+              <br />
+              <br />
+            </div>
+            <div id="bottom" style={myStyleBottom}>
+              <br />
+              <br />
+            </div>
           </ThemeProvider>
         </UsersContextProvider>
       </AuthContextProvider>
