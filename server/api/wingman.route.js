@@ -33,8 +33,11 @@ router.route("/key").put(userController.createKey)
 router.route("/match/:id").get(matchController.getMatchDataById)
 router.route("/rate/").post(matchController.rateMatch)
 router.route("/rate/").get(matchController.getRate)
-
-
+router.route("/reporters").get(userController.getReportes)
+router.route("/request").get(userController.getAllRequests)
+router.route("/request").post(userController.createDeleteRequest)
+router.route("/request").put(userController.acceptDeleteRequest)
+router.route("/request").patch(userController.rejectDeleteRequest)
 
 
 
