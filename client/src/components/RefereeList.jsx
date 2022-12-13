@@ -39,6 +39,9 @@ export const RefereeList = () => {
         navigate(`/referee/${id}`);
       };
     
+      const navigateCreate = () => {
+        navigate("/addReferee");
+      };
       const options = [
         { 
           value: 1,
@@ -125,13 +128,13 @@ export const RefereeList = () => {
   return (
       <>
     <CssBaseline />
-    
       <Box
       sx={{
-        height: 1200,
+        height: 800,
         width: '100%',
       }}
     >
+
       <Typography
         variant="h3"
         component="h3"
@@ -141,10 +144,13 @@ export const RefereeList = () => {
 
     <Container>
         <center>
+        <Box m={6} pt={0}> </Box>
+
+        <Button onClick={navigateCreate} color = 'secondary' variant="contained">CREATE REFEREE</Button>
+
     <Toolbar/>
       <Paper component={Box} width={750} height={800}>
     <DataGrid
-      
       rows={rows}
       columns={columns}
       getRowId={(row) => row.id}
@@ -154,7 +160,6 @@ export const RefereeList = () => {
       experimentalFeatures={{ newEditingApi: true }}
     />
         </Paper>
-        <Button mt = {10} onClick={'232'} color = 'fourth' variant="contained">UPDATE ACCOUNT</Button>
         </center>
         </Container>
 
