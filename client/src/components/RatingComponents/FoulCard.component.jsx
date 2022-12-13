@@ -23,7 +23,7 @@ export default function FoulCard({numFoul,numFoulPerCard}) {
         </Grid>
                 <Grid item>
                     <Typography variant="subtitle1" color="#A99985" font fontWeight="light">
-                    Cards per Foul: %{numFoulPerCard}
+                    Cards per Foul: %{numFoulPerCard.toFixed(2)}
                     </Typography>
             </Grid>
     </Grid>

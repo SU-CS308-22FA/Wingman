@@ -14,12 +14,13 @@ import RRRefereeList from "./routes/RefereeList";
 import TeamListPage from "./routes/Teams";
 import { AuthContextProvider } from "./context/authContext";
 import WelcomePage from "./routes/Welcome";
-
-import RefereeAssignPage from "./routes/AssignReferee";
 import ATeamProfile from "./routes/admin/TeamProfile";
+import RefereeDashboard from "./components/RefereeDashboard";
+import RefereeDashboardPage from "./routes/RefereeDashboardPage";
 import MatchPage from "./routes/MatchPage";
 import ReporterListPage from "./routes/admin/ReporterList";
 import DeleteRequestPage from "./routes/SuperAdmin/DeleteRequestsPage";
+import RRHistPage from "./routes/RRHistPage";
 
 const theme = createTheme({
   palette: {
@@ -62,30 +63,22 @@ class App extends Component {
       <AuthContextProvider>
         <UsersContextProvider>
           <ThemeProvider theme={theme}>
-            <div style={myStyle}>
-              <Router>
-                <Routes>
-                  <Route path="/" element={<WelcomePage />} />
-                  <Route
-                    path="/reporter/register"
-                    element={<RRRegisterPage />}
-                  />
-                  <Route
-                    path="/admin/register"
-                    element={<AdminRegisterPage />}
-                  />
-                  <Route path="/login" element={<RRLoginPage />} />
-                  <Route path="/admin/login" element={<RRLoginPage />} />
-                  <Route path="/profile/" element={<ProfilePage />} />\
-                  <Route path="/update/" element={<RRUpdatePage />} />
-                  <Route path="/refereeList" element={<RRRefereeList />} />
-                  <Route path="/referee/:id" element={<RRRefereeProfile />} />
-                  <Route path="/teams" element={<TeamListPage />} />
-                  <Route path="/assign" element={<RefereeAssignPage />} />
-                  <Route path="/teams/:id" element={<ATeamProfile />} />
-                  <Route path="/match/:id" element={<MatchPage />} />
-                  <Route path="/reporters" element={<ReporterListPage />} />
-                  <Route path="/requests" element={<DeleteRequestPage />} />
+            <div style = {myStyle}>
+            <Router>
+              <Routes>
+                    <Route path="/" element={<WelcomePage/>}/>        
+                    <Route path="/reporter/register" element={<RRRegisterPage/>}/>
+                    <Route path="/admin/register" element={<AdminRegisterPage/>}/>
+                    <Route path="/login" element={<RRLoginPage/>}/>
+                    <Route path="/admin/login" element={<RRLoginPage/>}/>
+                    <Route path="/profile/" element={<ProfilePage/>}/>\
+                    <Route path="/update/" element={<RRUpdatePage/>}/>
+                    <Route path="/refereeList" element={<RRRefereeList/>}/>
+                    <Route path="/referee/:id" element={<RefereeDashboardPage/>}/>     
+                    <Route path="/teams" element={<TeamListPage/>}/>
+                    <Route path="/teams/:id" element={<ATeamProfile/>}/>
+                    <Route path="/match/:id" element={<MatchPage/>}/>
+                    <Route path="/history/" element={<RRHistPage/>}/>
                 </Routes>
               </Router>
             </div>
