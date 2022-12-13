@@ -37,7 +37,18 @@ export default class matchController{
       } 
       }
 
-
+    /**
+ * Get a match by its ID
+ *
+ * @param {object} req - The request object
+ * @param {object} res - The response object
+ * @param {function} next - The next middleware function
+ *
+ * @throws {object} - { detail: 'Match not found.', code: 1} if the match is not found
+ * @throws {object} - { detail: 'Error when getting one match' } if there is a general error
+ *
+ * @return {object} - The response object with the data of the match
+ */
     static async getMatchById(req, res, next){
       try {
         const result = await db.query('SELECT * ,t.teamname AS HomeTeamName, t1.teamname AS AwayTeamName, t.teamlogo AS HomeTeamLogo, t1.teamlogo AS AwayTeamLogo FROM wingman.matches m, wingman.referees r, wingman.teams t, wingman.teams t1 WHERE m.match_id = $1 AND m.home_id = t.teamid AND m.away_id = t1.teamid  AND m.referee_id = r.id;  ', [req.params.id])
@@ -228,6 +239,21 @@ export default class matchController{
         }   
       }
 
+/**
+ * Get one or more rates from the `wingman.ratings` table.
+ *
+ * @param {Object} req - The request object.
+ * @param {string} req.query.uid - The user ID of the rate(s).
+ * @param {string} req.query.rid - The referee ID of the rate(s).
+ * @param {string} req.query.mid - The match ID of the rate(s).
+ * @param {Object} res - The response object.
+ * @param {function} next - The next middleware function in the app.
+ *
+ * @returns {Array} The rate(s) that were retrieved.
+ *
+ * @throws {NotFoundError} If no rate is found for the specified parameters.
+ * @throws {DatabaseError} If a database error occurs while getting the rate(s).
+ */
       static async getRate(req, res, next){
         try {
           const uid = req.query.uid;
@@ -235,6 +261,7 @@ export default class matchController{
           const mid = req.query.mid;
           let result = [];
           let avg = -1;
+          // Get rates where user_id, referee_id, and match_id all match the provided values or any combination.
           if(uid && rid && mid)
           {
             result = await db.query('SELECT * FROM wingman.ratings WHERE user_id = $1 AND referee_id = $2 AND match_id = $3', [uid,rid,mid])
