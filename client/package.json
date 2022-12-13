@@ -29,13 +29,22 @@
     "recharts": "^2.1.16",
 <<<<<<< HEAD
 <<<<<<< HEAD
+=======
+    "web-vitals": "^2.1.4" 
+=======
+>>>>>>> refs/rewritten/feature-dev-4
+<<<<<<< HEAD
     "web-vitals": "^2.1.4"
 =======
     "web-vitals": "^2.1.4" 
 >>>>>>> refs/rewritten/feature-dev
+<<<<<<< HEAD
 =======
     "web-vitals": "^2.1.4"
 >>>>>>> c662fc5 (Add Reporter List Feature)
+=======
+>>>>>>> refs/rewritten/feature-dev-2
+>>>>>>> refs/rewritten/feature-dev-4
   },
   "scripts": {
     "predeploy": "npm run build",

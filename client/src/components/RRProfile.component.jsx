@@ -75,6 +75,10 @@ const RRProfile = ({}) => {
     navigate("/update/")
   }
 
+  function onHist(){
+    navigate("/history/")
+  }
+
   return (
     <div>
           <main>
@@ -122,6 +126,7 @@ const RRProfile = ({}) => {
                 <Button onClick={onUpdate} color = 'fourth' variant="contained">UPDATE ACCOUNT</Button>
                 <Button onClick={onDelete} color = 'error' variant="contained">DELETE ACCOUNT</Button>
               </Stack>
+              <Button sx = {{mt:2, ml:23}} onClick={onHist} color = 'third' variant="contained">SEE RATE HISTORY</Button>
             </Container>
           </Box>
   

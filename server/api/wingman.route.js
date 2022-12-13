@@ -21,6 +21,7 @@ router.route("/referees").get(userController.getAllReferees)
 router.route("/referees/:id").get(userController.getRefereeById)
 router.route("/refereeSort/:par").get(userController.sortReferee)
 router.route("/teams").get(userController.getAllTeams)
+router.route("/referees/").post(userController.createReferee)
 router.route("/teams/:id").get(userController.getTeamById)
 router.route("/users/:id").get(authorize, userController.getUserById)
 router.route("/users/").post(userController.createUser)
@@ -30,11 +31,18 @@ router.route("/auth").put(userController.userAuthTemp)
 router.route("/verify").post(authorize, userController.verify)
 router.route("/key").put(userController.createKey)
 router.route("/match/:id").get(matchController.getMatchDataById)
+<<<<<<< HEAD
 router.route("/reporters").get(userController.getReportes)
 router.route("/request").get(userController.getAllRequests)
 router.route("/request").post(userController.createDeleteRequest)
 router.route("/request").put(userController.acceptDeleteRequest)
 router.route("/request").patch(userController.rejectDeleteRequest)
+=======
+router.route("/rate/").post(matchController.rateMatch)
+router.route("/rate/").get(matchController.getRate)
+
+
+>>>>>>> refs/rewritten/feature-dev-4
 
 
 

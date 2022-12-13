@@ -5,8 +5,8 @@ import Box from '@mui/material/Box';
 import { UsersContext } from "../context/UserContex";
 import { useNavigate } from "react-router-dom";
 import { AuthContext } from "../context/authContext";
-import { useState } from "react";
 import UserFinder from "../apis/UserFinder";
+import { CircularProgress } from "@mui/material";
 
 const PageName = () => {
   const navigate = useNavigate();
