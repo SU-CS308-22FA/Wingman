@@ -5,8 +5,8 @@ import Typography from '@mui/material/Typography';
 function Copyright(props) {
     return (
       <Typography variant="body2" color="text.secondary" align="center" {...props}>
-        {'Copyright © '}
-        <Link color="inherit" href="https://mui.com/">
+        {'Wingman © '}
+        <Link color="inherit" href="https://wingman-team29.herokuapp.com/">
           Wingman
         </Link>{' '}
         {new Date().getFullYear()}
