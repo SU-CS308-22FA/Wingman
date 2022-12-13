@@ -28,10 +28,14 @@
     "react-twitter-embed": "^4.0.4",
     "recharts": "^2.1.16",
 <<<<<<< HEAD
+<<<<<<< HEAD
     "web-vitals": "^2.1.4"
 =======
     "web-vitals": "^2.1.4" 
 >>>>>>> refs/rewritten/feature-dev
+=======
+    "web-vitals": "^2.1.4"
+>>>>>>> c662fc5 (Add Reporter List Feature)
   },
   "scripts": {
     "predeploy": "npm run build",
