@@ -41,6 +41,16 @@ export default class userController{
         res.status(400).json({error:error, data:{users:[]}})
       } 
       }
+      
+      /**
+     * Retrieves all non-assigned referees for a given week.
+     *
+     * @param {Object} req - The request object.
+     * @param {Object} res - The response object.
+     * @param {function} next - The next middleware function.
+     *
+     * @returns {JSON} - A JSON object containing the length of the results and the data itself.
+     */
 
       static async getNonAssignedReferees(req, res, next) {
         
@@ -61,17 +71,18 @@ export default class userController{
         } 
         }
         
-      /**
-       * Gets a referee by ID from the database.
-       *
-       * @param {Object} req - The request object.
-       * @param {Object} res - The response object.
-       * @param {function} next - The next middleware function in the route.
-       *
-       * @throws {Error} If the referee cannot be found.
-       *
-       * @returns {Object} The response object, containing the data for the found referee.
-       */
+    /**
+     * Retrieves the information for a single referee with the specified ID.
+     * 
+     * @param {object} req - The request object containing the ID of the referee to retrieve.
+     * @param {object} res - The response object to use for sending the retrieved referee data.
+     * @param {function} next - The next middleware function to call after the referee has been retrieved.
+     * 
+     * @returns {object} An object containing the retrieved referee data.
+     * 
+     * @throws {object} If the specified referee ID is not found, a 404 error is returned with the message "Referee not found.".
+     *                  If any other error occurs, a 400 error is returned with the details of the error.
+     */     
       static async getRefereeById(req, res, next){
         try {
           

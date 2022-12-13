@@ -38,16 +38,16 @@ export default class matchController{
       }
 
     /**
- * Get a match by its ID
+ * Get a match by its ID from the `wingman.matches` table.
  *
  * @param {object} req - The request object
  * @param {object} res - The response object
  * @param {function} next - The next middleware function
  *
- * @throws {object} - { detail: 'Match not found.', code: 1} if the match is not found
- * @throws {object} - { detail: 'Error when getting one match' } if there is a general error
+ * @throws {NotFoundError} - { detail: 'Match not found.', code: 1} If the match is not found
+ * @throws {DatabaseError} - { detail: 'Error when getting one match' } If there is a general error
  *
- * @return {object} - The response object with the data of the match
+ * @return {JSON} - The response json with the data of the match given
  */
     static async getMatchById(req, res, next){
       try {
@@ -74,6 +74,14 @@ export default class matchController{
         res.status(400).json({detail:err, data:[]})
       }   
     }
+
+    /**
+     * This function gets match data for a given week.
+     * @param {Object} req - The request object containing information about the request.
+     * @param {Object} res - The response object used to send a response to the client.
+     * @param {function} next - The next middleware function in the application's request-response cycle.
+     * @returns {JSON} An object containing the length of the match data and the match data itself.
+     */
 
     static async getMaxWeek(req, res, next){
       try {
@@ -249,7 +257,7 @@ export default class matchController{
  * @param {Object} res - The response object.
  * @param {function} next - The next middleware function in the app.
  *
- * @returns {Array} The rate(s) that were retrieved.
+ * @returns {Array} The rate(s) that were retrieved. Each array is json with it's info.
  *
  * @throws {NotFoundError} If no rate is found for the specified parameters.
  * @throws {DatabaseError} If a database error occurs while getting the rate(s).
