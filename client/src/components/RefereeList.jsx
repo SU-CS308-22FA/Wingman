@@ -17,7 +17,8 @@ import { DataGrid,gridClasses } from '@mui/x-data-grid';
 import { grey } from '@mui/material/colors';
 import { Button, Paper } from "@mui/material";
 
-export const RefereeList = () => {
+
+export const RefereeList = (isTFF) => {
     const  [isLoading, setLoading] = useState(true);
     const [pageSize, setPageSize] = useState(10);
     const  [referees, setReferees] = useState([]);
@@ -27,6 +28,7 @@ export const RefereeList = () => {
         const fetcData = async () => {
             try {
             const response = await UserFinder.get("/referees");
+            
             console.log("res:",response);
             setReferees(response.data.data.users)
             } catch (err) {}
@@ -38,7 +40,10 @@ export const RefereeList = () => {
     const handleRefereeSelect = (id) => {
         navigate(`/referee/${id}`);
       };
-    
+
+      const navigateCreate = () => {
+        navigate("/addReferee");
+      };
       const options = [
         { 
           value: 1,
@@ -128,7 +133,7 @@ export const RefereeList = () => {
     
       <Box
       sx={{
-        height: 1200,
+        height: 800,
         width: '100%',
       }}
     >
@@ -141,6 +146,8 @@ export const RefereeList = () => {
 
     <Container>
         <center>
+        <Box m={6} pt={0}> </Box>
+        {isTFF ==true ?<Button onClick={navigateCreate} color = 'secondary' variant="contained">CREATE REFEREE</Button> :  <Box m={0} pt={0}> </Box>}
     <Toolbar/>
       <Paper component={Box} width={750} height={800}>
     <DataGrid

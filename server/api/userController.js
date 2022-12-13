@@ -28,8 +28,7 @@ export default class userController{
     static async getAllReferees(req, res, next) {
       try {
         
-        const results = await db.query('SELECT * FROM wingman.referees order by id')
-        
+        const results = await db.query('SELECT * FROM wingman.referees WHERE id != 0 order by id')
         res.status(200).json({
           lenght: results.rows.length,
           data:{
@@ -42,11 +41,53 @@ export default class userController{
         res.status(400).json({error:error, data:{users:[]}})
       } 
       }
+      
+      /**
+     * Retrieves all non-assigned referees for a given week.
+     *
+     * @param {Object} req - The request object.
+     * @param {Object} res - The response object.
+     * @param {function} next - The next middleware function.
+     *
+     * @returns {JSON} - A JSON object containing the length of the results and the data itself.
+     */
 
+      static async getNonAssignedReferees(req, res, next) {
+        
+        try {
+          
+          const results = await db.query('SELECT * FROM wingman.referees WHERE id != 0 EXCEPT SELECT name, surname, r.totalmatches, r.totalyellowcards, r.totalredcards, age, currentseasonmatches, totalfoulspg, totalfoulsdivtackles, totalpenpg, totalyelpg,totalredpg, currentfoulspg, currentfoulsdivtackles, currentpenpg, currentyelpg, currentyel, currentredpg, currentred, avatarurl, id  FROM wingman.matches m, wingman.referees r, wingman.teams t, wingman.teams t1 WHERE  m.home_id = t.teamid AND m.away_id = t1.teamid  AND m.referee_id = r.id AND m.week = $1;', [req.params.wid])
+          
+          res.status(200).json({
+            lenght: results.rows.length,
+            data:{
+              users: results.rows
+            }
+            
+          })
+        } catch (error) {
+          console.log(`Error when getting non-assigned referees for a week ${error.detail}`)
+          res.status(400).json({error:error, data:{users:[]}})
+        } 
+        }
+        
+    /**
+     * Retrieves the information for a single referee with the specified ID.
+     * 
+     * @param {object} req - The request object containing the ID of the referee to retrieve.
+     * @param {object} res - The response object to use for sending the retrieved referee data.
+     * @param {function} next - The next middleware function to call after the referee has been retrieved.
+     * 
+     * @returns {object} An object containing the retrieved referee data.
+     * 
+     * @throws {object} If the specified referee ID is not found, a 404 error is returned with the message "Referee not found.".
+     *                  If any other error occurs, a 400 error is returned with the details of the error.
+     */     
       static async getRefereeById(req, res, next){
         try {
           
-          const result = await db.query('SELECT * FROM wingman.referees WHERE id = $1', [req.params.id])
+          const result = await db.query('SELECT wingman.referees.*, COALESCE(AVG(rate), 11) AS avg_rate FROM wingman.referees LEFT JOIN wingman.ratings ON id = referee_id  WHERE id = $1 GROUP BY(id, referee_id)', [req.params.id])
+
           if(result.rows.length == 0)
           {
             throw {
@@ -97,6 +138,41 @@ export default class userController{
           res.status(400).json({detail:err, data:[]})
         }   
       }
+      // static async doubleQueryForFutureReference(req, res, next) {
+      //   try {
+      //     // First, get the team data
+      //     const teamQuery = await db.query('SELECT DISTINCT * FROM wingman.teams t, wingman.teamref R WHERE teamid = $1 AND  t.teamname = R.teamname', [req.params.id]);
+      
+      //     // Then, get the referees data
+      //     const refereesQuery = await db.query('SELECT id FROM wingman.referees');
+      
+      //     // Use Promise.all() to wait for both queries to finish
+      //     const [teamData, refereesData] = await Promise.all([teamQuery, refereesQuery]);
+      
+      //     if (teamData.rows.length == 0) {
+      //       throw {
+      //         detail: "Team not found.",
+      //         code: 1,
+      //         error: new Error()
+      //       };
+      //     }
+      
+      //     res.status(200).json({
+      //       data: {
+      //         team: teamData.rows,
+      //         referees: refereesData.rows
+      //       }
+      //     });
+      //   } catch (err) {
+      //     console.log(`Error when getting one team ${err}`);
+      
+      //     if (err.code == 1) {
+      //       res.status(404).json({detail: err.detail, data: []});
+      //       return;
+      //     }
+      //     res.status(400).json({detail: err, data: []});
+      //   }
+      // }
       static async sortReferee(req, res, next){
         try {
           
@@ -283,6 +359,34 @@ export default class userController{
       }   
   }
 
+  static async createReferee(req, res, next){
+    try {
+      const newReferee = await db.query('INSERT INTO wingman.referees (name,surname, totalmatches, totalyellowcards,totalredcards,age, currentseasonmatches,totalfoulspg,currentyel,currentred,currentfoulspg,totalpenpg,totalyelpg, currentyelpg, currentredpg, totalredpg,currentpenpg,avatarurl) values ($1,$2,$3,$4, $5, $6,$7,$8,$9,$10,$11,$12,$13,$14,$15,$16, $17, $18) returning *'
+      , [req.body.name,req.body.surname, req.body.totalmatches, req.body.totalyellowcards,req.body.totalredcards,req.body.age, req.body.currentseasonmatches,req.body.totalfoulspg,req.body.currentyel,req.body.currentred,req.body.currentfoulspg,req.body.totalpenpg,req.body.totalyelpg, req.body.currentyelpg , req.body.currentredpg, req.body.totalredpg,req.body.currentpenpg,req.body.avatarurl])
+      res.status(200).json({
+        data: newReferee.rows[0],
+      })
+
+    } catch (error) {
+      console.log(`Error when creating referee ${JSON.stringify(error)}`)
+      console.log(`Error when creating referee ${error}`)
+      if(String(error).includes("users_mail_key") )
+      {
+        res.status(401).json({error:error, data:{users:[]}})
+      }
+      else if(error.code == 1)
+      {
+        res.status(402).json({detail:error.detail, data:[]})
+        return
+      }
+      else{
+        res.status(400).json({error:error, data:{users:[]}})
+      }
+
+      
+    }   
+}
+
   static async userAuthTemp(req, res, next){
     try {
   
@@ -413,5 +517,251 @@ static async verify(req, res, next){
         res.status(400).json({detail:err, data:[]})
     }   
   }
+ static async getReportes(req, res, next) {
+    try {
+      const results = await db.query(`select user_id, 
+                                             name, 
+                                             surname, 
+                                             mail, 
+                                             role, 
+                                             round(avg(rate), 2) as average_rate, 
+                                             count(rate) as rate_count,
+                                             case when requester_id is null then 0
+                                                 else 1 end as is_reported
+                                       from wingman.users u 
+                                         left join wingman.ratings r using(user_id) 
+                                         left join wingman.delete_requests d on d.requested_id = u.user_id
+                                       where role in ('Reporter', 'Retired Referee') group by 1, 2, 3, 4, 5, requester_id`);
+      res.status(200).json({
+        lenght: results.rows.length,
+        data: {
+          users: results.rows,
+        },
+      });
+    } catch (error) {
+      console.log(`Error when getting all users ${error.detail}`);
+      res.status(400).json({ error: error, data: { users: [] } });
+    }
+  }
 
+  static async createDeleteRequest(req, res, next) {
+    try {
+      const key = await db.query(
+        "SELECT * FROM wingman.users WHERE user_id in ($1, $2)",
+        [req.body.requester_id, req.body.requested_id]
+      );
+      const result = await db.query(
+        "SELECT * FROM wingman.delete_requests WHERE requested_id = $1",
+        [req.body.requested_id]
+      );
+      if (key.rows.length != 2) {
+        throw {
+          detail: "Invalid id/ids",
+          code: 1,
+          error: new Error(),
+        };
+      }
+      if (result.rows.length != 0) {
+        throw {
+          detail: "Already open issue",
+          code: 2,
+          error: new Error(),
+        };
+      }
+      const timeElapsed = Date.now();
+      const now = new Date(timeElapsed).toISOString();
+      const newRequest = await db.query(
+        "INSERT INTO wingman.delete_requests (requester_id,requested_id,requested_at, reason) values ($1,$2,$3,$4) returning *",
+        [req.body.requester_id, req.body.requested_id, now, req.body.reason]
+      );
+
+      res.status(200).json({
+        data: newRequest.rows[0],
+      });
+    } catch (error) {
+      if (error.code == 1) {
+        //invalid ids
+        res.status(402).json({ detail: error.detail, data: [] });
+        return;
+      } else if (error.code == 2) {
+        //already_open
+        res.status(403).json({ detail: error.detail, data: [] });
+        return;
+      } else {
+        res.status(400).json({ error: error, data: { users: [] } });
+      }
+    }
+  }
+  
+  /**
+   * Accept a delete request for a user account.
+   *
+   * @param {Object} req - The request object.
+   * @param {Object} res - The response object.
+   * @param {Function} next - The next middleware function in the route.
+   *
+   * @throws {Error} If there is an error querying the database or sending emails.
+   * @throws {NotFoundError} If the requested or requester user cannot be found.
+   * @throws {BadRequestError} If the request body is invalid.
+   */
+  static async acceptDeleteRequest(req, res, next) {
+    try {
+      const results = await db.query(
+        "Select * FROM wingman.users WHERE user_id in ($1, $2)",
+        [req.body.requested_id, req.body.requester_id]
+      );
+      const admin = await db.query(
+        "Select * FROM wingman.users WHERE user_id = $1",
+        [req.body.requested_id]
+      );
+      if (results.rows.length != 2) {
+        throw {
+          detail: "User not found.",
+          code: 1,
+          error: new Error(),
+        };
+      }
+      const request = await db.query(
+        "DELETE FROM wingman.delete_requests WHERE requested_id = $1 and requester_id = $2 returning *",
+        [req.body.requested_id, req.body.requester_id]
+      );
+
+      const reporter = await db.query(
+        "DELETE FROM wingman.users WHERE user_id = $1 returning *",
+        [req.body.requested_id]
+      );
+      var transporter = nodemailer.createTransport({
+        service: "gmail",
+        auth: {
+          user: process.env.MAIL_MAIL,
+          pass: process.env.MAIL_PASS,
+        },
+      });
+
+      var mailOptionsReporter = {
+        from: process.env.MAIL_MAIL,
+        to: reporter.rows[0].mail,
+        subject: "Your Account Has Been Deleted",
+        text: `Dear ${reporter.rows[0].name},\n\nDue to your inappropriate rating habbits, one of the TFF Admins flagged your account as suspicious. As a result of our investigations, we have decided to delete your account. Below you can find the reason why your account is suspicious. \n\n${request.rows[0].reason}`,
+      };
+
+      transporter.sendMail(mailOptionsReporter, function (error, info) {
+        if (error) {
+          console.log(error);
+        } else {
+          console.log("Email sent: " + info.response);
+        }
+      });
+      var mailOptionsAdmin = {
+        from: process.env.MAIL_MAIL,
+        to: admin.rows[0].mail,
+        subject: "Your Deletion Request Has Been Evaluated",
+        text: `Dear ${admin.rows[0].name},\n\nWe have evaluated your request. As a result of our investigations, we have decided to delete the account you flagged. Thank you for your cooperation!\n\n`,
+      };
+      transporter.sendMail(mailOptionsAdmin, function (error, info) {
+        if (error) {
+          console.log(error);
+        } else {
+          console.log("Email sent: " + info.response);
+        }
+      });
+      res.status(200).json({ data: results.rows[0] });
+    } catch (err) {
+      console.log(`Failed to delete user ${err}.`);
+      if (err.code == 1) {
+        res.status(404).json({ detail: err.detail, data: [] });
+        return;
+      }
+      res.status(400).json({ detail: err, data: [] });
+    }
+  }
+
+  /**
+   * Reject a delete request for a user's account.
+   *
+   * @param {Object} req - The request object containing the delete request information.
+   * @param {Object} res - The response object to send the rejection confirmation.
+   * @param {function} next - The next middleware function in the route.
+   *
+   * @throws {Object} err - An error object containing the error message and code.
+   */
+  static async rejectDeleteRequest(req, res, next) {
+    try {
+      const admin = await db.query(
+        "Select * FROM wingman.delete_requests WHERE requester_id = $1 and requested_id = $2",
+        [req.body.requester_id, req.body.requested_id]
+      );
+      if (admin.rows.length == 0) {
+        throw {
+          detail: "User not found.",
+          code: 1,
+          error: new Error(),
+        };
+      }
+      const request = await db.query(
+        "DELETE FROM wingman.delete_requests WHERE requested_id = $1 and requester_id = $2 returning *",
+        [req.body.requested_id, req.body.requester_id]
+      );
+      var transporter = nodemailer.createTransport({
+        service: "gmail",
+        auth: {
+          user: process.env.MAIL_MAIL,
+          pass: process.env.MAIL_PASS,
+        },
+      });
+      var mailOptionsAdmin = {
+        from: process.env.MAIL_MAIL,
+        to: admin.rows[0].mail,
+        subject: "Your Deletion Request Has Been Evaluated",
+        text: `Dear ${admin.rows[0].name},\n\nWe have evaluated your request. As a result of our investigations, we have decided not to delete the account you flagged. Thank you for your cooperation! Below you can find the reason. \n\n${req.body.reason}`,
+      };
+      transporter.sendMail(mailOptionsAdmin, function (error, info) {
+        if (error) {
+          console.log(error);
+        } else {
+          console.log("Email sent: " + info.response);
+        }
+      });
+      res.status(200).json({});
+    } catch (err) {
+      console.log(`Failed to delete user ${err}.`);
+      if (err.code == 1) {
+        res.status(404).json({ detail: err.detail, data: [] });
+        return;
+      }
+      res.status(400).json({ detail: err, data: [] });
+    }
+  }
+  static async getAllRequests(req, res, next) {
+    try {
+      const results = await db.query(`select u.user_id,
+                                    u.name,
+                                    u.surname,
+                                    u.mail,
+                                    u.role,
+                                    round(avg(rate), 2) as average_rate, 
+                                    count(rate) as rate_count,
+                                    d.reason,
+                                    d.requested_at,
+                                    uu.user_id as a_user_id,
+                                    uu.name as a_name,
+                                    uu.surname as a_surname,
+                                    uu.mail as a_mail,
+                                    uu.role as a_role
+                                from wingman.delete_requests d
+                                left join wingman.users u on d.requested_id = u.user_id
+                                left join wingman.users uu on d.requester_id = uu.user_id
+                                left join wingman.ratings r on r.user_id = d.requested_id 
+                                group by 1, 2, 3, 4, 5, 8, 9, 10, 11, 12`);
+      res.status(200).json({
+        lenght: results.rows.length,
+        data: {
+          users: results.rows,
+        },
+      });
+    } catch (error) {
+      console.log(`Error when getting all users ${error.detail}`);
+      res.status(400).json({ error: error, data: { users: [] } });
+    }
+  }
 }

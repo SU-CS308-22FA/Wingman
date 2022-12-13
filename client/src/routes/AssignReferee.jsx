@@ -9,7 +9,7 @@ import { AuthContext } from "../context/authContext";
 import UserFinder from "../apis/UserFinder";
 import { useEffect } from "react";
 import CircularProgress from '@mui/material/CircularProgress';
-
+import  {AdminRefAssign}  from "../components/AdminRefAssign";
 
 const RefereeAssignPage = () => {
   const navigate = useNavigate();
@@ -69,6 +69,7 @@ const RefereeAssignPage = () => {
     return (
       <div>
         <ResponsiveAppBar/>
+        <AdminRefAssign/>
         <Box m={0} pt={34}> </Box>
         <center>             <img src="https://i.hizliresim.com/t6q9rs6.png" height="66" width="50" />          
 </center>
