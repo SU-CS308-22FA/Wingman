@@ -71,7 +71,7 @@ const RRRefereeList = () => {
     return (
       <div>
         <ResponsiveAppBar/>
-        <RefereeList />
+        <RefereeList isTFF = {true} />
         <Box m={0} pt={34}> </Box>
 
         <center>             <img src="https://i.hizliresim.com/t6q9rs6.png" height="66" width="50" />          
@@ -84,7 +84,7 @@ const RRRefereeList = () => {
     return (
       <div>
         <RefAppBar/>
-        <RefereeList />
+        <RefereeList isTFF = {false} />
         <Box m={0} pt={34}> </Box>
 
         <center>             <img src="https://i.hizliresim.com/t6q9rs6.png" height="66" width="50" />          
