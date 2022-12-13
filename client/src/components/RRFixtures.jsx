@@ -79,13 +79,13 @@ const RRFixtures = ({}) => {
                 <Grid item xs>
                 <Grid item>
                     <Typography sx = {{mt:3}}>
-                      22.12.22
+                    {matches && matches[0].date}
                     </Typography>
                   </Grid>
                   
                   <Grid item>
                     <Typography sx = {{mt:1}}>
-                      19.00
+                    {matches && matches[0].time}
                     </Typography>
                   </Grid>
                   
@@ -133,13 +133,13 @@ const RRFixtures = ({}) => {
                   
                 <Grid item>
                     <Typography sx = {{mt:3}}>
-                      22.12.22
+                    {matches && matches[1].date}
                     </Typography>
                   </Grid>
                   
                   <Grid item>
                     <Typography sx = {{mt:1}}>
-                      19.00
+                    {matches && matches[1].time}
                     </Typography>
                   </Grid>
                   
@@ -189,15 +189,15 @@ const RRFixtures = ({}) => {
                   
                 <Grid item>
                     <Typography sx = {{mt:3}}>
-                      22.12.22
+                    {matches && matches[2].date}
                     </Typography>
                   </Grid>
                   
                   <Grid item>
                     <Typography sx = {{mt:1}}>
-                      19.00
+                    {matches && matches[2].time}
                     </Typography>
-                  </Grid>    
+                  </Grid> 
                 </Grid>
               </Grid>
             </Grid>
@@ -244,13 +244,13 @@ const RRFixtures = ({}) => {
                   
                 <Grid item>
                     <Typography sx = {{mt:3}}>
-                      22.12.22
+                    {matches && matches[3].date}
                     </Typography>
                   </Grid>
                   
                   <Grid item>
                     <Typography sx = {{mt:1}}>
-                      19.00
+                    {matches && matches[3].time}
                     </Typography>
                   </Grid>
                   
@@ -298,13 +298,13 @@ const RRFixtures = ({}) => {
                 <Grid item xs>
                 <Grid item>
                     <Typography sx = {{mt:3}}>
-                      22.12.22
+                    {matches && matches[4].date}
                     </Typography>
                   </Grid>
                   
                   <Grid item>
                     <Typography sx = {{mt:1}}>
-                      19.00
+                    {matches && matches[4].time}
                     </Typography>
                   </Grid>
                 
@@ -352,13 +352,13 @@ const RRFixtures = ({}) => {
                 <Grid item xs>
                 <Grid item>
                     <Typography sx = {{mt:3}}>
-                      22.12.22
+                    {matches && matches[5].date}
                     </Typography>
                   </Grid>
                   
                   <Grid item>
                     <Typography sx = {{mt:1}}>
-                      19.00
+                    {matches && matches[5].time}
                     </Typography>
                   </Grid>
               
@@ -406,13 +406,13 @@ const RRFixtures = ({}) => {
                 <Grid item xs>
                 <Grid item>
                     <Typography sx = {{mt:3}}>
-                      22.12.22
+                    {matches && matches[6].date}
                     </Typography>
                   </Grid>
                   
                   <Grid item>
                     <Typography sx = {{mt:1}}>
-                      19.00
+                    {matches && matches[6].time}
                     </Typography>
                   </Grid>
                   
@@ -460,13 +460,13 @@ const RRFixtures = ({}) => {
                 <Grid item xs>
                 <Grid item>
                     <Typography sx = {{mt:3}}>
-                      22.12.22
+                    {matches && matches[7].date}
                     </Typography>
                   </Grid>
                   
                   <Grid item>
                     <Typography sx = {{mt:1}}>
-                      19.00
+                    {matches && matches[7].time}
                     </Typography>
                   </Grid>
                   
@@ -514,13 +514,13 @@ const RRFixtures = ({}) => {
                 <Grid item xs>
                 <Grid item>
                     <Typography sx = {{mt:3}}>
-                      22.12.22
+                    {matches && matches[8].date}
                     </Typography>
                   </Grid>
                   
                   <Grid item>
                     <Typography sx = {{mt:1}}>
-                      19.00
+                    {matches && matches[8].time}
                     </Typography>
                   </Grid>
                   
@@ -581,24 +581,30 @@ const RRFixtures = ({}) => {
                   <Grid item xs container direction="row" spacing={2}justifyContent="space-around"
                     alignItems="center">
                     <Grid item>
-                    <Typography sx = {{mt: 5}} style={{ fontSize: 30 }}>
+                    <Typography sx = {{mt: 2}} style={{ fontSize: 30 }}>
                       {matches && matches[0].home_score} 
                     </Typography>
                     </Grid>
                     <Grid item>
-                    <Typography sx = {{mt: 5}} style={{ fontSize: 30 }}>
+                    <Typography sx = {{mt: 2}} style={{ fontSize: 30 }}>
                       - 
                     </Typography>
                     </Grid>
                     <Grid item>
-                    <Typography sx = {{mt: 5}} style={{ fontSize: 30 }}>
+                    <Typography sx = {{mt: 2}} style={{ fontSize: 30 }}>
                       {matches && matches[0].away_score} 
                     </Typography>
                     </Grid>
                   </Grid>
                   <Grid item>
-                    <Typography>
-                      22.12.22
+                    <Typography sx = {{mt:0}}>
+                    {matches && matches[0].date}
+                    </Typography>
+                  </Grid>
+                  
+                  <Grid item>
+                    <Typography sx = {{mt:0}}>
+                    {matches && matches[0].time}
                     </Typography>
                   </Grid>
                   <Grid item>
@@ -655,24 +661,30 @@ const RRFixtures = ({}) => {
                   <Grid item xs container direction="row" spacing={2}justifyContent="space-around"
                     alignItems="center">
                     <Grid item>
-                    <Typography sx = {{mt: 5}} style={{ fontSize: 30 }}>
+                    <Typography sx = {{mt: 2}} style={{ fontSize: 30 }}>
                       {matches && matches[1].home_score} 
                     </Typography>
                     </Grid>
                     <Grid item>
-                    <Typography sx = {{mt: 5}} style={{ fontSize: 30 }}>
+                    <Typography sx = {{mt: 2}} style={{ fontSize: 30 }}>
                       - 
                     </Typography>
                     </Grid>
                     <Grid item>
-                    <Typography sx = {{mt: 5}} style={{ fontSize: 30 }}>
+                    <Typography sx = {{mt: 2}} style={{ fontSize: 30 }}>
                       {matches && matches[1].away_score} 
                     </Typography>
                     </Grid>
                   </Grid>
                   <Grid item>
-                    <Typography>
-                      22.12.22
+                    <Typography sx = {{mt:0}}>
+                    {matches && matches[1].date}
+                    </Typography>
+                  </Grid>
+                  
+                  <Grid item>
+                    <Typography sx = {{mt:0}}>
+                    {matches && matches[1].time}
                     </Typography>
                   </Grid>
                   <Grid item>
@@ -730,24 +742,30 @@ const RRFixtures = ({}) => {
                   <Grid item xs container direction="row" spacing={2}justifyContent="space-around"
                     alignItems="center">
                     <Grid item>
-                    <Typography sx = {{mt: 5}} style={{ fontSize: 30 }}>
+                    <Typography sx = {{mt: 2}} style={{ fontSize: 30 }}>
                       {matches && matches[2].home_score} 
                     </Typography>
                     </Grid>
                     <Grid item>
-                    <Typography sx = {{mt: 5}} style={{ fontSize: 30 }}>
+                    <Typography sx = {{mt: 2}} style={{ fontSize: 30 }}>
                       - 
                     </Typography>
                     </Grid>
                     <Grid item>
-                    <Typography sx = {{mt: 5}} style={{ fontSize: 30 }}>
+                    <Typography sx = {{mt: 2}} style={{ fontSize: 30 }}>
                       {matches && matches[2].away_score} 
                     </Typography>
                     </Grid>
                   </Grid>
                   <Grid item>
-                    <Typography>
-                      22.12.22
+                    <Typography sx = {{mt:0}}>
+                    {matches && matches[2].date}
+                    </Typography>
+                  </Grid>
+                  
+                  <Grid item>
+                    <Typography sx = {{mt:0}}>
+                    {matches && matches[2].time}
                     </Typography>
                   </Grid>
                   <Grid item>
@@ -808,24 +826,30 @@ const RRFixtures = ({}) => {
                   <Grid item xs container direction="row" spacing={2}justifyContent="space-around"
                     alignItems="center">
                     <Grid item>
-                    <Typography sx = {{mt: 5}} style={{ fontSize: 30 }}>
+                    <Typography sx = {{mt: 2}} style={{ fontSize: 30 }}>
                       {matches && matches[3].home_score} 
                     </Typography>
                     </Grid>
                     <Grid item>
-                    <Typography sx = {{mt: 5}} style={{ fontSize: 30 }}>
+                    <Typography sx = {{mt: 2}} style={{ fontSize: 30 }}>
                       - 
                     </Typography>
                     </Grid>
                     <Grid item>
-                    <Typography sx = {{mt: 5}} style={{ fontSize: 30 }}>
+                    <Typography sx = {{mt: 2}} style={{ fontSize: 30 }}>
                       {matches && matches[3].away_score} 
                     </Typography>
                     </Grid>
                   </Grid>
                   <Grid item>
-                    <Typography>
-                      22.12.22
+                    <Typography sx = {{mt:0}}>
+                    {matches && matches[3].date}
+                    </Typography>
+                  </Grid>
+                  
+                  <Grid item>
+                    <Typography sx = {{mt:0}}>
+                    {matches && matches[3].time}
                     </Typography>
                   </Grid>
                   <Grid item>
@@ -884,24 +908,30 @@ const RRFixtures = ({}) => {
                   <Grid item xs container direction="row" spacing={2}justifyContent="space-around"
                     alignItems="center">
                     <Grid item>
-                    <Typography sx = {{mt: 5}} style={{ fontSize: 30 }}>
+                    <Typography sx = {{mt: 2}} style={{ fontSize: 30 }}>
                       {matches && matches[4].home_score} 
                     </Typography>
                     </Grid>
                     <Grid item>
-                    <Typography sx = {{mt: 5}} style={{ fontSize: 30 }}>
+                    <Typography sx = {{mt: 2}} style={{ fontSize: 30 }}>
                       - 
                     </Typography>
                     </Grid>
                     <Grid item>
-                    <Typography sx = {{mt: 5}} style={{ fontSize: 30 }}>
+                    <Typography sx = {{mt: 2}} style={{ fontSize: 30 }}>
                       {matches && matches[4].away_score} 
                     </Typography>
                     </Grid>
                   </Grid>
                   <Grid item>
-                    <Typography>
-                      22.12.22
+                    <Typography sx = {{mt:0}}>
+                    {matches && matches[4].date}
+                    </Typography>
+                  </Grid>
+                  
+                  <Grid item>
+                    <Typography sx = {{mt:0}}>
+                    {matches && matches[4].time}
                     </Typography>
                   </Grid>
                   <Grid item>
@@ -959,24 +989,30 @@ const RRFixtures = ({}) => {
                   <Grid item xs container direction="row" spacing={2}justifyContent="space-around"
                     alignItems="center">
                     <Grid item>
-                    <Typography sx = {{mt: 5}} style={{ fontSize: 30 }}>
+                    <Typography sx = {{mt: 2}} style={{ fontSize: 30 }}>
                       {matches && matches[5].home_score} 
                     </Typography>
                     </Grid>
                     <Grid item>
-                    <Typography sx = {{mt: 5}} style={{ fontSize: 30 }}>
+                    <Typography sx = {{mt: 2}} style={{ fontSize: 30 }}>
                       - 
                     </Typography>
                     </Grid>
                     <Grid item>
-                    <Typography sx = {{mt: 5}} style={{ fontSize: 30 }}>
+                    <Typography sx = {{mt: 2}} style={{ fontSize: 30 }}>
                       {matches && matches[5].away_score} 
                     </Typography>
                     </Grid>
                   </Grid>
                   <Grid item>
-                    <Typography>
-                      22.12.22
+                    <Typography sx = {{mt:0}}>
+                    {matches && matches[5].date}
+                    </Typography>
+                  </Grid>
+                  
+                  <Grid item>
+                    <Typography sx = {{mt:0}}>
+                    {matches && matches[5].time}
                     </Typography>
                   </Grid>
                   <Grid item>
@@ -1034,24 +1070,30 @@ const RRFixtures = ({}) => {
                   <Grid item xs container direction="row" spacing={2}justifyContent="space-around"
                     alignItems="center">
                     <Grid item>
-                    <Typography sx = {{mt: 5}} style={{ fontSize: 30 }}>
+                    <Typography sx = {{mt: 2}} style={{ fontSize: 30 }}>
                       {matches && matches[6].home_score} 
                     </Typography>
                     </Grid>
                     <Grid item>
-                    <Typography sx = {{mt: 5}} style={{ fontSize: 30 }}>
+                    <Typography sx = {{mt: 2}} style={{ fontSize: 30 }}>
                       - 
                     </Typography>
                     </Grid>
                     <Grid item>
-                    <Typography sx = {{mt: 5}} style={{ fontSize: 30 }}>
+                    <Typography sx = {{mt: 2}} style={{ fontSize: 30 }}>
                       {matches && matches[6].away_score} 
                     </Typography>
                     </Grid>
                   </Grid>
                   <Grid item>
-                    <Typography>
-                      22.12.22
+                    <Typography sx = {{mt:0}}>
+                    {matches && matches[6].date}
+                    </Typography>
+                  </Grid>
+                  
+                  <Grid item>
+                    <Typography sx = {{mt:0}}>
+                    {matches && matches[6].time}
                     </Typography>
                   </Grid>
                   <Grid item>
@@ -1108,24 +1150,30 @@ const RRFixtures = ({}) => {
                   <Grid item xs container direction="row" spacing={2}justifyContent="space-around"
                     alignItems="center">
                     <Grid item>
-                    <Typography sx = {{mt: 5}} style={{ fontSize: 30 }}>
+                    <Typography sx = {{mt: 2}} style={{ fontSize: 30 }}>
                       {matches && matches[7].home_score} 
                     </Typography>
                     </Grid>
                     <Grid item>
-                    <Typography sx = {{mt: 5}} style={{ fontSize: 30 }}>
+                    <Typography sx = {{mt: 2}} style={{ fontSize: 30 }}>
                       - 
                     </Typography>
                     </Grid>
                     <Grid item>
-                    <Typography sx = {{mt: 5}} style={{ fontSize: 30 }}>
+                    <Typography sx = {{mt: 2}} style={{ fontSize: 30 }}>
                       {matches && matches[7].away_score} 
                     </Typography>
                     </Grid>
                   </Grid>
                   <Grid item>
-                    <Typography>
-                      22.12.22
+                    <Typography sx = {{mt:0}}>
+                    {matches && matches[7].date}
+                    </Typography>
+                  </Grid>
+                  
+                  <Grid item>
+                    <Typography sx = {{mt:0}}>
+                    {matches && matches[7].time}
                     </Typography>
                   </Grid>
                   <Grid item>
@@ -1183,24 +1231,30 @@ const RRFixtures = ({}) => {
                   <Grid item xs container direction="row" spacing={2}justifyContent="space-around"
                     alignItems="center">
                     <Grid item>
-                    <Typography sx = {{mt: 5}} style={{ fontSize: 30 }}>
+                    <Typography sx = {{mt: 2}} style={{ fontSize: 30 }}>
                       {matches && matches[8].home_score} 
                     </Typography>
                     </Grid>
                     <Grid item>
-                    <Typography sx = {{mt: 5}} style={{ fontSize: 30 }}>
+                    <Typography sx = {{mt: 2}} style={{ fontSize: 30 }}>
                       - 
                     </Typography>
                     </Grid>
                     <Grid item>
-                    <Typography sx = {{mt: 5}} style={{ fontSize: 30 }}>
+                    <Typography sx = {{mt: 2}} style={{ fontSize: 30 }}>
                       {matches && matches[8].away_score} 
                     </Typography>
                     </Grid>
                   </Grid>
                   <Grid item>
-                    <Typography>
-                      22.12.22
+                    <Typography sx = {{mt:0}}>
+                    {matches && matches[8].date}
+                    </Typography>
+                  </Grid>
+                  
+                  <Grid item>
+                    <Typography sx = {{mt:0}}>
+                    {matches && matches[8].time}
                     </Typography>
                   </Grid>
                   <Grid item>

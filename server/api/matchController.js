@@ -23,7 +23,7 @@ export default class matchController{
     static async getMatchDatasByWeek(req, res, next) {
       try {
         
-        const results = await db.query('SELECT * ,t.teamname AS HomeTeamName, t1.teamname AS AwayTeamName, t.teamlogo AS HomeTeamLogo, t1.teamlogo AS AwayTeamLogo FROM wingman.matches m, wingman.referees r, wingman.teams t, wingman.teams t1 WHERE  m.home_id = t.teamid AND m.away_id = t1.teamid  AND m.referee_id = r.id AND m.week = $1;  ', [req.params.id])
+        const results = await db.query('SELECT * ,t.teamname AS HomeTeamName, t1.teamname AS AwayTeamName, t.teamlogo AS HomeTeamLogo, t1.teamlogo AS AwayTeamLogo FROM wingman.matches m, wingman.referees r, wingman.teams t, wingman.teams t1 WHERE  m.home_id = t.teamid AND m.away_id = t1.teamid  AND m.referee_id = r.id AND m.week = $1 ORDER BY match_id ;  ', [req.params.id])
         res.status(200).json({
           lenght: results.rows.length,
           data:{
@@ -91,6 +91,26 @@ export default class matchController{
     }
 
     static async updateReferee(req, res, next){
+      try{
+        const check = await db.query('SELECT name, surname, r.totalmatches, r.totalyellowcards, r.totalredcards, age, currentseasonmatches, totalfoulspg, totalfoulsdivtackles, totalpenpg, totalyelpg,totalredpg, currentfoulspg, currentfoulsdivtackles, currentpenpg, currentyelpg, currentyel, currentredpg, currentred, avatarurl, id  FROM wingman.matches m, wingman.referees r, wingman.teams t, wingman.teams t1 WHERE  m.home_id = t.teamid AND m.away_id = t1.teamid  AND m.referee_id = r.id AND m.week = $1;', [req.params.wid])
+        const refs = check.rows;
+
+        for (var i = 0; i < refs.length; i++) { 
+          if(req.params.refid == refs[i].id){
+            throw {
+              detail: "This Referee is already assigned to a match for this week",
+              code: 1,
+              error: new Error()
+            };
+          } 
+        }
+
+        
+       
+      }
+      catch{
+        console.log("This Referee is already assigned to a match for this week")
+      }
       try {
         const result = await db.query('UPDATE wingman.matches SET referee_id = $2 WHERE match_id = $1 returning *', [req.params.matchid, req.params.refid])
         if(result.rows.length == 0)
