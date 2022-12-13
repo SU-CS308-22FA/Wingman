@@ -39,7 +39,7 @@ You can clone this GitHub repository to obtain the source code. All of the code 
 
 1. Open the code editor of choice (VSCode is preffered as it has integrated terminals)
 2. Run the following command in a terminal at the root of your project: `npm i`
-3. Create an .env file at the root of your project. Your environment variables such as your `DB_URI`, `ACCESS_TOKEN_SECRET` will be in this file. Put your environment variables here.
+3. Create an .env file at the root of your project. Your environment variables such as your `DB_URI`, `ACCESS_TOKEN_SECRET` will be in this file. You also need to put an email address and password of it for the mail sending operations of the web page. You need to write the email as `MAIL_MAIL` and password as `MAIL_PASS`. Put your environment variables here.
 4. On both the client and server folders, run the following command: `npm i`
 5. After installing the necessary modules, run the following commands:
     - In the server folder run: `nodemon server`
