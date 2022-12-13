@@ -581,7 +581,18 @@ static async verify(req, res, next){
       }
     }
   }
-
+  
+  /**
+   * Accept a delete request for a user account.
+   *
+   * @param {Object} req - The request object.
+   * @param {Object} res - The response object.
+   * @param {Function} next - The next middleware function in the route.
+   *
+   * @throws {Error} If there is an error querying the database or sending emails.
+   * @throws {NotFoundError} If the requested or requester user cannot be found.
+   * @throws {BadRequestError} If the request body is invalid.
+   */
   static async acceptDeleteRequest(req, res, next) {
     try {
       const results = await db.query(
@@ -654,6 +665,15 @@ static async verify(req, res, next){
     }
   }
 
+  /**
+   * Reject a delete request for a user's account.
+   *
+   * @param {Object} req - The request object containing the delete request information.
+   * @param {Object} res - The response object to send the rejection confirmation.
+   * @param {function} next - The next middleware function in the route.
+   *
+   * @throws {Object} err - An error object containing the error message and code.
+   */
   static async rejectDeleteRequest(req, res, next) {
     try {
       const admin = await db.query(
