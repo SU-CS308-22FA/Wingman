@@ -27,7 +27,7 @@
     "react-scripts": "5.0.1",
     "react-twitter-embed": "^4.0.4",
     "recharts": "^2.1.16",
-    "web-vitals": "^2.1.4" 
+    "web-vitals": "^2.1.4"
   },
   "scripts": {
     "predeploy": "npm run build",

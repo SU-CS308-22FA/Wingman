@@ -488,5 +488,231 @@ static async verify(req, res, next){
         res.status(400).json({detail:err, data:[]})
     }   
   }
+ static async getReportes(req, res, next) {
+    try {
+      const results = await db.query(`select user_id, 
+                                             name, 
+                                             surname, 
+                                             mail, 
+                                             role, 
+                                             round(avg(rate), 2) as average_rate, 
+                                             count(rate) as rate_count,
+                                             case when requester_id is null then 0
+                                                 else 1 end as is_reported
+                                       from wingman.users u 
+                                         left join wingman.ratings r using(user_id) 
+                                         left join wingman.delete_requests d on d.requested_id = u.user_id
+                                       where role in ('Reporter', 'Retired Referee') group by 1, 2, 3, 4, 5, requester_id`);
+      res.status(200).json({
+        lenght: results.rows.length,
+        data: {
+          users: results.rows,
+        },
+      });
+    } catch (error) {
+      console.log(`Error when getting all users ${error.detail}`);
+      res.status(400).json({ error: error, data: { users: [] } });
+    }
+  }
 
+  static async createDeleteRequest(req, res, next) {
+    try {
+      const key = await db.query(
+        "SELECT * FROM wingman.users WHERE user_id in ($1, $2)",
+        [req.body.requester_id, req.body.requested_id]
+      );
+      const result = await db.query(
+        "SELECT * FROM wingman.delete_requests WHERE requested_id = $1",
+        [req.body.requested_id]
+      );
+      if (key.rows.length != 2) {
+        throw {
+          detail: "Invalid id/ids",
+          code: 1,
+          error: new Error(),
+        };
+      }
+      if (result.rows.length != 0) {
+        throw {
+          detail: "Already open issue",
+          code: 2,
+          error: new Error(),
+        };
+      }
+      const timeElapsed = Date.now();
+      const now = new Date(timeElapsed).toISOString();
+      const newRequest = await db.query(
+        "INSERT INTO wingman.delete_requests (requester_id,requested_id,requested_at, reason) values ($1,$2,$3,$4) returning *",
+        [req.body.requester_id, req.body.requested_id, now, req.body.reason]
+      );
+
+      res.status(200).json({
+        data: newRequest.rows[0],
+      });
+    } catch (error) {
+      if (error.code == 1) {
+        //invalid ids
+        res.status(402).json({ detail: error.detail, data: [] });
+        return;
+      } else if (error.code == 2) {
+        //already_open
+        res.status(403).json({ detail: error.detail, data: [] });
+        return;
+      } else {
+        res.status(400).json({ error: error, data: { users: [] } });
+      }
+    }
+  }
+
+  static async acceptDeleteRequest(req, res, next) {
+    try {
+      const results = await db.query(
+        "Select * FROM wingman.users WHERE user_id in ($1, $2)",
+        [req.body.requested_id, req.body.requester_id]
+      );
+      const admin = await db.query(
+        "Select * FROM wingman.users WHERE user_id = $1",
+        [req.body.requested_id]
+      );
+      if (results.rows.length != 2) {
+        throw {
+          detail: "User not found.",
+          code: 1,
+          error: new Error(),
+        };
+      }
+      const request = await db.query(
+        "DELETE FROM wingman.delete_requests WHERE requested_id = $1 and requester_id = $2 returning *",
+        [req.body.requested_id, req.body.requester_id]
+      );
+
+      const reporter = await db.query(
+        "DELETE FROM wingman.users WHERE user_id = $1 returning *",
+        [req.body.requested_id]
+      );
+      var transporter = nodemailer.createTransport({
+        service: "gmail",
+        auth: {
+          user: process.env.MAIL_MAIL,
+          pass: process.env.MAIL_PASS,
+        },
+      });
+
+      var mailOptionsReporter = {
+        from: process.env.MAIL_MAIL,
+        to: reporter.rows[0].mail,
+        subject: "Your Account Has Been Deleted",
+        text: `Dear ${reporter.rows[0].name},\n\nDue to your inappropriate rating habbits, one of the TFF Admins flagged your account as suspicious. As a result of our investigations, we have decided to delete your account. Below you can find the reason why your account is suspicious. \n\n${request.rows[0].reason}`,
+      };
+
+      transporter.sendMail(mailOptionsReporter, function (error, info) {
+        if (error) {
+          console.log(error);
+        } else {
+          console.log("Email sent: " + info.response);
+        }
+      });
+      var mailOptionsAdmin = {
+        from: process.env.MAIL_MAIL,
+        to: admin.rows[0].mail,
+        subject: "Your Deletion Request Has Been Evaluated",
+        text: `Dear ${admin.rows[0].name},\n\nWe have evaluated your request. As a result of our investigations, we have decided to delete the account you flagged. Thank you for your cooperation!\n\n`,
+      };
+      transporter.sendMail(mailOptionsAdmin, function (error, info) {
+        if (error) {
+          console.log(error);
+        } else {
+          console.log("Email sent: " + info.response);
+        }
+      });
+      res.status(200).json({ data: results.rows[0] });
+    } catch (err) {
+      console.log(`Failed to delete user ${err}.`);
+      if (err.code == 1) {
+        res.status(404).json({ detail: err.detail, data: [] });
+        return;
+      }
+      res.status(400).json({ detail: err, data: [] });
+    }
+  }
+
+  static async rejectDeleteRequest(req, res, next) {
+    try {
+      const admin = await db.query(
+        "Select * FROM wingman.delete_requests WHERE requester_id = $1 and requested_id = $2",
+        [req.body.requester_id, req.body.requested_id]
+      );
+      if (admin.rows.length == 0) {
+        throw {
+          detail: "User not found.",
+          code: 1,
+          error: new Error(),
+        };
+      }
+      const request = await db.query(
+        "DELETE FROM wingman.delete_requests WHERE requested_id = $1 and requester_id = $2 returning *",
+        [req.body.requested_id, req.body.requester_id]
+      );
+      var transporter = nodemailer.createTransport({
+        service: "gmail",
+        auth: {
+          user: process.env.MAIL_MAIL,
+          pass: process.env.MAIL_PASS,
+        },
+      });
+      var mailOptionsAdmin = {
+        from: process.env.MAIL_MAIL,
+        to: admin.rows[0].mail,
+        subject: "Your Deletion Request Has Been Evaluated",
+        text: `Dear ${admin.rows[0].name},\n\nWe have evaluated your request. As a result of our investigations, we have decided not to delete the account you flagged. Thank you for your cooperation! Below you can find the reason. \n\n${req.body.reason}`,
+      };
+      transporter.sendMail(mailOptionsAdmin, function (error, info) {
+        if (error) {
+          console.log(error);
+        } else {
+          console.log("Email sent: " + info.response);
+        }
+      });
+      res.status(200).json({});
+    } catch (err) {
+      console.log(`Failed to delete user ${err}.`);
+      if (err.code == 1) {
+        res.status(404).json({ detail: err.detail, data: [] });
+        return;
+      }
+      res.status(400).json({ detail: err, data: [] });
+    }
+  }
+  static async getAllRequests(req, res, next) {
+    try {
+      const results = await db.query(`select u.user_id,
+                                    u.name,
+                                    u.surname,
+                                    u.mail,
+                                    u.role,
+                                    round(avg(rate), 2) as average_rate, 
+                                    count(rate) as rate_count,
+                                    d.reason,
+                                    d.requested_at,
+                                    uu.user_id as a_user_id,
+                                    uu.name as a_name,
+                                    uu.surname as a_surname,
+                                    uu.mail as a_mail,
+                                    uu.role as a_role
+                                from wingman.delete_requests d
+                                left join wingman.users u on d.requested_id = u.user_id
+                                left join wingman.users uu on d.requester_id = uu.user_id
+                                left join wingman.ratings r on r.user_id = d.requested_id 
+                                group by 1, 2, 3, 4, 5, 8, 9, 10, 11, 12`);
+      res.status(200).json({
+        lenght: results.rows.length,
+        data: {
+          users: results.rows,
+        },
+      });
+    } catch (error) {
+      console.log(`Error when getting all users ${error.detail}`);
+      res.status(400).json({ error: error, data: { users: [] } });
+    }
+  }
 }
