@@ -30,9 +30,13 @@ import ReporterListPage from "./routes/admin/ReporterList";
 import DeleteRequestPage from "./routes/SuperAdmin/DeleteRequestsPage";
 =======
 import RRHistPage from "./routes/RRHistPage";
+<<<<<<< HEAD
 >>>>>>> refs/rewritten/feature-dev-2
 >>>>>>> refs/rewritten/feature-dev-4
 
+=======
+import RefereeCreatePage from "./routes/RefereeCreation";
+>>>>>>> d9b22f3 (Add ref create page route and update userController)
 const theme = createTheme({
   palette: {
     primary: {
@@ -110,6 +114,8 @@ class App extends Component {
                     <Route path="/admin/login" element={<RRLoginPage/>}/>
                     <Route path="/profile/" element={<ProfilePage/>}/>\
                     <Route path="/update/" element={<RRUpdatePage/>}/>
+                    <Route path="/addReferee" element={<RefereeCreatePage/>}/>
+
                     <Route path="/refereeList" element={<RRRefereeList/>}/>
                     <Route path="/referee/:id" element={<RefereeDashboardPage/>}/>     
                     <Route path="/teams" element={<TeamListPage/>}/>
