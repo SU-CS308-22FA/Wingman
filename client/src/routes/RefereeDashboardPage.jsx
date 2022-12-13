@@ -10,7 +10,8 @@ import { useState, useEffect } from "react";
 import UserFinder from "../apis/UserFinder";
 import CircularProgress from '@mui/material/CircularProgress';
 import RefereeDashboard from "../components/RefereeDashboard";
-
+import RefereeProfile from "../components/RefereeProfile.component";
+import RefAppBar from "../components/RetiredRefReporterAppBar";
 const myStyle={
      background: "#F5F1ED",
      height:'50',
@@ -83,7 +84,12 @@ const RefereeDashboardPage = () => {
     );
   }
   else if(user.role == "Reporter" || user.role == "Retired Referee"){
-    navigate("/profile/")
+   return (
+      <div style = {myStyle}>
+    <RefAppBar/>
+    <RefereeProfile/>
+    <Box m={0} pt={10}> </Box>      </div>
+   );
   }
   else{
     return (
