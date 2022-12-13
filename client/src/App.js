@@ -15,28 +15,15 @@ import TeamListPage from "./routes/Teams";
 import { AuthContextProvider } from "./context/authContext";
 import WelcomePage from "./routes/Welcome";
 import FixturePage from "./routes/fixturePage";
-
 import RefereeAssignPage from "./routes/AssignReferee";
 import ATeamProfile from "./routes/admin/TeamProfile";
-<<<<<<< HEAD
-import CreateReferee from "./components/CreateReferee.component";
-import RefereeCreatePage from "./routes/RefereeCreation";
 import RefereeDashboard from "./components/RefereeDashboard";
 import RefereeDashboardPage from "./routes/RefereeDashboardPage";
-=======
 import MatchPage from "./routes/MatchPage";
-<<<<<<< HEAD
 import ReporterListPage from "./routes/admin/ReporterList";
 import DeleteRequestPage from "./routes/SuperAdmin/DeleteRequestsPage";
-=======
 import RRHistPage from "./routes/RRHistPage";
-<<<<<<< HEAD
->>>>>>> refs/rewritten/feature-dev-2
->>>>>>> refs/rewritten/feature-dev-4
-
-=======
 import RefereeCreatePage from "./routes/RefereeCreation";
->>>>>>> d9b22f3 (Add ref create page route and update userController)
 const theme = createTheme({
   palette: {
     primary: {
@@ -78,32 +65,6 @@ class App extends Component {
       <AuthContextProvider>
         <UsersContextProvider>
           <ThemeProvider theme={theme}>
-<<<<<<< HEAD
-            <div style={myStyle}>
-              <Router>
-                <Routes>
-                  <Route path="/" element={<WelcomePage />} />
-                  <Route
-                    path="/reporter/register"
-                    element={<RRRegisterPage />}
-                  />
-                  <Route
-                    path="/admin/register"
-                    element={<AdminRegisterPage />}
-                  />
-                  <Route path="/login" element={<RRLoginPage />} />
-                  <Route path="/admin/login" element={<RRLoginPage />} />
-                  <Route path="/profile/" element={<ProfilePage />} />\
-                  <Route path="/update/" element={<RRUpdatePage />} />
-                  <Route path="/refereeList" element={<RRRefereeList />} />
-                  <Route path="/referee/:id" element={<RRRefereeProfile />} />
-                  <Route path="/teams" element={<TeamListPage />} />
-                  <Route path="/assign" element={<RefereeAssignPage />} />
-                  <Route path="/teams/:id" element={<ATeamProfile />} />
-                  <Route path="/match/:id" element={<MatchPage />} />
-                  <Route path="/reporters" element={<ReporterListPage />} />
-                  <Route path="/requests" element={<DeleteRequestPage />} />
-=======
             <div style = {myStyle}>
             <Router>
               <Routes>
@@ -119,22 +80,14 @@ class App extends Component {
                     <Route path="/refereeList" element={<RRRefereeList/>}/>
                     <Route path="/referee/:id" element={<RefereeDashboardPage/>}/>     
                     <Route path="/teams" element={<TeamListPage/>}/>
-<<<<<<< HEAD
                     <Route path="/assign/:id/week/:week" element={<RefereeAssignPage/>}/>
                     <Route path="/teams/:id" element={<ATeamProfile/>}/>
                     <Route path="/fixture/:week" element={<FixturePage/>}/>
-
-=======
-<<<<<<< HEAD
-                    <Route path="/add/referee" element={<RefereeCreatePage/>}/>
-                    <Route path="/assign" element={<RefereeAssignPage/>}/>
-=======
->>>>>>> 24ed12c (Latest version.)
                     <Route path="/teams/:id" element={<ATeamProfile/>}/>
                     <Route path="/match/:id" element={<MatchPage/>}/>
                     <Route path="/history/" element={<RRHistPage/>}/>
->>>>>>> refs/rewritten/feature-dev-4
->>>>>>> refs/rewritten/feature-dev-5
+                    <Route path="/reporters" element={<ReporterListPage />} />
+                    <Route path="/requests" element={<DeleteRequestPage />} />
                 </Routes>
               </Router>
             </div>
