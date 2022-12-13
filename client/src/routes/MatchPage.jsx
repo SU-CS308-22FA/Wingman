@@ -8,6 +8,8 @@ import { AuthContext } from "../context/authContext";
 import UserFinder from "../apis/UserFinder";
 import ReporterMatch from "../components/RatingComponents/ReporterMatch.component";
 import { CircularProgress } from "@material-ui/core";
+import RefAppBar from "../components/RetiredRefReporterAppBar";
+
 
 const MatchPage = () => {
   const navigate = useNavigate();
@@ -63,10 +65,19 @@ const MatchPage = () => {
       </div>
     );
   }
-  else if(user.role == "TFF Admin" || user.role == "Reporter" || user.role == "Retired Referee"){
+  else if(user.role == "TFF Admin"){
     return (
       <div>
         <ResponsiveAppBar/>
+        <ReporterMatch/>
+        <Copyright sx={{ mt: 5 }} />
+      </div>
+    );
+  }
+  else if(user.role == "Reporter" || user.role == "Retired Referee"){
+    return (
+      <div>
+        <RefAppBar/>
         <ReporterMatch/>
         <Copyright sx={{ mt: 5 }} />
       </div>
