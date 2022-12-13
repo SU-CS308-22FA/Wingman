@@ -35,6 +35,9 @@ function ResponsiveAppBar() {
       const onTeamsClicked = (e) => {
         navigate("/teams");
       };
+      const onReportersClicked = (e) => {
+        navigate("/reporters");
+      };
 const tiers = [
     {
         pageName:"Profile",
@@ -52,6 +55,10 @@ const tiers = [
         pageName:"Teams",
         onClick: onTeamsClicked
     },
+    {
+      pageName:"Reporters",
+      onClick: onReportersClicked
+  },
 
 
   ];
