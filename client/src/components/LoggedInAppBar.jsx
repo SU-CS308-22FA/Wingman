@@ -38,6 +38,9 @@ function ResponsiveAppBar() {
       const onFixtureClicked = (e) => {
         navigate("/fixture/1");
       };
+      const onReportersClicked = (e) => {
+        navigate("/reporters");
+      };
 const tiers = [
     {
         pageName:"Profile",
@@ -58,7 +61,11 @@ const tiers = [
     {
       pageName:"Fixture",
       onClick: onFixtureClicked
-  },
+    },
+    {
+      pageName:"Reporters",
+      onClick: onReportersClicked
+    }
 
 
   ];
