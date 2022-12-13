@@ -1,13 +1,11 @@
-import PropTypes from 'prop-types';
+import PropTypes from "prop-types";
 
 // material-ui
-import { Box, Chip, Grid, Stack, Typography } from '@mui/material';
-import MainCard from './MainCard';
+import { Box, Chip, Grid, Stack, Typography } from "@mui/material";
+import MainCard from "./MainCard";
 
 // project import
 // assets
-
-
 const SmallCard = ({ title, subtitle,value,percdif,reftens}) => (
     <MainCard contentSX={{ p: 2.25 }}>
         <Stack spacing={0.5}>
@@ -58,14 +56,13 @@ const SmallCard = ({ title, subtitle,value,percdif,reftens}) => (
 );
 
 SmallCard.propTypes = {
-    color: PropTypes.string,
-    title: PropTypes.string,
-    count: PropTypes.string,
-
+  color: PropTypes.string,
+  title: PropTypes.string,
+  count: PropTypes.string,
 };
 
 SmallCard.defaultProps = {
-    color: 'primary'
+  color: "primary",
 };
 
 export default SmallCard;
