@@ -9,6 +9,7 @@ import UserFinder from "../apis/UserFinder";
 import Fixtures from "../components/Fixtures";
 import { CircularProgress } from "@mui/material";
 import RRFixtures from "../components/RRFixtures";
+import RefAppBar from "../components/RetiredRefReporterAppBar";
 
 const FixturePage = () => {
   const navigate = useNavigate();
@@ -77,7 +78,7 @@ const FixturePage = () => {
   else if(user.role == "Reporter" || user.role == "Retired Referee" ){
     return (
       <div>
-        <ResponsiveAppBar/>
+        <RefAppBar/>
         <RRFixtures/>
         <Copyright sx={{ mt: 5 }} />
       </div>
