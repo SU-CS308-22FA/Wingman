@@ -80,17 +80,17 @@ const FixturesComponent = ({}) => {
                 <Grid item xs>
                 <Grid item>
                     <Typography sx = {{mt:3}}>
-                      22.12.22
+                    {matches && matches[0].date}
                     </Typography>
                   </Grid>
                   
                   <Grid item>
                     <Typography sx = {{mt:1}}>
-                      19.00
+                    {matches && matches[0].time}
                     </Typography>
                   </Grid>
                   <Grid item>
-                    <Button size="medium" sx = {{mt:5}} onClick={() => handleAssign(matches && matches[0].match_id)}>
+                    <Button size="medium" sx = {{mt:5}} onClick={() => handleAssign(matches && matches[0].match_id, matches && matches[0].week)}>
                     Assign Referee
                     </Button>
                   </Grid>
@@ -138,18 +138,18 @@ const FixturesComponent = ({}) => {
                   
                 <Grid item>
                     <Typography sx = {{mt:3}}>
-                      22.12.22
+                    {matches && matches[1].date}
                     </Typography>
                   </Grid>
                   
                   <Grid item>
                     <Typography sx = {{mt:1}}>
-                      19.00
+                    {matches && matches[1].time}
                     </Typography>
                   </Grid>
                   
                   <Grid item>
-                    <Button size="medium" sx ={{mt:5}} onClick={() => handleAssign(matches && matches[1].match_id)}>
+                    <Button size="medium" sx ={{mt:5}} onClick={() => handleAssign(matches && matches[1].match_id, matches && matches[1].week)}>
                     Assign Referee
                     </Button>
                   </Grid>
@@ -198,18 +198,18 @@ const FixturesComponent = ({}) => {
                   
                 <Grid item>
                     <Typography sx = {{mt:3}}>
-                      22.12.22
+                    {matches && matches[2].date}
                     </Typography>
                   </Grid>
                   
                   <Grid item>
                     <Typography sx = {{mt:1}}>
-                      19.00
+                    {matches && matches[2].time}
                     </Typography>
                   </Grid>
                   
                   <Grid item>
-                    <Button size="medium" sx ={{mt:5}} onClick={() => handleAssign(matches && matches[2].match_id)}>
+                    <Button size="medium" sx ={{mt:5}} onClick={() => handleAssign(matches && matches[2].match_id, matches && matches[2].week)}>
                     Assign Referee
                     </Button>
                   </Grid>
@@ -260,18 +260,18 @@ const FixturesComponent = ({}) => {
                   
                 <Grid item>
                     <Typography sx = {{mt:3}}>
-                      22.12.22
+                    {matches && matches[3].date}
                     </Typography>
                   </Grid>
                   
                   <Grid item>
                     <Typography sx = {{mt:1}}>
-                      19.00
+                    {matches && matches[3].time}
                     </Typography>
                   </Grid>
                   
                   <Grid item>
-                    <Button size="medium" sx ={{mt:5}} onClick={() => handleAssign(matches && matches[3].match_id)}>
+                    <Button size="medium" sx ={{mt:5}} onClick={() => handleAssign(matches && matches[3].match_id, matches && matches[3].week)}>
                     Assign Referee
                     </Button>
                   </Grid>
@@ -319,18 +319,18 @@ const FixturesComponent = ({}) => {
                 <Grid item xs>
                 <Grid item>
                     <Typography sx = {{mt:3}}>
-                      22.12.22
+                    {matches && matches[4].date}
                     </Typography>
                   </Grid>
                   
                   <Grid item>
                     <Typography sx = {{mt:1}}>
-                      19.00
+                    {matches && matches[4].time}
                     </Typography>
                   </Grid>
                   
                   <Grid item>
-                    <Button size="medium" sx ={{mt:5}} onClick={() => handleAssign(matches && matches[4].match_id)}>
+                    <Button size="medium" sx ={{mt:5}} onClick={() => handleAssign(matches && matches[4].match_id, matches && matches[4].week)}>
                     Assign Referee
                     </Button>
                   </Grid>
@@ -378,18 +378,18 @@ const FixturesComponent = ({}) => {
                 <Grid item xs>
                 <Grid item>
                     <Typography sx = {{mt:3}}>
-                      22.12.22
+                    {matches && matches[5].date}
                     </Typography>
                   </Grid>
                   
                   <Grid item>
                     <Typography sx = {{mt:1}}>
-                      19.00
+                    {matches && matches[5].time}
                     </Typography>
                   </Grid>
                   
                   <Grid item>
-                    <Button size="medium" sx ={{mt:5}} onClick={() => handleAssign(matches && matches[5].match_id)}>
+                    <Button size="medium" sx ={{mt:5}} onClick={() => handleAssign(matches && matches[5].match_id, matches && matches[5].week)}>
                     Assign Referee
                     </Button>
                   </Grid>
@@ -437,18 +437,18 @@ const FixturesComponent = ({}) => {
                 <Grid item xs>
                 <Grid item>
                     <Typography sx = {{mt:3}}>
-                      22.12.22
+                    {matches && matches[6].date}
                     </Typography>
                   </Grid>
                   
                   <Grid item>
                     <Typography sx = {{mt:1}}>
-                      19.00
+                    {matches && matches[6].time}
                     </Typography>
                   </Grid>
                   
                   <Grid item>
-                    <Button size="medium" sx ={{mt:5}} onClick={() => handleAssign(matches && matches[6].match_id)}>
+                    <Button size="medium" sx ={{mt:5}} onClick={() => handleAssign(matches && matches[6].match_id, matches && matches[6].week)}>
                     Assign Referee
                     </Button>
                   </Grid>
@@ -496,18 +496,18 @@ const FixturesComponent = ({}) => {
                 <Grid item xs>
                 <Grid item>
                     <Typography sx = {{mt:3}}>
-                      22.12.22
+                    {matches && matches[7].date}
                     </Typography>
                   </Grid>
                   
                   <Grid item>
                     <Typography sx = {{mt:1}}>
-                      19.00
+                    {matches && matches[7].time}
                     </Typography>
                   </Grid>
                   
                   <Grid item>
-                    <Button size="medium" sx ={{mt:5}} onClick={() => handleAssign(matches && matches[7].match_id)}>
+                    <Button size="medium" sx ={{mt:5}} onClick={() => handleAssign(matches && matches[7].match_id, matches && matches[7].week)}>
                     Assign Referee
                     </Button>
                   </Grid>
@@ -555,18 +555,18 @@ const FixturesComponent = ({}) => {
                 <Grid item xs>
                 <Grid item>
                     <Typography sx = {{mt:3}}>
-                      22.12.22
+                    {matches && matches[8].date}
                     </Typography>
                   </Grid>
                   
                   <Grid item>
                     <Typography sx = {{mt:1}}>
-                      19.00
+                    {matches && matches[8].time}
                     </Typography>
                   </Grid>
                   
                   <Grid item>
-                    <Button size="medium" sx ={{mt:5}} onClick={() => handleAssign(matches && matches[8].match_id)}>
+                    <Button size="medium" sx ={{mt:5}} onClick={() => handleAssign(matches && matches[8].match_id, matches && matches[8].week)}>
                     Assign Referee
                     </Button>
                   </Grid>
@@ -614,7 +614,8 @@ const FixturesComponent = ({}) => {
                   <Avatar
                   alt=""
                   src={matches && matches[0].hometeamlogo}
-                  sx={{ width: 60, height: 80, mt: 1 }}/>
+                  sx={{ width: 60, height: 80, mt: 1 }}
+                  variant="square"/>
                   <Typography>
                   {matches && matches[0].hometeamname}
                   </Typography>
@@ -628,24 +629,29 @@ const FixturesComponent = ({}) => {
                   <Grid item xs container direction="row" spacing={2}justifyContent="space-around"
                     alignItems="center">
                     <Grid item>
-                    <Typography sx = {{mt: 5}} style={{ fontSize: 30 }}>
+                    <Typography sx = {{mt: 2}} style={{ fontSize: 30 }}>
                       {matches && matches[0].home_score} 
                     </Typography>
                     </Grid>
                     <Grid item>
-                    <Typography sx = {{mt: 5}} style={{ fontSize: 30 }}>
+                    <Typography sx = {{mt: 2}} style={{ fontSize: 30 }}>
                       - 
                     </Typography>
                     </Grid>
                     <Grid item>
-                    <Typography sx = {{mt: 5}} style={{ fontSize: 30 }}>
+                    <Typography sx = {{mt: 2}} style={{ fontSize: 30 }}>
                       {matches && matches[0].away_score} 
                     </Typography>
                     </Grid>
                   </Grid>
                   <Grid item>
                     <Typography>
-                      22.12.22
+                    {matches && matches[0].date}
+                    </Typography>
+                  </Grid>
+                  <Grid item>
+                    <Typography>
+                    {matches && matches[0].time}
                     </Typography>
                   </Grid>
                   <Grid item>
@@ -654,8 +660,8 @@ const FixturesComponent = ({}) => {
                     </Typography>
                   </Grid>
                   <Grid item>
-                    <Button size="medium" onClick={() => handleAssign(matches && matches[0].match_id, matches && matches[0].week)}>
-                    Assign Ref
+                    <Button size="medium" onClick={() => handleDetails(matches && matches[1].match_id)}>
+                    Match Details
                     </Button>
                   </Grid>
                 </Grid>
@@ -668,7 +674,7 @@ const FixturesComponent = ({}) => {
                   <Avatar
                   alt=""
                   src={matches && matches[0].awayteamlogo}
-                  sx={{ width: 60, height: 80, mt: 1 }} />
+                  sx={{ width: 60, height: 80, mt: 1 }} variant="square"/>
                   <Typography >
                   {matches && matches[0].awayteamname}
                   </Typography>
@@ -702,24 +708,29 @@ const FixturesComponent = ({}) => {
                   <Grid item xs container direction="row" spacing={2}justifyContent="space-around"
                     alignItems="center">
                     <Grid item>
-                    <Typography sx = {{mt: 5}} style={{ fontSize: 30 }}>
+                    <Typography sx = {{mt: 2}} style={{ fontSize: 30 }}>
                       {matches && matches[1].home_score} 
                     </Typography>
                     </Grid>
                     <Grid item>
-                    <Typography sx = {{mt: 5}} style={{ fontSize: 30 }}>
+                    <Typography sx = {{mt: 2}} style={{ fontSize: 30 }}>
                       - 
                     </Typography>
                     </Grid>
                     <Grid item>
-                    <Typography sx = {{mt: 5}} style={{ fontSize: 30 }}>
+                    <Typography sx = {{mt: 2}} style={{ fontSize: 30 }}>
                       {matches && matches[1].away_score} 
                     </Typography>
                     </Grid>
                   </Grid>
                   <Grid item>
                     <Typography>
-                      22.12.22
+                    {matches && matches[1].date}
+                    </Typography>
+                  </Grid>
+                  <Grid item>
+                    <Typography>
+                    {matches && matches[1].time}
                     </Typography>
                   </Grid>
                   <Grid item>
@@ -777,24 +788,29 @@ const FixturesComponent = ({}) => {
                   <Grid item xs container direction="row" spacing={2}justifyContent="space-around"
                     alignItems="center">
                     <Grid item>
-                    <Typography sx = {{mt: 5}} style={{ fontSize: 30 }}>
+                    <Typography sx = {{mt: 2}} style={{ fontSize: 30 }}>
                       {matches && matches[2].home_score} 
                     </Typography>
                     </Grid>
                     <Grid item>
-                    <Typography sx = {{mt: 5}} style={{ fontSize: 30 }}>
+                    <Typography sx = {{mt: 2}} style={{ fontSize: 30 }}>
                       - 
                     </Typography>
                     </Grid>
                     <Grid item>
-                    <Typography sx = {{mt: 5}} style={{ fontSize: 30 }}>
+                    <Typography sx = {{mt: 2}} style={{ fontSize: 30 }}>
                       {matches && matches[2].away_score} 
                     </Typography>
                     </Grid>
                   </Grid>
                   <Grid item>
                     <Typography>
-                      22.12.22
+                    {matches && matches[2].date}
+                    </Typography>
+                  </Grid>
+                  <Grid item>
+                    <Typography>
+                    {matches && matches[2].time}
                     </Typography>
                   </Grid>
                   <Grid item>
@@ -854,24 +870,29 @@ const FixturesComponent = ({}) => {
                   <Grid item xs container direction="row" spacing={2}justifyContent="space-around"
                     alignItems="center">
                     <Grid item>
-                    <Typography sx = {{mt: 5}} style={{ fontSize: 30 }}>
+                    <Typography sx = {{mt: 2}} style={{ fontSize: 30 }}>
                       {matches && matches[3].home_score} 
                     </Typography>
                     </Grid>
                     <Grid item>
-                    <Typography sx = {{mt: 5}} style={{ fontSize: 30 }}>
+                    <Typography sx = {{mt: 2}} style={{ fontSize: 30 }}>
                       - 
                     </Typography>
                     </Grid>
                     <Grid item>
-                    <Typography sx = {{mt: 5}} style={{ fontSize: 30 }}>
+                    <Typography sx = {{mt: 2}} style={{ fontSize: 30 }}>
                       {matches && matches[3].away_score} 
                     </Typography>
                     </Grid>
                   </Grid>
                   <Grid item>
                     <Typography>
-                      22.12.22
+                    {matches && matches[3].date}
+                    </Typography>
+                  </Grid>
+                  <Grid item>
+                    <Typography>
+                    {matches && matches[3].time}
                     </Typography>
                   </Grid>
                   <Grid item>
@@ -929,24 +950,29 @@ const FixturesComponent = ({}) => {
                   <Grid item xs container direction="row" spacing={2}justifyContent="space-around"
                     alignItems="center">
                     <Grid item>
-                    <Typography sx = {{mt: 5}} style={{ fontSize: 30 }}>
+                    <Typography sx = {{mt: 2}} style={{ fontSize: 30 }}>
                       {matches && matches[4].home_score} 
                     </Typography>
                     </Grid>
                     <Grid item>
-                    <Typography sx = {{mt: 5}} style={{ fontSize: 30 }}>
+                    <Typography sx = {{mt: 2}} style={{ fontSize: 30 }}>
                       - 
                     </Typography>
                     </Grid>
                     <Grid item>
-                    <Typography sx = {{mt: 5}} style={{ fontSize: 30 }}>
+                    <Typography sx = {{mt: 2}} style={{ fontSize: 30 }}>
                       {matches && matches[4].away_score} 
                     </Typography>
                     </Grid>
                   </Grid>
                   <Grid item>
                     <Typography>
-                      22.12.22
+                    {matches && matches[4].date}
+                    </Typography>
+                  </Grid>
+                  <Grid item>
+                    <Typography>
+                    {matches && matches[4].time}
                     </Typography>
                   </Grid>
                   <Grid item>
@@ -1004,24 +1030,29 @@ const FixturesComponent = ({}) => {
                   <Grid item xs container direction="row" spacing={2}justifyContent="space-around"
                     alignItems="center">
                     <Grid item>
-                    <Typography sx = {{mt: 5}} style={{ fontSize: 30 }}>
+                    <Typography sx = {{mt: 2}} style={{ fontSize: 30 }}>
                       {matches && matches[5].home_score} 
                     </Typography>
                     </Grid>
                     <Grid item>
-                    <Typography sx = {{mt: 5}} style={{ fontSize: 30 }}>
+                    <Typography sx = {{mt: 2}} style={{ fontSize: 30 }}>
                       - 
                     </Typography>
                     </Grid>
                     <Grid item>
-                    <Typography sx = {{mt: 5}} style={{ fontSize: 30 }}>
+                    <Typography sx = {{mt: 2}} style={{ fontSize: 30 }}>
                       {matches && matches[5].away_score} 
                     </Typography>
                     </Grid>
                   </Grid>
                   <Grid item>
                     <Typography>
-                      22.12.22
+                    {matches && matches[5].date}
+                    </Typography>
+                  </Grid>
+                  <Grid item>
+                    <Typography>
+                    {matches && matches[5].time}
                     </Typography>
                   </Grid>
                   <Grid item>
@@ -1079,24 +1110,29 @@ const FixturesComponent = ({}) => {
                   <Grid item xs container direction="row" spacing={2}justifyContent="space-around"
                     alignItems="center">
                     <Grid item>
-                    <Typography sx = {{mt: 5}} style={{ fontSize: 30 }}>
+                    <Typography sx = {{mt: 2}} style={{ fontSize: 30 }}>
                       {matches && matches[6].home_score} 
                     </Typography>
                     </Grid>
                     <Grid item>
-                    <Typography sx = {{mt: 5}} style={{ fontSize: 30 }}>
+                    <Typography sx = {{mt: 2}} style={{ fontSize: 30 }}>
                       - 
                     </Typography>
                     </Grid>
                     <Grid item>
-                    <Typography sx = {{mt: 5}} style={{ fontSize: 30 }}>
+                    <Typography sx = {{mt: 2}} style={{ fontSize: 30 }}>
                       {matches && matches[6].away_score} 
                     </Typography>
                     </Grid>
                   </Grid>
                   <Grid item>
                     <Typography>
-                      22.12.22
+                    {matches && matches[6].date}
+                    </Typography>
+                  </Grid>
+                  <Grid item>
+                    <Typography>
+                    {matches && matches[6].time}
                     </Typography>
                   </Grid>
                   <Grid item>
@@ -1154,24 +1190,29 @@ const FixturesComponent = ({}) => {
                   <Grid item xs container direction="row" spacing={2}justifyContent="space-around"
                     alignItems="center">
                     <Grid item>
-                    <Typography sx = {{mt: 5}} style={{ fontSize: 30 }}>
+                    <Typography sx = {{mt: 2}} style={{ fontSize: 30 }}>
                       {matches && matches[7].home_score} 
                     </Typography>
                     </Grid>
                     <Grid item>
-                    <Typography sx = {{mt: 5}} style={{ fontSize: 30 }}>
+                    <Typography sx = {{mt: 2}} style={{ fontSize: 30 }}>
                       - 
                     </Typography>
                     </Grid>
                     <Grid item>
-                    <Typography sx = {{mt: 5}} style={{ fontSize: 30 }}>
+                    <Typography sx = {{mt: 2}} style={{ fontSize: 30 }}>
                       {matches && matches[7].away_score} 
                     </Typography>
                     </Grid>
                   </Grid>
                   <Grid item>
                     <Typography>
-                      22.12.22
+                    {matches && matches[7].date}
+                    </Typography>
+                  </Grid>
+                  <Grid item>
+                    <Typography>
+                    {matches && matches[7].time}
                     </Typography>
                   </Grid>
                   <Grid item>
@@ -1229,24 +1270,29 @@ const FixturesComponent = ({}) => {
                   <Grid item xs container direction="row" spacing={2}justifyContent="space-around"
                     alignItems="center">
                     <Grid item>
-                    <Typography sx = {{mt: 5}} style={{ fontSize: 30 }}>
+                    <Typography sx = {{mt: 2}} style={{ fontSize: 30 }}>
                       {matches && matches[8].home_score} 
                     </Typography>
                     </Grid>
                     <Grid item>
-                    <Typography sx = {{mt: 5}} style={{ fontSize: 30 }}>
+                    <Typography sx = {{mt: 2}} style={{ fontSize: 30 }}>
                       - 
                     </Typography>
                     </Grid>
                     <Grid item>
-                    <Typography sx = {{mt: 5}} style={{ fontSize: 30 }}>
+                    <Typography sx = {{mt: 2}} style={{ fontSize: 30 }}>
                       {matches && matches[8].away_score} 
                     </Typography>
                     </Grid>
                   </Grid>
                   <Grid item>
                     <Typography>
-                      22.12.22
+                    {matches && matches[8].date}
+                    </Typography>
+                  </Grid>
+                  <Grid item>
+                    <Typography>
+                    {matches && matches[8].time}
                     </Typography>
                   </Grid>
                   <Grid item>

@@ -41,7 +41,7 @@ router.route("/request").patch(userController.rejectDeleteRequest)
 router.route("/fixture").get(matchController.getMaxWeek)
 router.route("/assign/:id").get(matchController.getMatchById)
 router.route("/fixture/:id").get(matchController.getMatchDatasByWeek)
-router.route("/assign/:matchid/:refid").patch(matchController.updateReferee)
+router.route("/assign/:matchid/:refid/:wid").patch(matchController.updateReferee)
 
 router.route("/referees/week/:wid").get(userController.getNonAssignedReferees)
 

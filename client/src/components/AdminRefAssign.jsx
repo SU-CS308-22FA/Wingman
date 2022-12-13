@@ -18,6 +18,7 @@ import { grey } from '@mui/material/colors';
 import { Button, Paper } from "@mui/material";
 import { Card, CardContent, CardHeader, Divider } from '@mui/material';
 import { Avatar, Chip } from '@mui/material';
+import SmallCard from "./SmallCard";
 
 
 export const AdminRefAssign = () => {
@@ -35,8 +36,7 @@ export const AdminRefAssign = () => {
 
     const indexW = queryString.search("week")
     const wid = queryString.substring(indexW + 5)
-    console.log(id)
-    console.log(wid)
+    
 
     const fetcData = async () => {
       try {
@@ -57,7 +57,7 @@ export const AdminRefAssign = () => {
     }, []);
 
     const handleRefereeSelect = async (refid, matchid) => {
-        const response = await UserFinder.patch(`/assign/${matchid}/${refid}`);
+        const response = await UserFinder.patch(`/assign/${matchid}/${refid}/${wid}`);
         console.log("update:", response);
         fetcData();
       };
@@ -80,8 +80,8 @@ export const AdminRefAssign = () => {
         }
       ];
       const columns = [
-        { field: 'id', headerName: 'refereeid', width: 90 ,
-        disableColumnMenu: true,
+        { field: 'id', headerName: 'ASSIGN', width: 90 ,
+        disableColumnMenu: true,filterable: false,
 
         renderCell : (params) => {
         return(
@@ -101,7 +101,9 @@ export const AdminRefAssign = () => {
           field: 'name',
           headerName: 'Name',
           width: 100,
-          disableColumnMenu: true
+          disableColumnMenu: true,
+          filterable: true,
+            
 
 
         },
@@ -109,14 +111,16 @@ export const AdminRefAssign = () => {
             field: 'surname',
             headerName: 'Surname',
             width: 100,
-            disableColumnMenu: false
+            disableColumnMenu: true,
+            filterable: true,
+            
 
           },
         {
             field: 'currentseasonmatches',
             headerName: 'Current Season Matches',
             width: 100,
-            disableColumnMenu: false,
+            disableColumnMenu: true,
             filterable: true,
             type: 'number',
 
@@ -125,14 +129,18 @@ export const AdminRefAssign = () => {
             field: 'currentfoulspg',
             headerName: 'Fouls Per game',
             width: 100,
-            disableColumnMenu: true
+            disableColumnMenu: true,
+            filterable: true,
+            type: 'number'
 
           },
           {
             field: 'currentyelpg',
             headerName: 'Yellow per game',
             width: 100,
-            disableColumnMenu: true
+            disableColumnMenu: true,
+            filterable: true,
+            type: 'number',
 
           },
           
@@ -140,21 +148,27 @@ export const AdminRefAssign = () => {
             field: 'currentredpg',
             headerName: 'Red per game',
             width: 100,
-            disableColumnMenu: true
+            disableColumnMenu: true,
+            filterable: true,
+            type: 'number',
 
           },
           {
             field: 'currentfoulsdivtackles',
             headerName: 'Fouls per Tackles',
             width: 100,
-            disableColumnMenu: true
+            disableColumnMenu: true,
+            filterable: true,
+            type: 'number',
 
           },
           {
             field: 'currentpenpg',
             headerName: 'Penalty Per game',
             width: 100,
-            disableColumnMenu: true
+            disableColumnMenu: true,
+            filterable: true,
+            type: 'number',
 
           },
           
@@ -222,6 +236,7 @@ export const AdminRefAssign = () => {
                   {match && match.hometeamname}
                   </Typography>
                 </Grid>
+                
               </Grid>
             </Grid>
 
@@ -230,12 +245,17 @@ export const AdminRefAssign = () => {
                 <Grid item xs>
                   
                   <Grid item>
-                    <Typography sx = {{mt: 3, ml: 3}}>
-                      22.12.22
+                    <Typography sx = {{mt: 2, ml: 3}}>
+                    {match && match.date}
                     </Typography>
                   </Grid>
                   <Grid item>
-                    <Typography sx = {{mt:3, ml:3}}>
+                    <Typography sx = {{mt: 1, ml: 3}}>
+                    {match && match.time}
+                    </Typography>
+                  </Grid>
+                  <Grid item>
+                    <Typography sx = {{mt:1, ml:3}}>
                       {match && match.name} {match && match.surname}
                     </Typography>
                   </Grid>
