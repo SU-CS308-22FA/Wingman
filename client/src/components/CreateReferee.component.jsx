@@ -56,14 +56,6 @@ const CreateReferee = () => {
         return /^-?\d+$/.test(value);
       }
 
-  function isValidPass(pass) {
-    if(pass.length >= 8)
-    {
-      return true;
-    } else{
-      return false;
-    }
-  };
    const onChange = e =>
     setInputs({ ...inputs, [e.target.name]: e.target.value });
 
@@ -324,7 +316,7 @@ const CreateReferee = () => {
                  onChange={e => onChange(e)}
                />
              </Grid>
-<Grid item xs={12} sm={4}>
+      <Grid item xs={12} sm={4}>
                <TextField
                  required
                  fullWidth
