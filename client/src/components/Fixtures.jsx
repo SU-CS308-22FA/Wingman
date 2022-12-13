@@ -90,7 +90,12 @@ const FixturesComponent = ({}) => {
                     </Typography>
                   </Grid>
                   <Grid item>
-                    <Button size="medium" sx = {{mt:5}} onClick={() => handleAssign(matches && matches[0].match_id, matches && matches[0].week)}>
+                    <Typography sx = {{mt:1}}>
+                    {matches && matches[0].name} {matches && matches[0].surname}
+                    </Typography>
+                  </Grid>
+                  <Grid item>
+                    <Button size="medium" sx = {{mt:1}} onClick={() => handleAssign(matches && matches[0].match_id, matches && matches[0].week)}>
                     Assign Referee
                     </Button>
                   </Grid>
@@ -147,9 +152,13 @@ const FixturesComponent = ({}) => {
                     {matches && matches[1].time}
                     </Typography>
                   </Grid>
-                  
                   <Grid item>
-                    <Button size="medium" sx ={{mt:5}} onClick={() => handleAssign(matches && matches[1].match_id, matches && matches[1].week)}>
+                    <Typography sx = {{mt:1}}>
+                    {matches && matches[1].name} {matches && matches[1].surname}
+                    </Typography>
+                  </Grid>
+                  <Grid item>
+                    <Button size="medium" sx ={{mt:1}} onClick={() => handleAssign(matches && matches[1].match_id, matches && matches[1].week)}>
                     Assign Referee
                     </Button>
                   </Grid>
@@ -207,9 +216,15 @@ const FixturesComponent = ({}) => {
                     {matches && matches[2].time}
                     </Typography>
                   </Grid>
+
+                  <Grid item>
+                    <Typography sx = {{mt:1}}>
+                    {matches && matches[2].name} {matches && matches[2].surname}
+                    </Typography>
+                  </Grid>
                   
                   <Grid item>
-                    <Button size="medium" sx ={{mt:5}} onClick={() => handleAssign(matches && matches[2].match_id, matches && matches[2].week)}>
+                    <Button size="medium" sx ={{mt:1}} onClick={() => handleAssign(matches && matches[2].match_id, matches && matches[2].week)}>
                     Assign Referee
                     </Button>
                   </Grid>
@@ -269,9 +284,15 @@ const FixturesComponent = ({}) => {
                     {matches && matches[3].time}
                     </Typography>
                   </Grid>
+
+                  <Grid item>
+                    <Typography sx = {{mt:1}}>
+                    {matches && matches[3].name} {matches && matches[3].surname}
+                    </Typography>
+                  </Grid>
                   
                   <Grid item>
-                    <Button size="medium" sx ={{mt:5}} onClick={() => handleAssign(matches && matches[3].match_id, matches && matches[3].week)}>
+                    <Button size="medium" sx ={{mt:1}} onClick={() => handleAssign(matches && matches[3].match_id, matches && matches[3].week)}>
                     Assign Referee
                     </Button>
                   </Grid>
@@ -328,9 +349,13 @@ const FixturesComponent = ({}) => {
                     {matches && matches[4].time}
                     </Typography>
                   </Grid>
-                  
                   <Grid item>
-                    <Button size="medium" sx ={{mt:5}} onClick={() => handleAssign(matches && matches[4].match_id, matches && matches[4].week)}>
+                    <Typography sx = {{mt:1}}>
+                    {matches && matches[4].name} {matches && matches[4].surname}
+                    </Typography>
+                  </Grid>
+                  <Grid item>
+                    <Button size="medium" sx ={{mt:1}} onClick={() => handleAssign(matches && matches[4].match_id, matches && matches[4].week)}>
                     Assign Referee
                     </Button>
                   </Grid>
@@ -387,9 +412,14 @@ const FixturesComponent = ({}) => {
                     {matches && matches[5].time}
                     </Typography>
                   </Grid>
+                  <Grid item>
+                    <Typography sx = {{mt:1}}>
+                    {matches && matches[5].name} {matches && matches[5].surname}
+                    </Typography>
+                  </Grid>
                   
                   <Grid item>
-                    <Button size="medium" sx ={{mt:5}} onClick={() => handleAssign(matches && matches[5].match_id, matches && matches[5].week)}>
+                    <Button size="medium" sx ={{mt:1}} onClick={() => handleAssign(matches && matches[5].match_id, matches && matches[5].week)}>
                     Assign Referee
                     </Button>
                   </Grid>
@@ -446,9 +476,13 @@ const FixturesComponent = ({}) => {
                     {matches && matches[6].time}
                     </Typography>
                   </Grid>
-                  
                   <Grid item>
-                    <Button size="medium" sx ={{mt:5}} onClick={() => handleAssign(matches && matches[6].match_id, matches && matches[6].week)}>
+                    <Typography sx = {{mt:1}}>
+                    {matches && matches[6].name} {matches && matches[6].surname}
+                    </Typography>
+                  </Grid>
+                  <Grid item>
+                    <Button size="medium" sx ={{mt:1}} onClick={() => handleAssign(matches && matches[6].match_id, matches && matches[6].week)}>
                     Assign Referee
                     </Button>
                   </Grid>
@@ -505,9 +539,13 @@ const FixturesComponent = ({}) => {
                     {matches && matches[7].time}
                     </Typography>
                   </Grid>
-                  
                   <Grid item>
-                    <Button size="medium" sx ={{mt:5}} onClick={() => handleAssign(matches && matches[7].match_id, matches && matches[7].week)}>
+                    <Typography sx = {{mt:1}}>
+                    {matches && matches[7].name} {matches && matches[7].surname}
+                    </Typography>
+                  </Grid>
+                  <Grid item>
+                    <Button size="medium" sx ={{mt:1}} onClick={() => handleAssign(matches && matches[7].match_id, matches && matches[7].week)}>
                     Assign Referee
                     </Button>
                   </Grid>
@@ -564,9 +602,13 @@ const FixturesComponent = ({}) => {
                     {matches && matches[8].time}
                     </Typography>
                   </Grid>
-                  
                   <Grid item>
-                    <Button size="medium" sx ={{mt:5}} onClick={() => handleAssign(matches && matches[8].match_id, matches && matches[8].week)}>
+                    <Typography sx = {{mt:1}}>
+                    {matches && matches[8].name} {matches && matches[8].surname}
+                    </Typography>
+                  </Grid>
+                  <Grid item>
+                    <Button size="medium" sx ={{mt:1}} onClick={() => handleAssign(matches && matches[8].match_id, matches && matches[8].week)}>
                     Assign Referee
                     </Button>
                   </Grid>
@@ -660,7 +702,7 @@ const FixturesComponent = ({}) => {
                     </Typography>
                   </Grid>
                   <Grid item>
-                    <Button size="medium" onClick={() => handleDetails(matches && matches[1].match_id)}>
+                    <Button size="medium" onClick={() => handleDetails(matches && matches[0].match_id)}>
                     Match Details
                     </Button>
                   </Grid>
