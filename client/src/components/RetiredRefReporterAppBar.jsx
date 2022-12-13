@@ -32,6 +32,9 @@ function RefAppBar() {
       const onRefereeClicked = (e) => {
         navigate("/refereeList");
       };
+      const onFixtureClicked = (e) => {
+        navigate("/fixture/1");
+      };
 
 const tiers = [
     {
@@ -46,6 +49,10 @@ const tiers = [
         pageName:"Referees",
         onClick: onRefereeClicked
     },
+    {
+      pageName:"Fixture",
+      onClick: onFixtureClicked
+  },
 
 
   ];

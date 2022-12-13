@@ -28,6 +28,9 @@
     "react-twitter-embed": "^4.0.4",
     "recharts": "^2.1.16",
 <<<<<<< HEAD
+    "web-vitals": "^2.1.4" 
+=======
+<<<<<<< HEAD
 <<<<<<< HEAD
 =======
     "web-vitals": "^2.1.4" 
@@ -45,6 +48,7 @@
 =======
 >>>>>>> refs/rewritten/feature-dev-2
 >>>>>>> refs/rewritten/feature-dev-4
+>>>>>>> refs/rewritten/feature-dev-5
   },
   "scripts": {
     "predeploy": "npm run build",

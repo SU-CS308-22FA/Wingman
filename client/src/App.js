@@ -14,6 +14,7 @@ import RRRefereeList from "./routes/RefereeList";
 import TeamListPage from "./routes/Teams";
 import { AuthContextProvider } from "./context/authContext";
 import WelcomePage from "./routes/Welcome";
+import FixturePage from "./routes/fixturePage";
 
 import RefereeAssignPage from "./routes/AssignReferee";
 import ATeamProfile from "./routes/admin/TeamProfile";
@@ -119,6 +120,12 @@ class App extends Component {
                     <Route path="/referee/:id" element={<RefereeDashboardPage/>}/>     
                     <Route path="/teams" element={<TeamListPage/>}/>
 <<<<<<< HEAD
+                    <Route path="/assign/:id/week/:week" element={<RefereeAssignPage/>}/>
+                    <Route path="/teams/:id" element={<ATeamProfile/>}/>
+                    <Route path="/fixture/:week" element={<FixturePage/>}/>
+
+=======
+<<<<<<< HEAD
                     <Route path="/add/referee" element={<RefereeCreatePage/>}/>
                     <Route path="/assign" element={<RefereeAssignPage/>}/>
 =======
@@ -127,6 +134,7 @@ class App extends Component {
                     <Route path="/match/:id" element={<MatchPage/>}/>
                     <Route path="/history/" element={<RRHistPage/>}/>
 >>>>>>> refs/rewritten/feature-dev-4
+>>>>>>> refs/rewritten/feature-dev-5
                 </Routes>
               </Router>
             </div>
