@@ -26,7 +26,7 @@ const RRFixtures = ({}) => {
     navigate(`/assign/${id}`);
   };
   const handleRate = (id) => {
-    navigate(`/rate/${id}`);
+    navigate(`/match/${id}`);
   };
 
   const handleChange = (week) => {
