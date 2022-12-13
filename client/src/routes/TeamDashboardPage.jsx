@@ -1,18 +1,24 @@
 import React, { useContext } from "react";
-import Copyright from "../components/Copyright.component";
-import { RefereeList } from "../components/RefereeList";
+import Copyright from "./../components/Copyright.component";
+import ResponsiveAppBar from './../components/LoggedInAppBar';
 import Box from '@mui/material/Box';
-import ResponsiveAppBar from '../components/LoggedInAppBar';
-import { useNavigate } from "react-router-dom";
+import { TeamList } from "../components/TeamList";
 import { UsersContext } from "../context/UserContex";
+import { useNavigate } from "react-router-dom";
 import { AuthContext } from "../context/authContext";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import UserFinder from "../apis/UserFinder";
-import { useEffect } from "react";
 import CircularProgress from '@mui/material/CircularProgress';
 import RefAppBar from "../components/RetiredRefReporterAppBar";
+import TeamProfile from "../components/TeamProfile.component";
+const myStyle={
+     background: "#F5F1ED",
+     height:'50',
+     fontSize:'24px',
+     backgroundSize: 'cover',
+  };
 
-const RRRefereeList = () => {
+const TeamDashboardPage = () => {
   const navigate = useNavigate();
   const [isLoading, setLoading] = useState(true)
 
@@ -58,10 +64,10 @@ const RRRefereeList = () => {
   useEffect(() => {
     checkAuthenticated();
   }, []);
-
   if(isLoading || user === undefined){
     return (
       <div>
+        
         <Box m={0} pt={34}> </Box>
         <center> <CircularProgress /></center>
       </div>
@@ -69,32 +75,16 @@ const RRRefereeList = () => {
   }
   else if(user.role == "TFF Admin"){
     return (
-      <div>
+      <div style = {myStyle}>
         <ResponsiveAppBar/>
-        <RefereeList isTFF = {true} />
-        <Box m={0} pt={34}> </Box>
-
-        <center>             <img src="https://i.hizliresim.com/t6q9rs6.png" height="66" width="50" />          
-</center>
-        <Copyright sx={{ mt: 5 }} />
+        <TeamProfile/>
+        <Box m={0} pt={10}> </Box>
       </div>
     );
   }
   else if(user.role == "Reporter" || user.role == "Retired Referee"){
-    return (
-      <div>
-        <RefAppBar/>
-        <RefereeList isTFF = {false} />
-        <Box m={0} pt={34}> </Box>
-
-        <center>             <img src="https://i.hizliresim.com/t6q9rs6.png" height="66" width="50" />          
-</center>
-        <Copyright sx={{ mt: 5 }} />
-      </div>
-    );
+    navigate("/profile/")
   }
-
-
   else{
     return (
       <div>
@@ -103,6 +93,6 @@ const RRRefereeList = () => {
       </div>
     );
   }
-  };
+}
    
-  export default RRRefereeList;
+  export default TeamDashboardPage;

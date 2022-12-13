@@ -24,6 +24,7 @@ import ReporterListPage from "./routes/admin/ReporterList";
 import DeleteRequestPage from "./routes/SuperAdmin/DeleteRequestsPage";
 import RRHistPage from "./routes/RRHistPage";
 import RefereeCreatePage from "./routes/RefereeCreation";
+import TeamDashboardPage from "./routes/TeamDashboardPage";
 const theme = createTheme({
   palette: {
     primary: {
@@ -81,9 +82,8 @@ class App extends Component {
                     <Route path="/referee/:id" element={<RefereeDashboardPage/>}/>     
                     <Route path="/teams" element={<TeamListPage/>}/>
                     <Route path="/assign/:id/week/:week" element={<RefereeAssignPage/>}/>
-                    <Route path="/teams/:id" element={<ATeamProfile/>}/>
+                    <Route path="/teams/:id" element={<TeamDashboardPage/>}/>
                     <Route path="/fixture/:week" element={<FixturePage/>}/>
-                    <Route path="/teams/:id" element={<ATeamProfile/>}/>
                     <Route path="/match/:id" element={<MatchPage/>}/>
                     <Route path="/history/" element={<RRHistPage/>}/>
                     <Route path="/reporters" element={<ReporterListPage />} />
