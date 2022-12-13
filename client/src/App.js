@@ -15,19 +15,15 @@ import TeamListPage from "./routes/Teams";
 import { AuthContextProvider } from "./context/authContext";
 import WelcomePage from "./routes/Welcome";
 import FixturePage from "./routes/fixturePage";
-
 import RefereeAssignPage from "./routes/AssignReferee";
 import ATeamProfile from "./routes/admin/TeamProfile";
-import CreateReferee from "./components/CreateReferee.component";
-import RefereeCreatePage from "./routes/RefereeCreation";
 import RefereeDashboard from "./components/RefereeDashboard";
 import RefereeDashboardPage from "./routes/RefereeDashboardPage";
 import MatchPage from "./routes/MatchPage";
-import RRHistPage from "./routes/RRHistPage";
-import RefereeCreatePage from "./routes/RefereeCreation";
 import ReporterListPage from "./routes/admin/ReporterList";
 import DeleteRequestPage from "./routes/SuperAdmin/DeleteRequestsPage";
-
+import RRHistPage from "./routes/RRHistPage";
+import RefereeCreatePage from "./routes/RefereeCreation";
 const theme = createTheme({
   palette: {
     primary: {
@@ -81,10 +77,7 @@ class App extends Component {
                     <Route path="/update/" element={<RRUpdatePage/>}/>
                     <Route path="/addReferee" element={<RefereeCreatePage/>}/>
 
-                    <Route path="/addReferee" element={<RefereeCreatePage/>}/>
-
                     <Route path="/refereeList" element={<RRRefereeList/>}/>
-                    <Route path="/referee/:id" element={<RefereeDashboardPage/>}/>     
                     <Route path="/referee/:id" element={<RefereeDashboardPage/>}/>     
                     <Route path="/teams" element={<TeamListPage/>}/>
                     <Route path="/assign/:id/week/:week" element={<RefereeAssignPage/>}/>
@@ -93,21 +86,8 @@ class App extends Component {
                     <Route path="/teams/:id" element={<ATeamProfile/>}/>
                     <Route path="/match/:id" element={<MatchPage/>}/>
                     <Route path="/history/" element={<RRHistPage/>}/>
-                    <Route path="/reporters" element={<ReporterListPage />} />
-                  <Route path="/requests" element={<DeleteRequestPage />} />
-                    <Route path="/fixture" element={<FixturePage/>}/>
-                    <Route path="/fixture/:week" element={<FixturePage/>}/>
-
                 </Routes>
               </Router>
-            </div>
-            <div id="bottom" style={myStyleBottom}>
-              <br />
-              <br />
-            </div>
-            <div id="bottom" style={myStyleBottom}>
-              <br />
-              <br />
             </div>
             <div id="bottom" style={myStyleBottom}>
               <br />
