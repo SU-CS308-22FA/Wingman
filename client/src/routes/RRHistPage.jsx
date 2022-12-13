@@ -8,6 +8,7 @@ import { AuthContext } from "../context/authContext";
 import UserFinder from "../apis/UserFinder";
 import RRHistory from "../components/RRHistory.component";
 import { CircularProgress } from "@mui/material";
+import RefAppBar from "../components/RetiredRefReporterAppBar";
 
 const RRHistPage = () => {
   const navigate = useNavigate();
@@ -66,7 +67,7 @@ const RRHistPage = () => {
   else if(user.role == "Reporter" || user.role == "Retired Referee"){
     return (
       <div>
-        <ResponsiveAppBar/>
+        <RefAppBar/>
         <RRHistory/>
         <Copyright sx={{ mt: 5 }} />
       </div>
