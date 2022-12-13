@@ -42,7 +42,18 @@ export default class userController{
         res.status(400).json({error:error, data:{users:[]}})
       } 
       }
-
+      /**
+       * Gets a referee by ID from the database.
+       *
+       * @param {Object} req - The request object.
+       * @param {Object} res - The response object.
+       * @param {function} next - The next middleware function in the route.
+       *
+       * @throws {Error} If the referee cannot be found.
+       *
+       * @returns {Object} The response object, containing the data for the found referee.
+       */
+  
       static async getRefereeById(req, res, next){
         try {
           
@@ -324,8 +335,8 @@ export default class userController{
 
   static async createReferee(req, res, next){
     try {
-      const newReferee = await db.query('INSERT INTO wingman.referees (name,surname, totalmatches, totalyellowcards,totalredcards,age, currentseasonmatches,totalfoulspg,currentyel,currentred,currentfoulspg,totalpenpg,totalyelpg, totalredpg,currentpenpg,avatarurl) values ($1,$2,$3,$4, $5, $6,$7,$8,$9,$10,$11,$12,$13,$14,$15,$16) returning *'
-      , [req.body.name,req.body.surname, req.body.totalmatches, req.body.totalyellowcards,req.body.totalredcards,req.body.age, req.body.currentseasonmatches,req.body.totalfoulspg,req.body.currentyel,req.body.currentred,req.body.currentfoulspg,req.body.totalpenpg,req.body.totalyelpg, req.body.totalredpg,req.body.currentpenpg,req.body.avatarurl])
+      const newReferee = await db.query('INSERT INTO wingman.referees (name,surname, totalmatches, totalyellowcards,totalredcards,age, currentseasonmatches,totalfoulspg,currentyel,currentred,currentfoulspg,totalpenpg,totalyelpg, currentyelpg, currentredpg, totalredpg,currentpenpg,avatarurl) values ($1,$2,$3,$4, $5, $6,$7,$8,$9,$10,$11,$12,$13,$14,$15,$16, $17, $18) returning *'
+      , [req.body.name,req.body.surname, req.body.totalmatches, req.body.totalyellowcards,req.body.totalredcards,req.body.age, req.body.currentseasonmatches,req.body.totalfoulspg,req.body.currentyel,req.body.currentred,req.body.currentfoulspg,req.body.totalpenpg,req.body.totalyelpg, req.body.currentyelpg , req.body.currentredpg, req.body.totalredpg,req.body.currentpenpg,req.body.avatarurl])
       res.status(200).json({
         data: newReferee.rows[0],
       })

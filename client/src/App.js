@@ -25,8 +25,12 @@ import RefereeDashboardPage from "./routes/RefereeDashboardPage";
 =======
 import MatchPage from "./routes/MatchPage";
 import RRHistPage from "./routes/RRHistPage";
+<<<<<<< HEAD
 >>>>>>> refs/rewritten/feature-dev-2
 
+=======
+import RefereeCreatePage from "./routes/RefereeCreation";
+>>>>>>> d9b22f3 (Add ref create page route and update userController)
 const theme = createTheme({
   palette: {
     primary: {
@@ -80,6 +84,8 @@ class App extends Component {
                     <Route path="/admin/login" element={<RRLoginPage/>}/>
                     <Route path="/profile/" element={<ProfilePage/>}/>\
                     <Route path="/update/" element={<RRUpdatePage/>}/>
+                    <Route path="/addReferee" element={<RefereeCreatePage/>}/>
+
                     <Route path="/refereeList" element={<RRRefereeList/>}/>
                     <Route path="/referee/:id" element={<RefereeDashboardPage/>}/>     
                     <Route path="/teams" element={<TeamListPage/>}/>
