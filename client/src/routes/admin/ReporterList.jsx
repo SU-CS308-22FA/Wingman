@@ -1,17 +1,18 @@
-import React, { useContext, useState, useEffect } from "react";
-import Copyright from "../components/Copyright.component";
-import ResponsiveAppBar from '../components/LoggedInAppBar';
-import Box from '@mui/material/Box';
-import { UsersContext } from "../context/UserContex";
+import Copyright from "../../components/Copyright.component";
+import ResponsiveAppBar from '../../components/LoggedInAppBar';
+import React, { useContext, useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { AuthContext } from "../context/authContext";
-import UserFinder from "../apis/UserFinder";
-import { CircularProgress } from "@mui/material";
+import { UsersContext } from "../../context/UserContex";
+import { AuthContext } from "../../context/authContext";
+import UserFinder from "../../apis/UserFinder";
+import CircularProgress from '@mui/material/CircularProgress';
+import Box from '@mui/material/Box';
+import { ReporterList } from "../../components/ReportorList.component";
 
-const PageName = () => {
+
+const ReporterListPage = () => {
   const navigate = useNavigate();
   const [isLoading, setLoading] = useState(true)
-
   const {user, setUser} = useContext(UsersContext)
   const {setAuth} = useContext(AuthContext)
   const getData = async () => {
@@ -54,6 +55,7 @@ const PageName = () => {
   useEffect(() => {
     checkAuthenticated();
   }, []);
+
   if(isLoading || user === undefined){
     return (
       <div>
@@ -62,13 +64,21 @@ const PageName = () => {
       </div>
     );
   }
-  else if(user.role == "TFF Admin" || user.role == "Reporter" || user.role == "Retired Referee"){
+  else if(user.role == "TFF Admin"){
     return (
       <div>
         <ResponsiveAppBar/>
+        <ReporterList />
+        <Box m={0} pt={34}> </Box>
+
+        <center>             <img src="https://i.hizliresim.com/t6q9rs6.png" height="66" width="50" />          
+</center>
         <Copyright sx={{ mt: 5 }} />
       </div>
     );
+  }
+  else if(user.role == "Reporter" || user.role == "Retired Referee"){
+    navigate("/profile/")
   }
   else{
     return (
@@ -78,6 +88,6 @@ const PageName = () => {
       </div>
     );
   }
-}
+  };
    
-  export default PageName;
+  export default ReporterListPage;

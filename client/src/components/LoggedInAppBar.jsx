@@ -35,8 +35,13 @@ function ResponsiveAppBar() {
       const onTeamsClicked = (e) => {
         navigate("/teams");
       };
+<<<<<<< HEAD
       const onFixtureClicked = (e) => {
         navigate("/fixture/1");
+=======
+      const onReportersClicked = (e) => {
+        navigate("/reporters");
+>>>>>>> refs/rewritten/feature-dev-5
       };
 const tiers = [
     {
@@ -56,8 +61,13 @@ const tiers = [
         onClick: onTeamsClicked
     },
     {
+<<<<<<< HEAD
       pageName:"Fixture",
       onClick: onFixtureClicked
+=======
+      pageName:"Reporters",
+      onClick: onReportersClicked
+>>>>>>> refs/rewritten/feature-dev-5
   },
 
 
