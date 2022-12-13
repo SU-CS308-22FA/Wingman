@@ -31,8 +31,6 @@ import HoverRating from "./Rating.component";
 import SendIcon from "@mui/icons-material/Send";
 import UserFinder from "../../apis/UserFinder.js";
 
-let timeline = [];
-
 const labels = {
   1: 'Very poor',
   2: 'Very poor+',
@@ -107,10 +105,11 @@ function getIconSrcFromType(eventType) {
 }
 
 export default function ReporterMatch() {
-  const [matchData, setMatchData] = useState();
+  const [matchData, setMatchData] = useState({is_played:false});
   const [isLoading, setLoading] = useState(true);
   const [isAvalible, setAvalible] = useState(true);
   const [hasRated, setRated] = useState(true);
+  const [timeline, settimeline] = useState([]);
   const {user} = useContext(UsersContext)
   const [value, setValue] = React.useState(5);
   const [hover, setHover] = React.useState(5);
@@ -123,9 +122,23 @@ export default function ReporterMatch() {
   const fetcData = async () => {
     try {
       const response = await UserFinder.get(`/match/${id}`);
-      setMatchData(response.data.data);
-      timeline = (response.data.timeline);
-      setLoading(false);
+      await setMatchData(response.data.data);
+      let timeline = (response.data.timeline);
+      const goals = timeline.filter(event => event.event_type === "Goal" && event.event_side === "Home");
+      const homet = timeline.filter(event => event.event_side === "Home");
+      const totalGoalshome = goals.length;
+      if(totalGoalshome < response.data.data.home_score)
+      {
+        await timeline.push({event_side: "Home", event_text: homet[0].event_text, event_time: "94", event_type: "Goal"})
+      }
+      const goals2 = timeline.filter(event => event.event_type === "Goal" && event.event_side === "Away");
+      const totalGoalsaway = goals2.length;
+      const awayt = timeline.filter(event => event.event_side === "Away");
+      if(totalGoalsaway < response.data.data.away_score)
+      {
+        await timeline.push({event_side: "Away", event_text: awayt[0].event_text, event_time: "95", event_type: "Goal"})
+      }
+      await settimeline(timeline)
     } catch (err) {
       setAvalible(false);
     }
@@ -242,218 +255,233 @@ alignItems="center">
     setRated(false)
   });
     
-    fetcData();
+    fetcData().then(result => {
+      setLoading(false);
+    });;
   }, []);
 
   if(!isAvalible)
   {
-    return (<h1>Match not in db...</h1>);
+    return (<h1>Match not avalible...</h1>);
   }
   else
   {
     if (!isLoading) {
-      return (
-        <Grid
-          direction="row"
-          justifyContent="center"
-          alignItems="center"
-          container
-          spacing={1}
-        >
-          <Grid>
-            <Card
-              sx={{ height: 200, width: 1200, mt: 4 }}
-              style={{ backgroundColor: "#DAD2BC" }}
-            >
-              <CardContent>
-                <Grid
-                  container
-                  direction="row"
-                  justifyContent="space-around"
-                  alignItems="center"
-                  sx={{ mt: 2 }}
-                >
-                  <Grid item xs={2}>
-                    <Grid
-                    container
-                    direction="column"
-                    justifyContent="center"
-                    alignItems="center">
-                      <Grid item><Typography>HOME</Typography></Grid>
-                      <Grid item>
-                        <Avatar
-                          src={matchData.home_logo}
-                          sx={{ width: 100, height: 100}}
-                        />
-                      </Grid>
-                      <Grid item>
-                        <Typography>
-                          {matchData.home_teamname}
-                        </Typography>
-                      </Grid>
-                    </Grid>
-                  </Grid>
+      if(matchData.is_played == false)
+      {
+        return (<h1>Match not played...</h1>);
+      }
+      else
+      {
+        return (
+          <Grid
+            direction="row"
+            justifyContent="center"
+            alignItems="center"
+            container
+            spacing={1}
+          >
+            <Grid>
+              <Card
+                sx={{ height: 200, width: 1200, mt: 4 }}
+                style={{ backgroundColor: "#DAD2BC" }}
+              >
+                <CardContent>
                   <Grid
-                    item
-                    xs={2}
                     container
                     direction="row"
-                    justifyContent="center"
+                    justifyContent="space-around"
                     alignItems="center"
+                    sx={{ mt: 2 }}
                   >
-                    <Grid>
-                      <Typography
-                        color="#A99985"
-                        style={{ fontWeight: "bold", fontSize: 75 }}
-                      >
-                        {matchData.home_score}
-                      </Typography>
-                    </Grid>
-                    <Grid>
-                      <Typography color="#A99985" style={{ fontSize: 75 }}>
-                        :
-                      </Typography>
-                    </Grid>
-                    <Grid>
-                      <Typography
-                        sx={{ mr: 10 }}
-                        color="#A99985"
-                        style={{ fontWeight: "bold", fontSize: 75 }}
-                      >
-                        {matchData.away_score}
-                      </Typography>
-                    </Grid>
-                  </Grid>
-                  <Grid item>
-                  <Grid
-                    container
-                    direction="column"
-                    justifyContent="center"
-                    alignItems="center">
-                      <Grid item><Typography>AWAY</Typography></Grid>
-                      <Grid item>
-                        <Avatar
-                          src={matchData.away_logo}
-                          sx={{ width: 100, height: 100}}
-                        />
+                    <Grid item xs={2}>
+                      <Grid
+                      container
+                      direction="column"
+                      justifyContent="center"
+                      alignItems="center">
+                        <Grid item><Typography>HOME</Typography></Grid>
+                        <Grid item>
+                          <Avatar
+                            src={matchData.home_logo}
+                            sx={{ width: 100, height: 100}}
+                          />
+                        </Grid>
+                        <Grid item>
+                          <Typography>
+                            {matchData.home_teamname}
+                          </Typography>
+                        </Grid>
                       </Grid>
-                      <Grid item>
-                        <Typography>
-                          {matchData.away_teamname}
+                    </Grid>
+                    <Grid
+                      item
+                      xs={2}
+                      container
+                      direction="row"
+                      justifyContent="center"
+                      alignItems="center"
+                    >
+                      <Grid>
+                        <Typography
+                          color="#A99985"
+                          style={{ fontWeight: "bold", fontSize: 75 }}
+                        >
+                          {matchData.home_score}
                         </Typography>
                       </Grid>
+                      <Grid>
+                        <Typography color="#A99985" style={{ fontSize: 75 }}>
+                          :
+                        </Typography>
+                      </Grid>
+                      <Grid>
+                        <Typography
+                          sx={{ mr: 10 }}
+                          color="#A99985"
+                          style={{ fontWeight: "bold", fontSize: 75 }}
+                        >
+                          {matchData.away_score}
+                        </Typography>
+                      </Grid>
+                      <Grid>
+                          <Typography sx={{mr:10}} color="#A99985" style={{ fontSize: 12 }}>
+                            {matchData.name + " " + matchData.surname}
+                          </Typography>
+                        </Grid>
+                    </Grid>
+                    <Grid item>
+                    <Grid
+                      container
+                      direction="column"
+                      justifyContent="center"
+                      alignItems="center">
+                        <Grid item><Typography>AWAY</Typography></Grid>
+                        <Grid item>
+                          <Avatar
+                            src={matchData.away_logo}
+                            sx={{ width: 100, height: 100}}
+                          />
+                        </Grid>
+                        <Grid item>
+                          <Typography>
+                            {matchData.away_teamname}
+                          </Typography>
+                        </Grid>
+                      </Grid>
                     </Grid>
                   </Grid>
-                </Grid>
-              </CardContent>
-            </Card>
-          </Grid>
-          <Grid
-            sx={{ mt: 4 }}
-            container
-            justifyContent="center"
-            alignItems="center"
-          >
-            <Typography
-              color="black"
-              style={{ fontWeight: "bold", fontSize: 20 }}
-            >
-              Match Starts
-            </Typography>
-          </Grid>
-          <Grid
-            container
-            direction="row"
-            justifyContent="space-between"
-            alignItems="flex-start"
-          >
-            <Grid item>
-              <Box sx={{ ml: 12 }}>
-                <Grid
-                  container
-                  spacing={4}
-                  direction="column"
-                  justifyContent="flex-start"
-                  alignItems="flex-start"
-                >
-                  <Grid item>
-                    <CardReasonsCard totalCardsDist={[matchData.home_total_cards, matchData.home_foul_cards, matchData.home_unprofessional_cards, matchData.home_dive_cards, matchData.home_other_cards]} />
-                  </Grid>
-                  <Grid item>
-                    {" "}
-                    <RedYellowCardCard numRed={matchData.home_red_cards} numYellow={matchData.home_yellow_cards} />{" "}
-                  </Grid>
-                  <Grid item>
-                    <FoulCard numFoul={matchData.home_fouls} numFoulPerCard={matchData.home_total_cards / matchData.home_fouls * 100} />
-                  </Grid>
-                </Grid>
-              </Box>
+                </CardContent>
+              </Card>
             </Grid>
-            <Grid item>
-              <Timeline sx={{ width: 450 }}>
-                {timeline.map((item) => (
-                  <div
-                    key={
-                      item.event_id
-                    }
+            <Grid
+              sx={{ mt: 4 }}
+              container
+              justifyContent="center"
+              alignItems="center"
+            >
+              <Typography
+                color="black"
+                style={{ fontWeight: "bold", fontSize: 20 }}
+              >
+                Match Starts
+              </Typography>
+            </Grid>
+            <Grid
+              container
+              direction="row"
+              justifyContent="space-between"
+              alignItems="flex-start"
+            >
+              <Grid item>
+                <Box sx={{ ml: 12 }}>
+                  <Grid
+                    container
+                    spacing={4}
+                    direction="column"
+                    justifyContent="flex-start"
+                    alignItems="flex-start"
                   >
-                    {createTimelineItem(
-                      item.event_text,
-                      item.event_side,
-                      item.event_time,
-                      item.event_type
-                    )}
-                  </div>
-                ))}
-              </Timeline>
+                    <Grid item>
+                      <CardReasonsCard totalCardsDist={[matchData.home_total_cards, matchData.home_foul_cards, matchData.home_unprofessional_cards, matchData.home_dive_cards, matchData.home_other_cards]} />
+                    </Grid>
+                    <Grid item>
+                      {" "}
+                      <RedYellowCardCard numRed={matchData.home_red_cards} numYellow={matchData.home_yellow_cards} />{" "}
+                    </Grid>
+                    <Grid item>
+                      <FoulCard numFoul={matchData.home_fouls} numFoulPerCard={matchData.home_total_cards / matchData.home_fouls * 100} />
+                    </Grid>
+                  </Grid>
+                </Box>
+              </Grid>
+              <Grid item>
+                <Timeline sx={{ width: 450 }}>
+                  {timeline.map((item) => (
+                    <div
+                      key={
+                        item.event_id
+                      }
+                    >
+                      {createTimelineItem(
+                        item.event_text,
+                        item.event_side,
+                        item.event_time,
+                        item.event_type
+                      )}
+                    </div>
+                  ))}
+                </Timeline>
+              </Grid>
+              <Grid item>
+                <Box sx={{ mr: 12 }}>
+                  <Grid
+                    container
+                    spacing={4}
+                    direction="column"
+                    justifyContent="flex-start"
+                    alignItems="flex-start"
+                  >
+                     <Grid item>
+                      <CardReasonsCard totalCardsDist={[matchData.away_total_cards, matchData.away_foul_cards, matchData.away_unprofessional_cards, matchData.away_dive_cards, matchData.away_other_cards]} />
+                    </Grid>
+                    <Grid item>
+                      {" "}
+                      <RedYellowCardCard numRed={matchData.away_red_cards} numYellow={matchData.away_yellow_cards} />{" "}
+                    </Grid>
+                    <Grid item>
+                      <FoulCard numFoul={matchData.away_fouls} numFoulPerCard={matchData.away_total_cards / matchData.away_fouls * 100} />
+                    </Grid>
+                  </Grid>
+                </Box>
+              </Grid>
             </Grid>
-            <Grid item>
-              <Box sx={{ mr: 12 }}>
-                <Grid
-                  container
-                  spacing={4}
-                  direction="column"
-                  justifyContent="flex-start"
-                  alignItems="flex-start"
-                >
-                   <Grid item>
-                    <CardReasonsCard totalCardsDist={[matchData.away_total_cards, matchData.away_foul_cards, matchData.away_unprofessional_cards, matchData.away_dive_cards, matchData.away_other_cards]} />
-                  </Grid>
-                  <Grid item>
-                    {" "}
-                    <RedYellowCardCard numRed={matchData.away_red_cards} numYellow={matchData.away_yellow_cards} />{" "}
-                  </Grid>
-                  <Grid item>
-                    <FoulCard numFoul={matchData.away_fouls} numFoulPerCard={matchData.away_total_cards / matchData.away_fouls * 100} />
-                  </Grid>
-                </Grid>
-              </Box>
+            <Grid
+              sx={{ mt: 0 }}
+              container
+              justifyContent="center"
+              alignItems="center"
+            >
+              <Typography
+                color="black"
+                style={{ fontWeight: "bold", fontSize: 20 }}
+              >
+                Match Ends
+              </Typography>
+            </Grid>
+    
+            <Grid>
+              <Card
+                sx={{ height: 200, width: 800, mt: 4 }}
+                style={{ backgroundColor: "#DAD2BC" }}
+              >
+                {renderRate()}
+              </Card>
             </Grid>
           </Grid>
-          <Grid
-            sx={{ mt: 0 }}
-            container
-            justifyContent="center"
-            alignItems="center"
-          >
-            <Typography
-              color="black"
-              style={{ fontWeight: "bold", fontSize: 20 }}
-            >
-              Match Ends
-            </Typography>
-          </Grid>
-  
-          <Grid>
-            <Card
-              sx={{ height: 200, width: 800, mt: 4 }}
-              style={{ backgroundColor: "#DAD2BC" }}
-            >
-              {renderRate()}
-            </Card>
-          </Grid>
-        </Grid>
-      );
+        );
+      }
+      
     } else {
       return (<h1>Loading...</h1>);
     }
