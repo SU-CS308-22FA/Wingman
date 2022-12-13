@@ -17,6 +17,7 @@ import { DataGrid,gridClasses } from '@mui/x-data-grid';
 import { grey } from '@mui/material/colors';
 import { Button, Paper } from "@mui/material";
 
+
 export const RefereeList = () => {
     const  [isLoading, setLoading] = useState(true);
     const [pageSize, setPageSize] = useState(10);
@@ -39,7 +40,10 @@ export const RefereeList = () => {
     const handleRefereeSelect = (id) => {
         navigate(`/referee/${id}`);
       };
-    
+
+      const navigateCreate = () => {
+        navigate("/addReferee");
+      };
       const options = [
         { 
           value: 1,
@@ -129,7 +133,7 @@ export const RefereeList = () => {
     
       <Box
       sx={{
-        height: 1200,
+        height: 800,
         width: '100%',
       }}
     >
@@ -142,6 +146,8 @@ export const RefereeList = () => {
 
     <Container>
         <center>
+        <Box m={6} pt={0}> </Box>
+        <Button onClick={navigateCreate} color = 'secondary' variant="contained">CREATE REFEREE</Button>
     <Toolbar/>
       <Paper component={Box} width={750} height={800}>
     <DataGrid
@@ -155,7 +161,6 @@ export const RefereeList = () => {
       experimentalFeatures={{ newEditingApi: true }}
     />
         </Paper>
-        <Button mt = {10} onClick={'232'} color = 'fourth' variant="contained">UPDATE ACCOUNT</Button>
         </center>
         </Container>
 

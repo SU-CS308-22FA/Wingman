@@ -42,6 +42,18 @@ const RefereeCreatePage = () => {
     }
   };
 
+  /**
+   * This function checks if the user is authenticated and performs
+   * additional actions based on the result of the verification.
+   *
+   * @async
+   * @returns {Promise<void>} An asynchronous promise that resolves when the function has finished executing.
+   *
+   * @throws {Error} If there is an error verifying the user's authentication status.
+   *
+   * @example
+   * await checkAuthenticated();
+   */
   const checkAuthenticated = async () => {
     try {
       const res = await UserFinder.post("/verify", {}, {headers: {'jwt_token': localStorage.token}})

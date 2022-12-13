@@ -80,8 +80,15 @@ const columnChartOptions = {
     ]
 };
 
-// ==============================|| SALES COLUMN CHART ||============================== //
-
+/**
+ * RefereeBarChart is a functional component that displays data as a bar chart.
+ *
+ * @param {object} props - The properties passed to the component
+ * @param {array} props.data - The data to be displayed in the chart. It should be an array of two arrays, where the first array represents the data for the "Current Season" series and the second array represents the data for the "All Seasons" series.
+ * @param {array} props.opt - The labels for the x-axis of the chart. This should be an array of strings.
+ *
+ * @returns {JSX.Element} - A JSX element representing the bar chart
+ */
 const RefereeBarChart = ({ data, opt}) => {
     const theme = useTheme();
 
