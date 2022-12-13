@@ -23,7 +23,7 @@ import MatchPage from "./routes/MatchPage";
 import ReporterListPage from "./routes/admin/ReporterList";
 import DeleteRequestPage from "./routes/SuperAdmin/DeleteRequestsPage";
 import RRHistPage from "./routes/RRHistPage";
-
+import RefereeCreatePage from "./routes/RefereeCreation";
 const theme = createTheme({
   palette: {
     primary: {
@@ -75,6 +75,8 @@ class App extends Component {
                     <Route path="/admin/login" element={<RRLoginPage/>}/>
                     <Route path="/profile/" element={<ProfilePage/>}/>\
                     <Route path="/update/" element={<RRUpdatePage/>}/>
+                    <Route path="/addReferee" element={<RefereeCreatePage/>}/>
+
                     <Route path="/refereeList" element={<RRRefereeList/>}/>
                     <Route path="/referee/:id" element={<RefereeDashboardPage/>}/>     
                     <Route path="/teams" element={<TeamListPage/>}/>
