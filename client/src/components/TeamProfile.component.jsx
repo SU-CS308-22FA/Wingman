@@ -30,7 +30,8 @@ export const TeamProfile = () => {
   const [infoText, setInfoText] = useState('');
 
   const [team, setTeam] = useState(null);
-  
+  const [isAvailable, setAvailable] = useState(true);
+
   const queryString = window.location.href;
   const id = queryString.match(/teams\/(\d+)/)[1];
   
@@ -44,6 +45,8 @@ export const TeamProfile = () => {
           setTeam(prevTeam => []);
         }
       } catch (err) {
+        setAvailable(false);
+
         setTeam(prevTeam => []);
       }
     }
@@ -52,6 +55,18 @@ export const TeamProfile = () => {
       fetchData();
     }
   }, [id]);
+  if(!isAvailable)
+  {
+    return (
+    <center>
+                <Box m={30} pt={0}> </Box>
+      <Typography variant="h3" color="#A99985" font fontWeight="600">
+      Team not found.
+      </Typography></center>
+    
+    );
+  }
+  else{
   return (
     team !== null ? 
      <Grid container rowSpacing={4.5} columnSpacing={2.75}>
@@ -133,5 +148,5 @@ export const TeamProfile = () => {
 </Grid> : null
   )
 }
-
+}
 export default TeamProfile;
