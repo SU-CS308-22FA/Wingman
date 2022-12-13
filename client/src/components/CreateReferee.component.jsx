@@ -70,8 +70,9 @@ const CreateReferee = () => {
   const onSubmitForm = async e => {
     e.preventDefault();
     try {
-      {console.log(currentpenpg.length, totalredcards.length)}
-      if(!isAlphabetical(name)){
+      if(name.length == 0 || surname.length == 0){
+        throw{fmessage: "Name or surname cannot be empty. Please check the both fields."} }   
+      else if(!isAlphabetical(name)){
         throw{fmessage: "Name contains non-alphabetical characters. Please check the name field."} }    
       else if(!isAlphabetical(surname)){
         throw{fmessage: "Surname contains non-alphabetical characters. Please check the name field."}}
@@ -82,12 +83,12 @@ const CreateReferee = () => {
       else if(!isInteger(age) || !isInteger(totalmatches) || !isInteger(totalredcards) || !isInteger(totalyellowcards) ||
               !isInteger(currentseasonmatches)|| !isInteger(currentyel)||  !isInteger(currentred)){
         throw{fmessage: "Statistics specifying net numbers must be integers."}}     
-      else if(totalmatches.length != 0 && currentseasonmatches.length != 0 && totalmatches<currentseasonmatches){
+      else if(totalmatches.length != 0 && currentseasonmatches.length != 0 && parseInt(totalmatches)<parseInt(currentseasonmatches)){
           throw{fmessage: "Total number of matches cannot be smaller than current season matches. Please check the both fields."}}
-      else if(totalredcards.length != 0 && currentred.length != 0 && totalredcards<currentred){
+      else if(totalredcards.length != 0 && currentred.length != 0 && parseInt(totalredcards)< parseInt(currentred)){
           throw{fmessage: "Total number of red cards cannot be smaller than current season red cards. Please check the both fields."}
         }
-      else if(totalyellowcards.length != 0 && currentyel.length != 0 && totalyellowcards<currentyel){ 
+      else if(totalyellowcards.length != 0 && currentyel.length != 0 && parseInt(totalyellowcards)<parseInt(currentyel)){ 
             throw{fmessage: "Total number of yellow cards cannot be smaller than current season yellow cards. Please check the both fields."}}
       else if( totalfoulspg.length== null|| currentfoulspg.length== null ||totalpenpg.length== null||currentpenpg.length== null
        || totalfoulspg.length== 0 || currentfoulspg.length== 0 ||totalpenpg.length== 0 ||currentpenpg.length== 0){
@@ -119,6 +120,8 @@ const CreateReferee = () => {
         currentfoulspg: currentfoulspg,
         totalpenpg : totalpenpg,
         totalyelpg: totalyellowcards/totalmatches,
+        currentyelpg: currentyel/currentseasonmatches,
+        currentredpg: currentred/ currentseasonmatches,
         totalredpg: totalredcards/totalmatches,
         currentpenpg:currentpenpg,
         avatarurl: "https://img.freepik.com/premium-vector/referee-avatar-icon-flat-color-style_755164-489.jpg?w=2000",
@@ -138,14 +141,18 @@ const CreateReferee = () => {
             currentyel: response.data.data.currentyel,
             currentred: response.data.data.currentred,
             currentfoulspg: response.data.data.currentfoulspg,
+            currentyelpg: response.data.data.currentyelpg,
+            currentredpg : response.data.data.currentredpg,
             totalpenpg : response.data.data.totalpenpg,
             totalyelpg: response.data.data.totalyelpg,
             totalredpg: response.data.data.totalredpg,
             currentpenpg:response.data.data.currentpenpg,
             avatarurl:response.data.data.avatarurl
           } 
+
+        
           setReferee(val)  
-          navigate("/refereelist")}
+          navigate(`/referee/${val.id}`)}
     } catch (err) {
         if(err.fmessage)
             setError(err.fmessage)
