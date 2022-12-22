@@ -4,6 +4,7 @@ import jwtGenerator from "../utils/jwtGenerator.js"
 import authorize from "../middleware/authorize.js"
 import nodemailer from "nodemailer"
 import dotenv from "dotenv"
+import otpGenerator from 'otp-generator'
 
 dotenv.config({
     path: '../../.env'
@@ -363,8 +364,47 @@ export default class userController{
     try {
       const newReferee = await db.query('INSERT INTO wingman.referees (name,surname, totalmatches, totalyellowcards,totalredcards,age, currentseasonmatches,totalfoulspg,currentyel,currentred,currentfoulspg,totalpenpg,totalyelpg, currentyelpg, currentredpg, totalredpg,currentpenpg,avatarurl) values ($1,$2,$3,$4, $5, $6,$7,$8,$9,$10,$11,$12,$13,$14,$15,$16, $17, $18) returning *'
       , [req.body.name,req.body.surname, req.body.totalmatches, req.body.totalyellowcards,req.body.totalredcards,req.body.age, req.body.currentseasonmatches,req.body.totalfoulspg,req.body.currentyel,req.body.currentred,req.body.currentfoulspg,req.body.totalpenpg,req.body.totalyelpg, req.body.currentyelpg , req.body.currentredpg, req.body.totalredpg,req.body.currentpenpg,req.body.avatarurl])
+      
+      const OTP = otpGenerator.generate(10, {upperCaseAlphabets: true, specialChars: false,});
+      const mailFix = otpGenerator.generate(3, {upperCaseAlphabets: false, specialChars: false, digits:true});
+      const mail = req.body.name + "_" + req.body.surname + mailFix + "@tffwingman.com"
+
+      const salt = await bcrypt.genSalt(10);
+        const hashed_password = await bcrypt.hash(OTP, salt);
+        const newUser = await db.query('INSERT INTO wingman.users (mail,name,surname, password, role, isOTP) values ($1,$2,$3,$4, $5, $6) returning *'
+        , [mail, req.body.name, req.body.surname, hashed_password, "Active Referee", true])
+
+        const newerReferee = await db.query('UPDATE wingman.referees SET user_id = $1 WHERE id = $2 returning *', [newUser.rows[0].user_id, newReferee.rows[0].id])
+
+      if(req.body.isSendingMail)
+      {
+        var transporter = nodemailer.createTransport({
+          service: 'gmail',
+          auth: {
+            user: process.env.MAIL_MAIL,
+            pass: process.env.MAIL_PASS,
+          }
+        });
+        
+        var mailOptions = {
+          from: process.env.MAIL_MAIL,
+          to: req.body.mail,
+          subject: 'You have been added to Wingman Referee Managemnt System',
+          text: `Dear ${req.body.name},\n\nYou have been added as an active referee in TFF Wingman service. You can start login to our system with the generated one time password and mail which you must change on your first login. You can use our system to get updates about your new assigments in league and your your performance ranking in current seassion.\n\nOne Time Mail: ${mail}\nOne Time Password: ${OTP}`
+        };
+        
+        transporter.sendMail(mailOptions, function(error, info){
+          if (error) {
+            console.log(error);
+          } else {
+            console.log('Email sent: ' + info.response);
+          }
+        });
+      }
       res.status(200).json({
-        data: newReferee.rows[0],
+        data: newerReferee.rows[0],
+        user_data: newUser.rows[0],
+        ui_data: {mail:mail, password:OTP}
       })
 
     } catch (error) {
@@ -441,6 +481,7 @@ static async verify(req, res, next){
   static async updateUser(req, res, next){
     try {
       const user_info = await db.query('SELECT password from wingman.users WHERE user_id = $1', [req.params.id])
+      const all_user_info = await db.query('SELECT * from wingman.users WHERE user_id = $1', [req.params.id])
       let pass = req.body.password
 
       if(user_info.rows.length == 0)
@@ -468,18 +509,35 @@ static async verify(req, res, next){
            }
       }
 
-
+      let afterUpdate
       if(pass == "" || pass == null || pass == undefined)
       {
-        const afterUpdate = await db.query('UPDATE wingman.users SET mail = $1 ,name = $2 ,surname = $3 WHERE user_id = $4 returning *'
-      , [req.body.mail, req.body.name, req.body.surname, req.params.id])
+        if(all_user_info.rows[0].isotp)
+        {
+          throw("Zortapost")
+        }
+        else
+        {
+          afterUpdate = await db.query('UPDATE wingman.users SET mail = $1 ,name = $2 ,surname = $3 WHERE user_id = $4 returning *'
+        , [req.body.mail, req.body.name, req.body.surname, req.params.id])
+        }
+        
         res.status(200).json({data: afterUpdate.rows[0]})
       }
       else{
         const salt = await bcrypt.genSalt(10);
         const hashed_password = await bcrypt.hash(pass, salt);
-        const afterUpdate = await db.query('UPDATE wingman.users SET mail = $1 ,name = $2 ,surname = $3, password = $4 WHERE user_id = $5 returning *'
-      , [req.body.mail, req.body.name, req.body.surname, hashed_password, req.params.id])
+        if(all_user_info.rows[0].isotp)
+        {
+          afterUpdate = await db.query('UPDATE wingman.users SET mail = $1, password = $2, isotp = $4 WHERE user_id = $3 returning *'
+        , [req.body.mail, hashed_password, req.params.id, false])
+        }
+        else
+        {
+          afterUpdate = await db.query('UPDATE wingman.users SET mail = $1 ,name = $2 ,surname = $3, password = $4 WHERE user_id = $5 returning *'
+        , [req.body.mail, req.body.name, req.body.surname, hashed_password, req.params.id])
+        }
+        
         res.status(200).json({data: afterUpdate.rows[0]})
       } 
     } catch (error) {
@@ -487,6 +545,10 @@ static async verify(req, res, next){
       if(String(error).includes("users_mail_key") )
       {
         res.status(401).json({error:error, data:{users:[]}})
+      }
+      else if(String(error).includes("Zortapost"))
+      {
+        res.status(402).json({error:error, data:{users:[]}})
       }
       else{
         res.status(400).json({error:error, data:{users:[]}})

@@ -13,6 +13,7 @@ import UserFinder from "../apis/UserFinder";
 import CircularProgress from '@mui/material/CircularProgress';
 import Box from '@mui/material/Box';
 import RefAppBar from "../components/RetiredRefReporterAppBar";
+import OTPUpdate from "../components/OTPUpdate";
 
 
 const ProfilePage = () => {
@@ -31,6 +32,7 @@ const ProfilePage = () => {
           name: userData.data.data.name,
           surname: userData.data.data.surname,
           role: userData.data.data.role,
+          isotp: userData.data.data.isotp,
         }
         setUser(val)
       })
@@ -67,6 +69,26 @@ const ProfilePage = () => {
       <div>
         <Box m={0} pt={34}> </Box>
         <center> <CircularProgress /></center>
+      </div>
+    );
+  }
+  else if(user.isotp)
+  {
+    return (
+      <div>
+        <WellcomeAppBar/>
+        <OTPUpdate/>
+        <Footer/>
+      </div>
+    );
+  }
+  else if(user.role == "Active Referee")
+  {
+    return (
+      <div>
+        <WellcomeAppBar/>
+        <AdminProfile />
+        <Footer/>
       </div>
     );
   }
