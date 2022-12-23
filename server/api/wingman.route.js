@@ -17,6 +17,14 @@ router.route("/test").get((req, res) => {
   })
 
 router.route("/users").get(userController.getAllUsers)
+router.route("/usersarchive").get(userController.getAllArchiveUsers)
+
+router.route("/recover/:id").get(userController.createRecoverRequestUser)
+router.route("/recoversend/:id").get(userController.getRecover)
+router.route("/recovermail/:id").get(userController.mailRecoverRequestUser)
+router.route("/recover").post(userController.recoverUser)
+router.route("/recover/:id").delete(userController.permaDel)
+
 router.route("/referees").get(userController.getAllReferees)
 router.route("/referees/:id").get(userController.getRefereeById)
 router.route("/refereeSort/:par").get(userController.sortReferee)

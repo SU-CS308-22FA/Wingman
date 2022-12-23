@@ -12,11 +12,19 @@ import Container from '@mui/material/Container';
 import Typography from '@mui/material/Typography';
 import Alert from '@mui/material/Alert';
 import UserFinder from "../apis/UserFinder";
+import { Checkbox, FormControlLabel, FormGroup } from "@mui/material";
+import Dialog from '@mui/material/Dialog';
+import DialogActions from '@mui/material/DialogActions';
+import DialogContent from '@mui/material/DialogContent';
+import DialogContentText from '@mui/material/DialogContentText';
+import DialogTitle from '@mui/material/DialogTitle';
+
 const CreateReferee = () => {
   const navigate = useNavigate();
   const [referee, setReferee] = useState(null);
   const [error, setError] = useState(null)
- 
+  const [isSendingMail, setMailSend] = useState(false) 
+  const [open, setOpen] = React.useState(false);
   
   const [inputs, setInputs] = useState({
     name: "",
@@ -32,13 +40,21 @@ const CreateReferee = () => {
     currentfoulspg: NaN,
     totalpenpg:NaN,
     currentpenpg: NaN,
-
+    mail: ""
   });  
   
+  function isValidEmail(email) {
+    const emailRegex = /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+    return emailRegex.test(String(email).toLowerCase());
+  }
  
+  const handleClose = () => {
+    setOpen(false);
+    navigate(`/referee/${referee.id}`)
+  };
 
   const { name, surname, totalmatches,totalyellowcards, totalredcards, age, currentseasonmatches,
-    totalfoulspg,currentyel,currentfoulspg,currentred,totalpenpg,currentpenpg} = inputs;
+    totalfoulspg,currentyel,currentfoulspg,currentred,totalpenpg,currentpenpg, mail} = inputs;
     function isAlphabetical(s) {
         // Use a regex to match only alphabetical characters and spaces
         const pattern = /^[a-zA-Z ]*$/;
@@ -56,6 +72,10 @@ const CreateReferee = () => {
         return /^-?\d+$/.test(value);
       }
 
+    function onCheckBox(event){
+      setMailSend(event.target.checked)
+    }
+
    const onChange = e =>
     setInputs({ ...inputs, [e.target.name]: e.target.value });
 
@@ -63,11 +83,15 @@ const CreateReferee = () => {
     e.preventDefault();
     try {
       if(name.length == 0 || surname.length == 0){
-        throw{fmessage: "Name or surname cannot be empty. Please check the both fields."} }   
+        throw{fmessage: "Name or surname cannot be empty. Please check the both fields."} }  
+      if(isSendingMail && mail.length == 0){
+        throw{fmessage: "Mail cannot be empty if sending mail. Please check the mail field or uncheck sending mail."} }    
       else if(!isAlphabetical(name)){
         throw{fmessage: "Name contains non-alphabetical characters. Please check the name field."} }    
       else if(!isAlphabetical(surname)){
         throw{fmessage: "Surname contains non-alphabetical characters. Please check the name field."}}
+      else if(isSendingMail && !isValidEmail(mail)){
+        throw{fmessage: "Mail format is incorrect. Please enter valid mail or uncheck sending mail."}}
       else if(age.length == null || totalmatches.length== null || totalyellowcards.length== null|| totalredcards.length== null || currentseasonmatches.length== null||
           currentyel.length== null||currentred.length== null || age.length == 0 || totalmatches.length== 0 || totalyellowcards.length== 0|| totalredcards.length== 0 || currentseasonmatches.length== 0||
           currentyel.length== 0||currentred.length== 0){
@@ -117,6 +141,8 @@ const CreateReferee = () => {
         totalredpg: totalredcards/totalmatches,
         currentpenpg:currentpenpg,
         avatarurl: "https://img.freepik.com/premium-vector/referee-avatar-icon-flat-color-style_755164-489.jpg?w=2000",
+        mail: mail,
+        isSendingMail: isSendingMail
       })
       console.log(response.data.data);      
       if(response.status==200){
@@ -139,12 +165,15 @@ const CreateReferee = () => {
             totalyelpg: response.data.data.totalyelpg,
             totalredpg: response.data.data.totalredpg,
             currentpenpg:response.data.data.currentpenpg,
-            avatarurl:response.data.data.avatarurl
-          } 
+            avatarurl:response.data.data.avatarurl,
+            mail: response.data.ui_data.mail,
+            password: response.data.ui_data.password
+          }
 
+          setOpen(true)
         
           setReferee(val)  
-          navigate(`/referee/${val.id}`)}
+        }
     } catch (err) {
         if(err.fmessage)
             setError(err.fmessage)
@@ -157,6 +186,26 @@ const CreateReferee = () => {
   return (
       <Container component="main">
         <CssBaseline />
+
+       {referee? <Dialog
+        open={open}
+        onClose={handleClose}
+        aria-labelledby="alert-dialog-title"
+        aria-describedby="alert-dialog-description"
+      >
+        <DialogTitle id="alert-dialog-title">
+          {"New referee created with following login information."}
+        </DialogTitle>
+        <DialogContent>
+          <DialogContentText id="alert-dialog-description">
+            {"Mail: " + referee.mail + "\n" + "Password: " + referee.password} 
+          </DialogContentText>
+        </DialogContent>
+        <DialogActions>
+          <Button onClick={handleClose}>OK</Button>
+        </DialogActions>
+      </Dialog> : <div></div>}
+
         <Box margin={{ left: "auto", right: "auto" }}
           sx={{
             marginTop: 6,
@@ -328,7 +377,32 @@ const CreateReferee = () => {
                />
              </Grid>
 
+             {isSendingMail ? <Grid item xs={12} sm={4}>
+               <TextField
+                 required
+                 fullWidth
+                  id="mail"
+                 label="Mail to send login details"
+                  name="mail"
+                 autoComplete="mail"
+                 onChange={e => onChange(e)}
+               />
+             </Grid> : <Grid item xs={12} sm={4}> <TextField
+                 fullWidth
+                  id="mail"
+                 label="Mail to send login details"
+                  name="mail"
+                 autoComplete="mail"
+                 onChange={e => onChange(e)}
+                 disabled={true}  
+               /> </Grid>}
+
             </Grid>
+
+            <Box mt={1} pt={0}> </Box>
+            <FormGroup>
+            <FormControlLabel control={<Checkbox onChange={onCheckBox} />} label="Send Login Details to mail?" />
+          </FormGroup>
             
             <Box m={1} pt={0}> </Box>
             {error &&<Alert variant="filled" severity="error"> {error} </Alert>}

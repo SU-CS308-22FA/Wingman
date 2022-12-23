@@ -4,6 +4,7 @@ import jwtGenerator from "../utils/jwtGenerator.js"
 import authorize from "../middleware/authorize.js"
 import nodemailer from "nodemailer"
 import dotenv from "dotenv"
+import otpGenerator from 'otp-generator'
 
 dotenv.config({
     path: '../../.env'
@@ -24,6 +25,180 @@ export default class userController{
           res.status(400).json({error:error, data:{users:[]}})
         }   
     }
+
+    static async getAllArchiveUsers(req, res, next){
+      try {
+        const results = await db.query('SELECT * FROM wingman.usersarchive')
+        const ratings = await db.query('SELECT DISTINCT r.*, re.name, re.surname, re.avatarurl FROM wingman.usersarchive u LEFT JOIN wingman.ratingsarchive r ON r.user_id = u.user_id LEFT JOIN wingman.referees re ON r.referee_id = re.id')
+        res.status(200).json({
+          lenght: results.rows.length,
+          data:{
+            users: results.rows,
+            ratings: ratings.rows
+          }
+        })
+      } catch (error) {
+        console.log(`Error when getting all archive users ${error.detail}`)
+        res.status(400).json({error:error, data:{users:[]}})
+      }   
+  }
+
+  static async createRecoverRequestUser(req, res, next)
+  {
+    try{
+    const OTP = otpGenerator.generate(20, {upperCaseAlphabets: true, specialChars: false,})
+    console.log(OTP)
+    
+    const tryOld = await db.query('SELECT * FROM wingman.recovers WHERE user_id = $1', [req.params.id])
+    if(tryOld.rows.length != 0)
+    {
+      throw{detail: "Request Already Exists"}
+    }
+    db.query("INSERT INTO wingman.recovers (user_id, otp) VALUES ($1, $2)", [req.params.id, OTP])
+    const myUser = await db.query('SELECT * FROM wingman.usersarchive WHERE user_id = $1', [req.params.id]);
+
+
+
+    var transporter = nodemailer.createTransport({
+      service: 'gmail',
+      auth: {
+        user: process.env.MAIL_MAIL,
+        pass: process.env.MAIL_PASS,
+      }
+    });
+    
+    var mailOptions = {
+      from: process.env.MAIL_MAIL,
+      to: myUser.rows[0].mail,
+      subject: 'Recover Your Deleted Wingman Account',
+      text: `Dear Wingman User,\n\nYou can recover your deleted Wingman Account by clicking link below.\n\nYour link: https://wingman-team29.herokuapp.com/recover/${OTP}`
+    };
+    
+    transporter.sendMail(mailOptions, function(error, info){
+      if (error) {
+        console.log(error);
+      } else {
+        console.log('Email sent: ' + info.response);
+      }
+    });
+    res.status(200).json({status:"Okey"})
+  }
+    catch(error){
+      console.log(`Error when creating recover req archive user ${error}`)
+      res.status(400).json({error:error})
+    }
+  }
+
+  static async mailRecoverRequestUser(req, res, next)
+  {
+    const myUser = await db.query('SELECT * FROM wingman.usersarchive WHERE user_id = $1', [req.params.id]);
+    const myReq = await db.query('SELECT * FROM wingman.recovers WHERE user_id = $1', [req.params.id]);
+    if(myReq.rows.length == 0)
+    {
+      throw{detail: "No Request Exists"}
+    }
+    console.log(myReq.rows[0].otp)
+
+    var transporter = nodemailer.createTransport({
+      service: 'gmail',
+      auth: {
+        user: process.env.MAIL_MAIL,
+        pass: process.env.MAIL_PASS,
+      }
+    });
+    
+    var mailOptions = {
+      from: process.env.MAIL_MAIL,
+      to: myUser.rows[0].mail,
+      subject: 'Recover Your Deleted Wingman Account',
+      text: `Dear Wingman User,\n\nYou can recover your deleted Wingman Account by clicking link below.\n\nYour link: https://wingman-team29.herokuapp.com/recover/${myReq.rows[0].otp}`
+    };
+    
+    transporter.sendMail(mailOptions, function(error, info){
+      if (error) {
+        console.log(error);
+      } else {
+        console.log('Email sent: ' + info.response);
+      }
+    });
+    res.status(200).json({status:"Okey"})
+  }
+
+  static async recoverUser(req, res, next)
+  {
+    try{
+    const myReq = await db.query('DELETE FROM wingman.recovers WHERE otp = $1 returning *', [req.body.otp]);
+    if(myReq.rows.length == 0)
+    {
+      throw{detail: "No Request Exists with given otp"}
+    }
+    const ratings = await db.query("SELECT * FROM wingman.ratingsarchive WHERE user_id = $1", [myReq.rows[0].user_id])
+
+    const results = await db.query("DELETE FROM wingman.usersarchive WHERE user_id = $1 returning *", [myReq.rows[0].user_id])
+
+    const newUser = await db.query('INSERT INTO wingman.users (mail,name,surname, password, role, isotp, user_id) values ($1,$2,$3,$4, $5, $6, $7) returning *'
+    , [results.rows[0].mail, results.rows[0].name, results.rows[0].surname, results.rows[0].password, results.rows[0].role, results.rows[0].isotp, results.rows[0].user_id])
+
+      for(let i = 0; i < ratings.rows.length; i++)
+      {
+        let rate = ratings.rows[i]
+        await db.query('INSERT INTO wingman.ratings (referee_id, user_id, match_id, rate) VALUES ($1, $2, $3, $4)', [rate.referee_id, rate.user_id, rate.match_id, rate.rate])
+      }
+    
+    res.status(200).json({status:"Okey"})
+  }
+    catch(error)
+    {
+      console.log(`Error when creating recover user ${JSON.stringify(error)}`)
+      res.status(400).json({error:error})
+    }
+    
+  }
+
+  static async permaDel(req, res, next){
+    try {
+      const results = await db.query("DELETE FROM wingman.usersarchive WHERE user_id = $1 returning *", [req.params.id])
+      
+      if(results.rows.length == 0)
+        {
+          throw {
+            detail: "User not found.",
+            code: 1,
+            error: new Error()
+          };
+        }
+      res.status(200).json({data: results.rows[0]})
+    } catch (err) {
+      console.log(`Failed to delete user ${err}.`)
+        if(err.code == 1)
+        {
+          res.status(404).json({detail:err.detail, data:[]})
+          return
+        }
+        res.status(400).json({detail:err, data:[]})
+    }
+  }
+
+  static async getRecover(req, res, next){
+    try {
+      
+      const myReq = await db.query('SELECT * FROM wingman.recovers WHERE user_id = $1', [req.params.id]);
+
+      if(myReq.rows.length == 0)
+      {
+        throw {
+          detail: "Req not found.",
+        };
+      }
+
+      res.status(200).json({
+      data: myReq.rows[0]
+      })
+    } catch (err) {
+      console.log(`Error when getting req ${err}`)
+      res.status(400).json({detail:err, data:[]})
+    }   
+  }
 
     static async getAllReferees(req, res, next) {
       try {
@@ -363,8 +538,47 @@ export default class userController{
     try {
       const newReferee = await db.query('INSERT INTO wingman.referees (name,surname, totalmatches, totalyellowcards,totalredcards,age, currentseasonmatches,totalfoulspg,currentyel,currentred,currentfoulspg,totalpenpg,totalyelpg, currentyelpg, currentredpg, totalredpg,currentpenpg,avatarurl) values ($1,$2,$3,$4, $5, $6,$7,$8,$9,$10,$11,$12,$13,$14,$15,$16, $17, $18) returning *'
       , [req.body.name,req.body.surname, req.body.totalmatches, req.body.totalyellowcards,req.body.totalredcards,req.body.age, req.body.currentseasonmatches,req.body.totalfoulspg,req.body.currentyel,req.body.currentred,req.body.currentfoulspg,req.body.totalpenpg,req.body.totalyelpg, req.body.currentyelpg , req.body.currentredpg, req.body.totalredpg,req.body.currentpenpg,req.body.avatarurl])
+      
+      const OTP = otpGenerator.generate(10, {upperCaseAlphabets: true, specialChars: false,});
+      const mailFix = otpGenerator.generate(3, {upperCaseAlphabets: false, specialChars: false, digits:true});
+      const mail = req.body.name + "_" + req.body.surname + mailFix + "@tffwingman.com"
+
+      const salt = await bcrypt.genSalt(10);
+        const hashed_password = await bcrypt.hash(OTP, salt);
+        const newUser = await db.query('INSERT INTO wingman.users (mail,name,surname, password, role, isOTP) values ($1,$2,$3,$4, $5, $6) returning *'
+        , [mail, req.body.name, req.body.surname, hashed_password, "Active Referee", true])
+
+        const newerReferee = await db.query('UPDATE wingman.referees SET user_id = $1 WHERE id = $2 returning *', [newUser.rows[0].user_id, newReferee.rows[0].id])
+
+      if(req.body.isSendingMail)
+      {
+        var transporter = nodemailer.createTransport({
+          service: 'gmail',
+          auth: {
+            user: process.env.MAIL_MAIL,
+            pass: process.env.MAIL_PASS,
+          }
+        });
+        
+        var mailOptions = {
+          from: process.env.MAIL_MAIL,
+          to: req.body.mail,
+          subject: 'You have been added to Wingman Referee Managemnt System',
+          text: `Dear ${req.body.name},\n\nYou have been added as an active referee in TFF Wingman service. You can start login to our system with the generated one time password and mail which you must change on your first login. You can use our system to get updates about your new assigments in league and your your performance ranking in current seassion.\n\nOne Time Mail: ${mail}\nOne Time Password: ${OTP}`
+        };
+        
+        transporter.sendMail(mailOptions, function(error, info){
+          if (error) {
+            console.log(error);
+          } else {
+            console.log('Email sent: ' + info.response);
+          }
+        });
+      }
       res.status(200).json({
-        data: newReferee.rows[0],
+        data: newerReferee.rows[0],
+        user_data: newUser.rows[0],
+        ui_data: {mail:mail, password:OTP}
       })
 
     } catch (error) {
@@ -441,6 +655,7 @@ static async verify(req, res, next){
   static async updateUser(req, res, next){
     try {
       const user_info = await db.query('SELECT password from wingman.users WHERE user_id = $1', [req.params.id])
+      const all_user_info = await db.query('SELECT * from wingman.users WHERE user_id = $1', [req.params.id])
       let pass = req.body.password
 
       if(user_info.rows.length == 0)
@@ -468,18 +683,35 @@ static async verify(req, res, next){
            }
       }
 
-
+      let afterUpdate
       if(pass == "" || pass == null || pass == undefined)
       {
-        const afterUpdate = await db.query('UPDATE wingman.users SET mail = $1 ,name = $2 ,surname = $3 WHERE user_id = $4 returning *'
-      , [req.body.mail, req.body.name, req.body.surname, req.params.id])
+        if(all_user_info.rows[0].isotp)
+        {
+          throw("Zortapost")
+        }
+        else
+        {
+          afterUpdate = await db.query('UPDATE wingman.users SET mail = $1 ,name = $2 ,surname = $3 WHERE user_id = $4 returning *'
+        , [req.body.mail, req.body.name, req.body.surname, req.params.id])
+        }
+        
         res.status(200).json({data: afterUpdate.rows[0]})
       }
       else{
         const salt = await bcrypt.genSalt(10);
         const hashed_password = await bcrypt.hash(pass, salt);
-        const afterUpdate = await db.query('UPDATE wingman.users SET mail = $1 ,name = $2 ,surname = $3, password = $4 WHERE user_id = $5 returning *'
-      , [req.body.mail, req.body.name, req.body.surname, hashed_password, req.params.id])
+        if(all_user_info.rows[0].isotp)
+        {
+          afterUpdate = await db.query('UPDATE wingman.users SET mail = $1, password = $2, isotp = $4 WHERE user_id = $3 returning *'
+        , [req.body.mail, hashed_password, req.params.id, false])
+        }
+        else
+        {
+          afterUpdate = await db.query('UPDATE wingman.users SET mail = $1 ,name = $2 ,surname = $3, password = $4 WHERE user_id = $5 returning *'
+        , [req.body.mail, req.body.name, req.body.surname, hashed_password, req.params.id])
+        }
+        
         res.status(200).json({data: afterUpdate.rows[0]})
       } 
     } catch (error) {
@@ -487,6 +719,10 @@ static async verify(req, res, next){
       if(String(error).includes("users_mail_key") )
       {
         res.status(401).json({error:error, data:{users:[]}})
+      }
+      else if(String(error).includes("Zortapost"))
+      {
+        res.status(402).json({error:error, data:{users:[]}})
       }
       else{
         res.status(400).json({error:error, data:{users:[]}})
@@ -496,7 +732,10 @@ static async verify(req, res, next){
 
   static async deleteById(req, res, next){
     try {
+      const ratings = await db.query("SELECT * FROM wingman.ratings WHERE user_id = $1", [req.params.id])
+
       const results = await db.query("DELETE FROM wingman.users WHERE user_id = $1 returning *", [req.params.id])
+      
       if(results.rows.length == 0)
         {
           throw {
@@ -506,6 +745,16 @@ static async verify(req, res, next){
           };
         }
 
+        const newUser = await db.query('INSERT INTO wingman.usersarchive (mail,name,surname, password, role, isotp, user_id) values ($1,$2,$3,$4, $5, $6, $7) returning *'
+        , [results.rows[0].mail, results.rows[0].name, results.rows[0].surname, results.rows[0].password, results.rows[0].role, results.rows[0].isotp, results.rows[0].user_id])
+
+      console.log(ratings.rows)
+      for(let i = 0; i < ratings.rows.length; i++)
+      {
+        let rate = ratings.rows[i]
+        console.log(rate)
+        await db.query('INSERT INTO wingman.ratingsarchive (referee_id, user_id, match_id, rate) VALUES ($1, $2, $3, $4)', [rate.referee_id, rate.user_id, rate.match_id, rate.rate])
+      }
       res.status(200).json({data: results.rows[0]})
     } catch (err) {
       console.log(`Failed to delete user ${err}.`)
@@ -626,11 +875,20 @@ static async verify(req, res, next){
         "DELETE FROM wingman.delete_requests WHERE requested_id = $1 and requester_id = $2 returning *",
         [req.body.requested_id, req.body.requester_id]
       );
+      const ratings = await db.query("SELECT * FROM wingman.ratings WHERE user_id = $1", [req.body.requested_id])
 
       const reporter = await db.query(
         "DELETE FROM wingman.users WHERE user_id = $1 returning *",
         [req.body.requested_id]
       );
+      const newUser = await db.query('INSERT INTO wingman.usersarchive (mail,name,surname, password, role, isotp, user_id) values ($1,$2,$3,$4, $5, $6, $7) returning *'
+        , [reporter.rows[0].mail, reporter.rows[0].name, reporter.rows[0].surname, reporter.rows[0].password, reporter.rows[0].role, reporter.rows[0].isotp, reporter.rows[0].user_id])
+      
+        for(let i = 0; i < ratings.rows.length; i++)
+      {
+        let rate = ratings.rows[i]
+        await db.query('INSERT INTO wingman.ratingsarchive (referee_id, user_id, match_id, rate) VALUES ($1, $2, $3, $4)', [rate.referee_id, rate.user_id, rate.match_id, rate.rate])
+      }
       var transporter = nodemailer.createTransport({
         service: "gmail",
         auth: {
