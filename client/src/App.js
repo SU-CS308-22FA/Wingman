@@ -25,6 +25,8 @@ import DeleteRequestPage from "./routes/SuperAdmin/DeleteRequestsPage";
 import RRHistPage from "./routes/RRHistPage";
 import RefereeCreatePage from "./routes/RefereeCreation";
 import TeamDashboardPage from "./routes/TeamDashboardPage";
+import UserArchivePage from "./routes/SuperAdmin/UserArchivePage";
+import { Recover } from "./components/archives/Recover";
 const theme = createTheme({
   palette: {
     primary: {
@@ -88,6 +90,8 @@ class App extends Component {
                     <Route path="/history/" element={<RRHistPage/>}/>
                     <Route path="/reporters" element={<ReporterListPage />} />
                     <Route path="/requests" element={<DeleteRequestPage />} />
+                    <Route path="/archive" element={<UserArchivePage />} />
+                    <Route path="/recover/:otp" element={<Recover/>}/>
                 </Routes>
               </Router>
             </div>

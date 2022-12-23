@@ -26,6 +26,180 @@ export default class userController{
         }   
     }
 
+    static async getAllArchiveUsers(req, res, next){
+      try {
+        const results = await db.query('SELECT * FROM wingman.usersarchive')
+        const ratings = await db.query('SELECT DISTINCT r.*, re.name, re.surname, re.avatarurl FROM wingman.usersarchive u LEFT JOIN wingman.ratingsarchive r ON r.user_id = u.user_id LEFT JOIN wingman.referees re ON r.referee_id = re.id')
+        res.status(200).json({
+          lenght: results.rows.length,
+          data:{
+            users: results.rows,
+            ratings: ratings.rows
+          }
+        })
+      } catch (error) {
+        console.log(`Error when getting all archive users ${error.detail}`)
+        res.status(400).json({error:error, data:{users:[]}})
+      }   
+  }
+
+  static async createRecoverRequestUser(req, res, next)
+  {
+    try{
+    const OTP = otpGenerator.generate(20, {upperCaseAlphabets: true, specialChars: false,})
+    console.log(OTP)
+    
+    const tryOld = await db.query('SELECT * FROM wingman.recovers WHERE user_id = $1', [req.params.id])
+    if(tryOld.rows.length != 0)
+    {
+      throw{detail: "Request Already Exists"}
+    }
+    db.query("INSERT INTO wingman.recovers (user_id, otp) VALUES ($1, $2)", [req.params.id, OTP])
+    const myUser = await db.query('SELECT * FROM wingman.usersarchive WHERE user_id = $1', [req.params.id]);
+
+
+
+    var transporter = nodemailer.createTransport({
+      service: 'gmail',
+      auth: {
+        user: process.env.MAIL_MAIL,
+        pass: process.env.MAIL_PASS,
+      }
+    });
+    
+    var mailOptions = {
+      from: process.env.MAIL_MAIL,
+      to: myUser.rows[0].mail,
+      subject: 'Recover Your Deleted Wingman Account',
+      text: `Dear Wingman User,\n\nYou can recover your deleted Wingman Account by clicking link below.\n\nYour link: https://wingman-team29.herokuapp.com/recover/${OTP}`
+    };
+    
+    transporter.sendMail(mailOptions, function(error, info){
+      if (error) {
+        console.log(error);
+      } else {
+        console.log('Email sent: ' + info.response);
+      }
+    });
+    res.status(200).json({status:"Okey"})
+  }
+    catch(error){
+      console.log(`Error when creating recover req archive user ${error}`)
+      res.status(400).json({error:error})
+    }
+  }
+
+  static async mailRecoverRequestUser(req, res, next)
+  {
+    const myUser = await db.query('SELECT * FROM wingman.usersarchive WHERE user_id = $1', [req.params.id]);
+    const myReq = await db.query('SELECT * FROM wingman.recovers WHERE user_id = $1', [req.params.id]);
+    if(myReq.rows.length == 0)
+    {
+      throw{detail: "No Request Exists"}
+    }
+    console.log(myReq.rows[0].otp)
+
+    var transporter = nodemailer.createTransport({
+      service: 'gmail',
+      auth: {
+        user: process.env.MAIL_MAIL,
+        pass: process.env.MAIL_PASS,
+      }
+    });
+    
+    var mailOptions = {
+      from: process.env.MAIL_MAIL,
+      to: myUser.rows[0].mail,
+      subject: 'Recover Your Deleted Wingman Account',
+      text: `Dear Wingman User,\n\nYou can recover your deleted Wingman Account by clicking link below.\n\nYour link: https://wingman-team29.herokuapp.com/recover/${myReq.rows[0].otp}`
+    };
+    
+    transporter.sendMail(mailOptions, function(error, info){
+      if (error) {
+        console.log(error);
+      } else {
+        console.log('Email sent: ' + info.response);
+      }
+    });
+    res.status(200).json({status:"Okey"})
+  }
+
+  static async recoverUser(req, res, next)
+  {
+    try{
+    const myReq = await db.query('DELETE FROM wingman.recovers WHERE otp = $1 returning *', [req.body.otp]);
+    if(myReq.rows.length == 0)
+    {
+      throw{detail: "No Request Exists with given otp"}
+    }
+    const ratings = await db.query("SELECT * FROM wingman.ratingsarchive WHERE user_id = $1", [myReq.rows[0].user_id])
+
+    const results = await db.query("DELETE FROM wingman.usersarchive WHERE user_id = $1 returning *", [myReq.rows[0].user_id])
+
+    const newUser = await db.query('INSERT INTO wingman.users (mail,name,surname, password, role, isotp, user_id) values ($1,$2,$3,$4, $5, $6, $7) returning *'
+    , [results.rows[0].mail, results.rows[0].name, results.rows[0].surname, results.rows[0].password, results.rows[0].role, results.rows[0].isotp, results.rows[0].user_id])
+
+      for(let i = 0; i < ratings.rows.length; i++)
+      {
+        let rate = ratings.rows[i]
+        await db.query('INSERT INTO wingman.ratings (referee_id, user_id, match_id, rate) VALUES ($1, $2, $3, $4)', [rate.referee_id, rate.user_id, rate.match_id, rate.rate])
+      }
+    
+    res.status(200).json({status:"Okey"})
+  }
+    catch(error)
+    {
+      console.log(`Error when creating recover user ${JSON.stringify(error)}`)
+      res.status(400).json({error:error})
+    }
+    
+  }
+
+  static async permaDel(req, res, next){
+    try {
+      const results = await db.query("DELETE FROM wingman.usersarchive WHERE user_id = $1 returning *", [req.params.id])
+      
+      if(results.rows.length == 0)
+        {
+          throw {
+            detail: "User not found.",
+            code: 1,
+            error: new Error()
+          };
+        }
+      res.status(200).json({data: results.rows[0]})
+    } catch (err) {
+      console.log(`Failed to delete user ${err}.`)
+        if(err.code == 1)
+        {
+          res.status(404).json({detail:err.detail, data:[]})
+          return
+        }
+        res.status(400).json({detail:err, data:[]})
+    }
+  }
+
+  static async getRecover(req, res, next){
+    try {
+      
+      const myReq = await db.query('SELECT * FROM wingman.recovers WHERE user_id = $1', [req.params.id]);
+
+      if(myReq.rows.length == 0)
+      {
+        throw {
+          detail: "Req not found.",
+        };
+      }
+
+      res.status(200).json({
+      data: myReq.rows[0]
+      })
+    } catch (err) {
+      console.log(`Error when getting req ${err}`)
+      res.status(400).json({detail:err, data:[]})
+    }   
+  }
+
     static async getAllReferees(req, res, next) {
       try {
         
@@ -558,7 +732,10 @@ static async verify(req, res, next){
 
   static async deleteById(req, res, next){
     try {
+      const ratings = await db.query("SELECT * FROM wingman.ratings WHERE user_id = $1", [req.params.id])
+
       const results = await db.query("DELETE FROM wingman.users WHERE user_id = $1 returning *", [req.params.id])
+      
       if(results.rows.length == 0)
         {
           throw {
@@ -568,6 +745,16 @@ static async verify(req, res, next){
           };
         }
 
+        const newUser = await db.query('INSERT INTO wingman.usersarchive (mail,name,surname, password, role, isotp, user_id) values ($1,$2,$3,$4, $5, $6, $7) returning *'
+        , [results.rows[0].mail, results.rows[0].name, results.rows[0].surname, results.rows[0].password, results.rows[0].role, results.rows[0].isotp, results.rows[0].user_id])
+
+      console.log(ratings.rows)
+      for(let i = 0; i < ratings.rows.length; i++)
+      {
+        let rate = ratings.rows[i]
+        console.log(rate)
+        await db.query('INSERT INTO wingman.ratingsarchive (referee_id, user_id, match_id, rate) VALUES ($1, $2, $3, $4)', [rate.referee_id, rate.user_id, rate.match_id, rate.rate])
+      }
       res.status(200).json({data: results.rows[0]})
     } catch (err) {
       console.log(`Failed to delete user ${err}.`)
@@ -688,11 +875,20 @@ static async verify(req, res, next){
         "DELETE FROM wingman.delete_requests WHERE requested_id = $1 and requester_id = $2 returning *",
         [req.body.requested_id, req.body.requester_id]
       );
+      const ratings = await db.query("SELECT * FROM wingman.ratings WHERE user_id = $1", [req.body.requested_id])
 
       const reporter = await db.query(
         "DELETE FROM wingman.users WHERE user_id = $1 returning *",
         [req.body.requested_id]
       );
+      const newUser = await db.query('INSERT INTO wingman.usersarchive (mail,name,surname, password, role, isotp, user_id) values ($1,$2,$3,$4, $5, $6, $7) returning *'
+        , [reporter.rows[0].mail, reporter.rows[0].name, reporter.rows[0].surname, reporter.rows[0].password, reporter.rows[0].role, reporter.rows[0].isotp, reporter.rows[0].user_id])
+      
+        for(let i = 0; i < ratings.rows.length; i++)
+      {
+        let rate = ratings.rows[i]
+        await db.query('INSERT INTO wingman.ratingsarchive (referee_id, user_id, match_id, rate) VALUES ($1, $2, $3, $4)', [rate.referee_id, rate.user_id, rate.match_id, rate.rate])
+      }
       var transporter = nodemailer.createTransport({
         service: "gmail",
         auth: {

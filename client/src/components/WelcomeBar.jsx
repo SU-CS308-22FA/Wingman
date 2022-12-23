@@ -26,11 +26,18 @@ function WelcomeAppBar() {
       const onRequestsClicked = (e) => {
         navigate("/requests");
       };
+      const onArchiveClick = (e) => {
+        navigate("/archive");
+      };
 const tiers = [
     {
       pageName:"Delete Requests",
       onClick: onRequestsClicked
   },
+  {
+    pageName:"Archive",
+    onClick: onArchiveClick
+},
 
 
   ];
