@@ -313,41 +313,41 @@ export default class userController{
           res.status(400).json({detail:err, data:[]})
         }   
       }
-      // static async doubleQueryForFutureReference(req, res, next) {
-      //   try {
-      //     // First, get the team data
-      //     const teamQuery = await db.query('SELECT DISTINCT * FROM wingman.teams t, wingman.teamref R WHERE teamid = $1 AND  t.teamname = R.teamname', [req.params.id]);
+      static async getRecommendationById(req, res, next) {
+        try {
+          // First, get the team data
+          const tensionQuery = await db.query("SELECT Abs( (r.tension)-(t.avg_tension_score*0.7)) AS TensionDif, t.match_id, r.id, r.avatarurl, t.homelogo, t.awaylogo, t.tension_class, r.tension, CONCAT(r.name, ' ', r.surname) as ref_name, t.avg_tension_score, t.home, t.away, t.hometension,t.awaytension FROM ( SELECT m.match_id, t1.teamname as home, t2.teamname as away, t1.teamlogo as homelogo, t2.teamlogo as awaylogo,t1.tension as hometension, t2.tension as awaytension, (t1.tension + t2.tension) / 2 AS avg_tension_score, (CASE WHEN (t1.tension + t2.tension) / 2 < 80 THEN 'Fair' WHEN (t1.tension + t2.tension) / 2 BETWEEN 80 AND 90 THEN 'Mediocre' WHEN (t1.tension + t2.tension) / 2 > 90  THEN 'Severe' END) AS tension_class FROM wingman.matches m JOIN wingman.teams t1 ON m.home_id = t1.teamid JOIN wingman.teams t2 ON m.away_id = t2.teamid ) t JOIN ( SELECT id, name, surname, tension, avatarurl, CASE WHEN tension < 53 THEN 'Fair' WHEN tension BETWEEN 53 AND 64.5 THEN 'Mediocre' WHEN tension > 64.5 THEN 'Severe' ELSE 'unknown' END AS tension_class FROM wingman.referees ) r ON t.tension_class = r.tension_class WHERE match_id = $1", [req.params.id]);
       
-      //     // Then, get the referees data
-      //     const refereesQuery = await db.query('SELECT id FROM wingman.referees');
+          // Then, get the referees data
+          const ratingQuery = await db.query('SELECT id FROM wingman.referees');
       
-      //     // Use Promise.all() to wait for both queries to finish
-      //     const [teamData, refereesData] = await Promise.all([teamQuery, refereesQuery]);
+          // Use Promise.all() to wait for both queries to finish
+          const [tensionData, ratingData] = await Promise.all([tensionQuery, ratingQuery]);
       
-      //     if (teamData.rows.length == 0) {
-      //       throw {
-      //         detail: "Team not found.",
-      //         code: 1,
-      //         error: new Error()
-      //       };
-      //     }
+          if (tensionData.rows.length == 0) {
+            throw {
+              detail: "Tension not found.",
+              code: 1,
+              error: new Error()
+            };
+          }
       
-      //     res.status(200).json({
-      //       data: {
-      //         team: teamData.rows,
-      //         referees: refereesData.rows
-      //       }
-      //     });
-      //   } catch (err) {
-      //     console.log(`Error when getting one team ${err}`);
+          res.status(200).json({
+            data: {
+              tensions: tensionData.rows,
+              ratings: ratingData.rows
+            }
+          });
+        } catch (err) {
+          console.log(`Error when getting one team ${err}`);
       
-      //     if (err.code == 1) {
-      //       res.status(404).json({detail: err.detail, data: []});
-      //       return;
-      //     }
-      //     res.status(400).json({detail: err, data: []});
-      //   }
-      // }
+          if (err.code == 1) {
+            res.status(404).json({detail: err.detail, data: []});
+            return;
+          }
+          res.status(400).json({detail: err, data: []});
+        }
+      }
       static async sortReferee(req, res, next){
         try {
           
