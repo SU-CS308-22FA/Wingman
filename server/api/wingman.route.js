@@ -24,7 +24,7 @@ router.route("/recoversend/:id").get(userController.getRecover)
 router.route("/recovermail/:id").get(userController.mailRecoverRequestUser)
 router.route("/recover").post(userController.recoverUser)
 router.route("/recover/:id").delete(userController.permaDel)
-
+router.route("/recommendation/:id").get(userController.getRecommendationById)
 router.route("/referees").get(userController.getAllReferees)
 router.route("/referees/:id").get(userController.getRefereeById)
 router.route("/refereeSort/:par").get(userController.sortReferee)

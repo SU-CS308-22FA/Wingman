@@ -27,6 +27,10 @@ import RefereeCreatePage from "./routes/RefereeCreation";
 import TeamDashboardPage from "./routes/TeamDashboardPage";
 import UserArchivePage from "./routes/SuperAdmin/UserArchivePage";
 import { Recover } from "./components/archives/Recover";
+import Recommendation from "./components/RecommendationComponent";
+import RecommendationPage from "./routes/RecommendationPage";
+
+
 const theme = createTheme({
   palette: {
     primary: {
@@ -79,7 +83,7 @@ class App extends Component {
                     <Route path="/profile/" element={<ProfilePage/>}/>\
                     <Route path="/update/" element={<RRUpdatePage/>}/>
                     <Route path="/addReferee" element={<RefereeCreatePage/>}/>
-
+                    <Route path="/recommendation/:id" element={<RecommendationPage/>}/>
                     <Route path="/refereeList" element={<RRRefereeList/>}/>
                     <Route path="/referee/:id" element={<RefereeDashboardPage/>}/>     
                     <Route path="/teams" element={<TeamListPage/>}/>

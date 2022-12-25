@@ -1,15 +1,13 @@
 import React, { useState } from "react";
 import { useEffect } from "react";
-import { useContext } from "react";
-import { useNavigate } from "react-router-dom";
 import UserFinder from "../apis/UserFinder";
-import { DataGrid, gridClasses } from "@mui/x-data-grid";
  
 import {
   Avatar,
   Box,
   Card,
   CardContent,
+  CardMedia,
   CardHeader,
   Grid,
   Typography,
@@ -17,12 +15,14 @@ import {
 import SmallCard from "./SmallCard";
 import RecAreaChart from "./RecAreaChart";
 import MainCard from "./MainCard";
+import RateAreaChart from "./RateAreaChart";
 
 export const Recommendation = () => {
   const [infoText, setInfoText] = useState("");
 
   const [match, setMatch] = useState(null);
   const [isAvailable, setAvailable] = useState(true);
+  const [rate,setRate] = useState(null);
 
   const queryString = window.location.href;
   const id = queryString.match(/recommendation\/(\d+)/)[1];
@@ -37,6 +37,11 @@ export const Recommendation = () => {
         } else {
           setMatch((prevMatch) => []);
         }
+        if (response.data.data.ratings) {
+          setRate((prevRate) => response.data.data.ratings);
+        } else {
+          setRate((prevRate) => []);
+        }
       } catch (err) {
         setAvailable(false);
 
@@ -44,6 +49,7 @@ export const Recommendation = () => {
       }
     }
     console.log("Ege", match)
+    console.log("Ege",rate)
     if (id) {
       fetchData();
     }
@@ -175,7 +181,7 @@ export const Recommendation = () => {
             boxShadow:0 }}
           >
   <CardHeader
-  title= {<center><Typography variant="h5" color="#70798C" font fontWeight="600"> First Recommendation Criteria </Typography></center>}
+  title= {<center><Typography variant="h5" color="#A99985" font fontWeight="600"> First Recommendation Criteria </Typography></center>}
     titleTypographyProps={{ align: 'center' }}
   />
   <CardContent align="center">
@@ -200,7 +206,65 @@ export const Recommendation = () => {
       </Box>
   </MainCard>
 </Grid>
+
+<Grid item ml = {5}  mr = {2.5} xs={12} md={12} lg={12}>
+    <Card
+          elevation = {0}
+          style={{ height: '200px', backgroundColor: "#F1EAE4", borderColor: "#EAE0D7",
+         boxShadow:0 }}
+          >
+  <CardContent align="center">
+  {<center><Typography md = {5} variant="h5" color="#A99985" font fontWeight="600"> Wingman's First Recommendation - {match.reduce((prev, curr) => prev.tensiondif < curr.tensiondif ? prev : curr).ref_name} </Typography></center>}
+
+  <Avatar src={match.reduce((prev, curr) => prev.tensiondif < curr.tensiondif ? prev : curr).avatarurl}           	sx={{ mt:1,width: 100, height: 100 }}/>
+    <Typography variant="subtitle2" mt ={1} color="#252323" font fontWeight="500">Among all the referees with the {match[0].tension_class} tension class, {match.reduce((prev, curr) => prev.tensiondif < curr.tensiondif ? prev : curr).ref_name} has the lowest tension score difference with {match.reduce((prev, curr) => prev.tensiondif < curr.tensiondif ? prev : curr).tensiondif.toFixed(2)} after normalization.</Typography>
+  </CardContent>
+</Card></Grid>
+
+
+
+
+
+<Grid item ml = {5}  mr = {2.5} xs={12} md={12} lg={12}>
+    <Card
+          elevation = {0}
+             style={{ backgroundColor: "#F1EAE4", borderColor: "#EAE0D7",
+            boxShadow:0 }}
+          >
+  <CardHeader
+  title= {<center><Typography variant="h5" color="#70798C" font fontWeight="600"> Second Recommendation Criteria </Typography></center>}
+    titleTypographyProps={{ align: 'center' }}
+  />
+  <CardContent align="center">
+    <Typography variant="subtitle1"  color="#252323" font fontWeight="500"> Wingman's second recommendation taking into account the referee ratings. A list of all referees who directed the match of {match[0].home} or {match[0].away} is retrieved. The system calculates the average rating of these referees in matches involving any of these teams. The table below is a summary of the referees' performance. Finally, the system recommends the referee with the highest rating. Ratings are given by press officers and former referees.</Typography>
+  </CardContent>
+  </Card>
+  </Grid>
+
+  <Grid item ml = {5}  mr = {2} xs={12} md={12} lg={12}>
+
+  <MainCard content={false} sx={{ mt: 1}}>
+  <Box sx={{ pt: 1, pr: 0, ml:2}}>
+      <RateAreaChart data={rate} />
+      </Box>
+  </MainCard>
+</Grid>
  
+<Grid item ml = {5}  mr = {2.5} xs={12} md={12} lg={12}>
+    <Card
+          elevation = {0}
+          style={{ height: '200px', backgroundColor: "#F1EAE4", borderColor: "#EAE0D7",
+         boxShadow:0 }}
+          >
+  <CardContent align="center">
+  {<center><Typography md = {5} variant="h5" color="#70798C" font fontWeight="600"> Wingman's Second Recommendation - {rate.reduce((prev, curr) => prev.avg_rating > curr.avg_rating ? prev : curr).refname} </Typography></center>}
+
+  <Avatar src={rate.reduce((prev, curr) => prev.avg_rating > curr.avg_rating ? prev : curr).avatarurl}           	sx={{ mt:1,width: 100, height: 100 }}/>
+    <Typography variant="subtitle2" mt ={1} color="#252323" font fontWeight="500">Among all the referees who directed the match of {match[0].home} or {match[0].away}; {rate.reduce((prev, curr) => prev.avg_rating > curr.avg_rating ? prev : curr).refname}  has the highest rating with {Number(rate.reduce((prev, curr) => prev.avg_rating > curr.avg_rating ? prev : curr).avg_rating).toFixed(2)}.</Typography>
+  </CardContent>
+</Card></Grid>
+
+
   </Grid>
 
     ) : null;
@@ -209,18 +273,4 @@ export const Recommendation = () => {
 export default Recommendation;
  
 
-{/* <Grid item ml = {5}  mr = {2.5} xs={12} md={12} lg={12}>
-    <Card
-          elevation = {0}
-             style={{ backgroundColor: "#F5F1ED", borderColor: "#EAE0D7",
-            boxShadow:0 }}
-          >
-  <CardHeader
-  title= {<center><Typography variant="h5" color="#A99985" font fontWeight="600"> Wingman's First Recommendation - {match[0].home} vs. {match[0].away} </Typography></center>}
-    titleTypographyProps={{ align: 'center' }}
-  />
-  <CardContent align="center">
-  <Avatar src={match.reduce((prev, curr) => prev.tensiondif < curr.tensiondif ? prev : curr).avatarurl}           	sx={{ width: 200, height: 200 }}/>
-    <Typography variant="h5" mt ={2} color="#252323" font fontWeight="400">{match.reduce((prev, curr) => prev.tensiondif < curr.tensiondif ? prev : curr).ref_name}</Typography>
-  </CardContent>
-</Card></Grid> */}
+ 
