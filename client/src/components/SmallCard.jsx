@@ -21,8 +21,8 @@ const SmallCard = ({ title, subtitle,value,percdif,reftens}) => (
                 {value &&
                 <Grid item>
                 <Chip
-                    label={(value < 65 ? "Fair" : value <= 80 ? "Mediocre" : "Severe")}
-                    color={ value < 65 ? "success" : value <= 80 ? "secondary" : "error"}
+                    label={(value < 80 ? "Fair" : value <= 90 ? "Mediocre" : "Severe")}
+                    color={ value < 80 ? "success" : value <= 90 ? "secondary" : "error"}
                     sx={{ ml: 1.25, mb:1, pl: 0 }}
                     size="small"
                 />         
@@ -40,8 +40,8 @@ const SmallCard = ({ title, subtitle,value,percdif,reftens}) => (
                 {reftens &&
                 <Grid item>
                 <Chip
-                    label={(reftens < 60 ? "Fair" : reftens <= 80 ? "Mediocre" : "Severe")}
-                    color={ reftens < 60 ? "success" : reftens <= 80 ? "secondary" : "error"}
+                    label={(reftens < 53 ? "Fair" : reftens <= 64.5 ? "Mediocre" : "Severe")}
+                    color={ reftens < 53 ? "success" : reftens <= 64.5 ? "secondary" : "error"}
                     sx={{ ml: 1.25, mb:1, pl: 0 }}
                     size="small"
                 />         
