@@ -27,6 +27,8 @@ import RefereeCreatePage from "./routes/RefereeCreation";
 import TeamDashboardPage from "./routes/TeamDashboardPage";
 import UserArchivePage from "./routes/SuperAdmin/UserArchivePage";
 import { Recover } from "./components/archives/Recover";
+import ForgotPasswordPage from "./routes/ForgotPasswordPage";
+import ResetPasswordPage from "./routes/ResetPasswordPage";
 const theme = createTheme({
   palette: {
     primary: {
@@ -91,6 +93,8 @@ class App extends Component {
                     <Route path="/reporters" element={<ReporterListPage />} />
                     <Route path="/requests" element={<DeleteRequestPage />} />
                     <Route path="/archive" element={<UserArchivePage />} />
+                    <Route path="/reset/" element={<ForgotPasswordPage/>}/>
+                    <Route path="/reset/:token" element={<ResetPasswordPage/>}/>
                     <Route path="/recover/:otp" element={<Recover/>}/>
                 </Routes>
               </Router>

@@ -1,8 +1,16 @@
 import db from "../db.js"
+import dotenv from "dotenv"
+import nodemailer from "nodemailer"
+import jsonwebtoken from "jsonwebtoken"
+import bcrypt from "bcrypt"
 
+
+dotenv.config({
+    path: '../../.env'
+})
 export default class passwordController{
 
-  static async createKey(req, res, next){
+  static async createMail(req, res, next){
       try {
         const isUserExist = await db.query('SELECT * FROM wingman.users WHERE mail = $1', [req.body.mail])
         if (isUserExist.rows.length == 0)
@@ -13,7 +21,6 @@ export default class passwordController{
           const payload = {
             user_id: isUserExist.rows[0].user_id
           };
-
           const token = jsonwebtoken.sign(payload, process.env.JWT_SECRET, { expiresIn: 60*10 });
           
           var transporter = nodemailer.createTransport({
@@ -28,7 +35,7 @@ export default class passwordController{
             from: process.env.MAIL_MAIL,
             to: req.body.mail,
             subject: 'Reset your Password',
-            text: `Dear ${isUserExist.rows[0].name},\n\nYou have been requested to reset your password. Please click on the following link, or paste this into your browser to complete the process:\n\nhttp://localhost:3000/recover/${token}\n\nThe link will expire in 10 minutes. If you did not request this, please ignore this email and your password will remain unchanged.\n\n`
+            text: `Dear ${isUserExist.rows[0].name},\n\nYou have been requested to reset your password. Please click on the following link, or paste this into your browser to complete the process:\n\nhttp://localhost:3000/reset/${token}\n\nThe link will expire in 10 minutes. If you did not request this, please ignore this email and your password will remain unchanged.\n\n`
           };
           
           transporter.sendMail(mailOptions, function(error, info){
@@ -54,8 +61,8 @@ export default class passwordController{
 
   static async verify(req, res, next){
     try {
-      const { otp } = req.params;
-      const decoded = jsonwebtoken.verify(otp, process.env.JWT_SECRET);
+      const { token } = req.params;
+      const decoded = jsonwebtoken.verify(token, process.env.JWT_SECRET);
       res.status(200).json({
         message: "Token is valid!",
       })
@@ -69,10 +76,11 @@ export default class passwordController{
 
   static async recover(req, res, next){
     try {
-      const { otp } = req.params;
+      const { token } = req.params;
       const { password } = req.body;
+      let decoded;
       try{
-        const decoded = jsonwebtoken.verify(otp, process.env.JWT_SECRET);
+        decoded = jsonwebtoken.verify(token, process.env.JWT_SECRET);
       }
       catch(err){
         throw {
