@@ -37,6 +37,24 @@ export default class matchController{
       } 
       }
 
+      
+
+      static async getPlayedMatchDatasByRef(req, res, next) {
+        try {
+          
+          const results = await db.query('SELECT * ,t.teamname AS HomeTeamName, t1.teamname AS AwayTeamName, t.teamlogo AS HomeTeamLogo, t1.teamlogo AS AwayTeamLogo FROM wingman.matches m, wingman.referees r, wingman.teams t, wingman.teams t1 WHERE  m.home_id = t.teamid AND m.away_id = t1.teamid  AND m.referee_id = r.id AND r.user_id = $1 AND is_played = true ;  ', [req.params.id])
+          res.status(200).json({
+            lenght: results.rows.length,
+            data:{
+              users: results.rows
+            }
+            
+          })
+        } catch (error) {
+          console.log(`Error when getting matches for a week ${error.detail}`)
+          res.status(400).json({error:error, data:{users:[]}})
+        } 
+        }
     /**
  * Get a match by its ID from the `wingman.matches` table.
  *
@@ -52,6 +70,32 @@ export default class matchController{
     static async getMatchById(req, res, next){
       try {
         const result = await db.query('SELECT * ,t.teamname AS HomeTeamName, t1.teamname AS AwayTeamName, t.teamlogo AS HomeTeamLogo, t1.teamlogo AS AwayTeamLogo FROM wingman.matches m, wingman.referees r, wingman.teams t, wingman.teams t1 WHERE m.match_id = $1 AND m.home_id = t.teamid AND m.away_id = t1.teamid  AND m.referee_id = r.id;  ', [req.params.id])
+        if(result.rows.length == 0)
+        {
+          throw {
+            detail: "Match not found.",
+            code: 1,
+            error: new Error()
+          };
+        }
+
+        res.status(200).json({
+        data: result.rows[0]
+        })
+      } catch (err) {
+        console.log(`Error when getting one match ${err}`)
+        if(err.code == 1)
+        {
+          res.status(404).json({detail:err.detail, data:[]})
+          return
+        }
+        res.status(400).json({detail:err, data:[]})
+      }   
+    }
+
+    static async getMatchByRefAssign(req, res, next){
+      try {
+        const result = await db.query('SELECT * ,t.teamname AS HomeTeamName, t1.teamname AS AwayTeamName, t.teamlogo AS HomeTeamLogo, t1.teamlogo AS AwayTeamLogo FROM wingman.matches m, wingman.referees r, wingman.teams t, wingman.teams t1 WHERE  m.home_id = t.teamid AND m.away_id = t1.teamid  AND m.referee_id = r.id AND r.user_id = $1 AND is_played = false ;  ', [req.params.id])
         if(result.rows.length == 0)
         {
           throw {

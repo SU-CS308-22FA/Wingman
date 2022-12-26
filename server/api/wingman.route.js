@@ -43,7 +43,10 @@ router.route("/request").put(userController.acceptDeleteRequest)
 router.route("/request").patch(userController.rejectDeleteRequest)
 router.route("/rate/").post(matchController.rateMatch)
 router.route("/rate/").get(matchController.getRate)
-
+router.route("/activereferee/:id").get(userController.getActiveRefereeById)
+router.route("/activematches/:id").get(matchController.getPlayedMatchDatasByRef)
+router.route("/activematch/:id").get(matchController.getMatchByRefAssign)
+router.route("/rank/:col/:id").get(userController.getRank)
 
 
 

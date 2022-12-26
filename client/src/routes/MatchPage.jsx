@@ -9,6 +9,8 @@ import UserFinder from "../apis/UserFinder";
 import ReporterMatch from "../components/RatingComponents/ReporterMatch.component";
 import { CircularProgress } from "@material-ui/core";
 import RefAppBar from "../components/RetiredRefReporterAppBar";
+import ActiveRefAppBar from "../components/ActiveRefAppBar";
+import ActiveRefereeMatch from "../components/ActiveRefereeMatch";
 
 
 const MatchPage = () => {
@@ -70,6 +72,15 @@ const MatchPage = () => {
       <div>
         <ResponsiveAppBar/>
         <ReporterMatch/>
+        <Copyright sx={{ mt: 5 }} />
+      </div>
+    );
+  }
+  else if(user.role == "Active Referee"){
+    return (
+      <div>
+        <ActiveRefAppBar/>
+        <ActiveRefereeMatch/>
         <Copyright sx={{ mt: 5 }} />
       </div>
     );

@@ -70,6 +70,33 @@ export default class userController{
           res.status(400).json({error:error, data:{users:[]}})
         } 
         }
+
+        static async getRank(req, res, next){
+          try {
+            const param = req.params.col
+            const result = await db.query('SELECT q.rnk FROM ( SELECT ROW_NUMBER() OVER (ORDER BY '+param +' DESC) AS rnk, r.* FROM wingman.referees AS r) AS q  WHERE q.user_id = $1', [req.params.id])
+            if(result.rows.length == 0)
+            {
+              throw {
+                detail: "Match not found.",
+                code: 1,
+                error: new Error()
+              };
+            }
+    
+            res.status(200).json({
+            data: result.rows[0]
+            })
+          } catch (err) {
+            console.log(`Error when getting one match ${err}`)
+            if(err.code == 1)
+            {
+              res.status(404).json({detail:err.detail, data:[]})
+              return
+            }
+            res.status(400).json({detail:err, data:[]})
+          }   
+        }
         
     /**
      * Retrieves the information for a single referee with the specified ID.
@@ -87,6 +114,34 @@ export default class userController{
         try {
           
           const result = await db.query('SELECT wingman.referees.*, COALESCE(AVG(rate), 11) AS avg_rate FROM wingman.referees LEFT JOIN wingman.ratings ON id = referee_id  WHERE id = $1 GROUP BY(id, referee_id)', [req.params.id])
+
+          if(result.rows.length == 0)
+          {
+            throw {
+              detail: "Referee not found.",
+              code: 1,
+              error: new Error()
+            };
+          }
+  
+          res.status(200).json({
+          data: result.rows[0]
+          })
+        } catch (err) {
+          console.log(`Error when getting one referee ${err}`)
+          if(err.code == 1)
+          {
+            res.status(404).json({detail:err.detail, data:[]})
+            return
+          }
+          res.status(400).json({detail:err, data:[]})
+        }   
+      }
+
+      static async getActiveRefereeById(req, res, next){
+        try {
+          
+          const result = await db.query('SELECT * FROM wingman.users u, wingman.referees r WHERE u.user_id = r.user_id AND u.user_id = $1', [req.params.id])
 
           if(result.rows.length == 0)
           {
@@ -764,4 +819,6 @@ static async verify(req, res, next){
       res.status(400).json({ error: error, data: { users: [] } });
     }
   }
+
+  
 }
