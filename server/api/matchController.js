@@ -96,14 +96,7 @@ export default class matchController{
     static async getMatchByRefAssign(req, res, next){
       try {
         const result = await db.query('SELECT * ,t.teamname AS HomeTeamName, t1.teamname AS AwayTeamName, t.teamlogo AS HomeTeamLogo, t1.teamlogo AS AwayTeamLogo FROM wingman.matches m, wingman.referees r, wingman.teams t, wingman.teams t1 WHERE  m.home_id = t.teamid AND m.away_id = t1.teamid  AND m.referee_id = r.id AND r.user_id = $1 AND is_played = false ;  ', [req.params.id])
-        if(result.rows.length == 0)
-        {
-          throw {
-            detail: "Match not found.",
-            code: 1,
-            error: new Error()
-          };
-        }
+        
 
         res.status(200).json({
         data: result.rows[0]
@@ -376,4 +369,34 @@ export default class matchController{
           res.status(400).json({detail:err, data:[]})
         }   
       }
+
+
+      static async createReport(req, res, next){
+        try {
+          const newReport = await db.query('INSERT INTO wingman.report (reporter_id, reported_element_id, report) values ($1,$2,$3) returning *'
+          , [req.params.id,req.params.element, req.params.rep])
+          res.status(200).json({
+            data: newReport.rows[0],
+          })
+    
+        } catch (error) {
+          console.log(`Error when creating report ${JSON.stringify(error)}`)
+          console.log(`Error when creating report ${error}`)
+          if(String(error).includes("users_mail_key") )
+          {
+            res.status(401).json({error:error, data:{users:[]}})
+          }
+          else if(error.code == 1)
+          {
+            res.status(402).json({detail:error.detail, data:[]})
+            return
+          }
+          else{
+            res.status(400).json({error:error, data:{users:[]}})
+          }
+    
+          
+        }   
+    }
+
 }

@@ -48,7 +48,7 @@ const ActiveRefProfile = ({}) => {
             setMaxWeek(maxWeekRes.data.data.max)
             const ref_mathces = await UserFinder.get(`/activematches/${user.id}`)
             console.log(ref_mathces)
-
+            
             const ref_assigned_match = await UserFinder.get(`/activematch/${user.id}`)
             console.log("assigned", ref_assigned_match)
 
@@ -92,7 +92,7 @@ const ActiveRefProfile = ({}) => {
             <Button
             variant = "contained"
             color = "secondary"
-            onClick={() => handleReportSelect(params.row.id)}
+            onClick={() => handleReportSelect(params.row.match_id)}
             >
                 Report
             </Button>
@@ -113,14 +113,7 @@ const ActiveRefProfile = ({}) => {
   
         },
 
-        {
-            field: 'time',
-            headerName: 'Time',
-            width: 100,
-            disableColumnMenu: true,
-            filterable: true,
-  
-        },
+        
 
         
         {
@@ -136,7 +129,7 @@ const ActiveRefProfile = ({}) => {
         {
             field: 'home_score',
             headerName: 'Home Score',
-            width: 100,
+            width: 20,
             disableColumnMenu: true,
             filterable: true,
             
@@ -145,7 +138,7 @@ const ActiveRefProfile = ({}) => {
         {
             field: 'away_score',
             headerName: 'Away Score',
-            width: 100,
+            width: 20,
             disableColumnMenu: true,
             filterable: true,
             type: 'number',

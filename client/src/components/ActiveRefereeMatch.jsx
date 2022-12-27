@@ -109,8 +109,18 @@ export default function ActiveRefereeMatch() {
   const [hover, setHover] = React.useState(5);
 
   const [dropdown, setDropdown] = useState('');
+  const [report, setReport] = useState('');
+
   const handleChange = (event: SelectChangeEvent) => {
     setDropdown(event.target.value);
+  };
+
+
+  const onReportChange = (e) => setReport(e.target.value);
+
+  const sendReport = async () => {
+    const response = await UserFinder.post(`/report/${user.id}/${dropdown}/${report}`);
+    setReport('');
   };
 
 
@@ -377,25 +387,34 @@ export default function ActiveRefereeMatch() {
             </Grid>
             <Grid item xs container direction="column" spacing={4} >
               <Grid item >
-              <FormControl variant="standard" sx={{ m: 1, ml: 62, minWidth: 500 }} >
+              <FormControl variant="standard" sx={{ m: 1, ml: 62, minWidth: 600 }} >
                 <InputLabel id="demo-simple-select-label">Report</InputLabel>
                 <Select
                   labelId="demo-simple-select-label"
                   id="demo-simple-select"
                   value={dropdown}
-                  label="Age"
+                  label="report"
                   onChange={handleChange}
                 >
-                  <MenuItem value={10}>Ten</MenuItem>
-                  <MenuItem value={20}>Twenty</MenuItem>
-                  <MenuItem value={30}>Thirty</MenuItem>
+                  {timeline.map((item) => (
+                    <MenuItem value={item.timeline_id}>{item.event_type}{item.event_text} {item.event_time}</MenuItem>
+                  ))}
+                  
+                  
                 </Select>
               </FormControl>
               </Grid>
 
               <Grid item>
-                <TextField fullWidth label="Comment" id="fullWidth" />
+                <TextField fullWidth label="Comment" id="fullWidth" value={report} onChange ={onReportChange}/>
               </Grid>
+                <center>
+              <Grid sx = {{my: 2}}>
+                <Button variant="outlined" onClick={sendReport}>
+                Send
+                </Button>
+              </Grid>
+              </center>
     
               </Grid>
           </Grid>
