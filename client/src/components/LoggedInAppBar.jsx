@@ -41,6 +41,9 @@ function ResponsiveAppBar() {
       const onReportersClicked = (e) => {
         navigate("/reporters");
       };
+      const onReportsClicked = (e) => {
+        navigate("/reports");
+      };
 const tiers = [
     {
         pageName:"Profile",
@@ -65,6 +68,10 @@ const tiers = [
     {
       pageName:"Reporters",
       onClick: onReportersClicked
+    },
+    {
+      pageName:"Match Reports",
+      onClick: onReportsClicked
     }
 
 

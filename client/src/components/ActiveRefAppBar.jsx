@@ -23,14 +23,23 @@ function ActiveRefAppBar() {
     const navigate = useNavigate();
     const {setAuth} = useContext(AuthContext)
     const {setUser} = useContext(UsersContext)
-      const onRequestsClicked = (e) => {
-        navigate("/requests");
-      };
+    const {user} = useContext(UsersContext)
+    const onMatchReportClicked = (e) => {
+      navigate(`/reports/${user.id}`);
+    };
+
+    const onProfileClicked = (e) => {
+      navigate(`/profile/`);
+    };
 const tiers = [
     {
       pageName:"Match Reports",
-      onClick: onRequestsClicked
+      onClick: onMatchReportClicked
   },
+  {
+    pageName:"Profile",
+    onClick: onProfileClicked
+},
 
 
   ];

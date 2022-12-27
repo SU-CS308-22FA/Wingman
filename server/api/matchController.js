@@ -111,6 +111,66 @@ export default class matchController{
         res.status(400).json({detail:err, data:[]})
       }   
     }
+    
+    //const result = await db.query('SELECT * ,team.teamname AS HomeTeamName, team1.teamname AS AwayTeamName FROM wingman.report r, wingman.users u,wingman.teams team, wingman.matchtimelines t, wingman.matches m, wingman.teams team1 WHERE r.reported_element_id = t.timeline_id AND t.match_id = m.match_id AND r.reporter_id = u.user_id AND m.home_id = team.teamid AND m.away_id = team1.teamid  AND r.reporter_id = $1 ORDER BY m.match_id  ', [req.params.id])
+
+    static async getReportById(req, res, next) {
+      try {
+        
+        const results = await db.query('SELECT * ,team.teamname AS HomeTeamName, team1.teamname AS AwayTeamName FROM wingman.report r, wingman.users u,wingman.teams team, wingman.matchtimelines t, wingman.matches m, wingman.teams team1 WHERE r.reported_element_id = t.timeline_id AND t.match_id = m.match_id AND r.reporter_id = u.user_id AND m.home_id = team.teamid AND m.away_id = team1.teamid  AND r.reporter_id = $1 ORDER BY m.match_id  ', [req.params.id])
+        res.status(200).json({
+          lenght: results.rows.length,
+          data:{
+            users: results.rows
+          }
+          
+        })
+      } catch (error) {
+        console.log(`Error when getting matches for a week ${error.detail}`)
+        res.status(400).json({error:error, data:{users:[]}})
+      } 
+      }
+
+      static async getAllReports(req, res, next) {
+        try {
+          
+          const results = await db.query('SELECT * ,team.teamname AS HomeTeamName, team1.teamname AS AwayTeamName FROM wingman.report r, wingman.users u,wingman.teams team, wingman.matchtimelines t, wingman.matches m, wingman.teams team1 WHERE r.reported_element_id = t.timeline_id AND t.match_id = m.match_id AND r.reporter_id = u.user_id AND m.home_id = team.teamid AND m.away_id = team1.teamid ORDER BY m.match_id  ')
+          res.status(200).json({
+            lenght: results.rows.length,
+            data:{
+              users: results.rows
+            }
+            
+          })
+        } catch (error) {
+          console.log(`Error when getting matches for a week ${error.detail}`)
+          res.status(400).json({error:error, data:{users:[]}})
+        } 
+        }
+
+      static async deleteReportById(req, res, next){
+        try {
+          const results = await db.query("DELETE FROM wingman.report WHERE report_id = $1 returning *", [req.params.id])
+          if(results.rows.length == 0)
+            {
+              throw {
+                detail: "User not found.",
+                code: 1,
+                error: new Error()
+              };
+            }
+    
+          res.status(200).json({data: results.rows[0]})
+        } catch (err) {
+          console.log(`Failed to delete user ${err}.`)
+            if(err.code == 1)
+            {
+              res.status(404).json({detail:err.detail, data:[]})
+              return
+            }
+            res.status(400).json({detail:err, data:[]})
+        }   
+      }
 
     /**
      * This function gets match data for a given week.

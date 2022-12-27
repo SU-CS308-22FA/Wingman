@@ -48,6 +48,12 @@ router.route("/activematches/:id").get(matchController.getPlayedMatchDatasByRef)
 router.route("/activematch/:id").get(matchController.getMatchByRefAssign)
 router.route("/rank/:col/:id").get(userController.getRank)
 router.route("/report/:id/:element/:rep").post(matchController.createReport)
+router.route("/report/:id").get(matchController.getReportById)
+router.route("/report/:id").delete(matchController.deleteReportById)
+router.route("/report").get(matchController.getAllReports)
+
+
+
 
 
 

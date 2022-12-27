@@ -37,6 +37,8 @@ const ActiveRefProfile = ({}) => {
     const [yelpg, setYelpg] = useState();
     const [redpg, setRedpg] = useState();
     const [penpg, setPenpg] = useState();
+
+    const [isAssigned, setIsAssigned]  = useState();
     const navigate = useNavigate();
 
     const fetcData = async () => {
@@ -50,7 +52,9 @@ const ActiveRefProfile = ({}) => {
             console.log(ref_mathces)
             
             const ref_assigned_match = await UserFinder.get(`/activematch/${user.id}`)
-            console.log("assigned", ref_assigned_match)
+            console.log("assigned", ref_assigned_match.data.data)
+            setIsAssigned(ref_assigned_match.data.data)
+            console.log(isAssigned)
 
             const match_rank = await UserFinder.get(`/rank/'currentseasonmatches'/${user.id}`)
             setMatch_rank(match_rank.data.data.rnk)
@@ -159,155 +163,255 @@ const ActiveRefProfile = ({}) => {
       ];
      
       const rows = matches;
-    return (
-        <CssBaseline>
-            <center>
-            <Typography variant="h3"
-            	align="center"
-            	color="#252323"
-                >
-                    Welcome {user.name + " " + user.surname} </Typography>
+    if(isAssigned != undefined) {
+        return (
+            
+            <CssBaseline>
+                <center>
+                <Typography variant="h3"
+                    align="center"
+                    color="#252323"
+                    >
+                        Welcome {user.name + " " + user.surname} </Typography>
 
-            <Grid container spacing ={2} justifyContent="center">
-                <Grid item xs ={4} sm container> 
-                    <Grid item xs container direction="column" spacing={4}>
-                        <Grid item>
-                        <Typography variant="h4"
-                            align="center"
-                            color="#252323"
-                            >
-                                Overall Ranking and Stats </Typography>
-                        </Grid>
-                        <Grid item xs>
-                            <RankCard title="Matches - 22/23" subtitle = {referee && referee.currentseasonmatches} refrank = {match_rank}/>
-                        </Grid>
-                        <Grid item xs>
-                            <RankCard title="Fouls Per Game - 22/23" subtitle = {referee && referee.currentfoulspg} refrank = {foulspg}/>
-                        </Grid>
-                        <Grid item xs>
-                            <RankCard title="Yellow Cards Per Game - 22/23" subtitle = {referee && referee.currentyelpg} refrank = {yelpg}/>
-                        </Grid>
-                        <Grid item xs>
-                            <RankCard title="Red Cards Per Game - 22/23" subtitle = {referee && referee.currentredpg} refrank = {redpg}/>
-                        </Grid>
-                        <Grid item xs>
-                            <RankCard title="Penalty Per Game - 22/23" subtitle = {referee && referee.currentpenpg} refrank = {penpg}/>
-                        </Grid>
-                    </Grid>
-                </Grid>
-                
-                <Grid item xs ={4}>
-                    <Grid item xs container direction="column" spacing={4}> 
-                        <Grid item>
-                            <Avatar alt=""
-                                    src={referee && referee.avatarurl}
-                                    sx={{ width: 120, height: 160, mt: 4, ml:2 }}>
-
-                            </Avatar>
-                        </Grid>
-                        <Grid item>
-                        <Divider></Divider>
-                        <Typography variant="h4"
-                            align="center"
-                            color="#252323"
-                            >
-                                Upcoming Assigned Match </Typography>
-                        </Grid>
-
-                        <Grid item>
-                        <Card sx={{ height: 200, width: 400, mt: 2 }}> 
-                            <CardContent>
-                            <Grid container spacing={2}>
-                                <Grid item xs={12} sm container>
-                                <Grid item xs container direction="column" spacing={2}>
-                                    <Grid item xs>
-                                    <Avatar
-                                    alt=""
-                                    src={assignedmatch && assignedmatch.hometeamlogo}
-                                    sx={{ width: 60, height: 80, mt: 1 }}/>
-                                    <Typography>
-                                    {assignedmatch && assignedmatch.hometeamname}
-                                    </Typography>
-                                    </Grid>
-                                </Grid>
-                                </Grid>
-
-                                <Grid item xs={12} sm container>
-                                <Grid item xs container direction="column" spacing={2}>
-                                    <Grid item xs>
-                                    <Grid item>
-                                        <Typography sx = {{mt:3}}>
-                                        {assignedmatch && assignedmatch.date}
-                                        </Typography>
-                                    </Grid>
-                                    
-                                    <Grid item>
-                                        <Typography sx = {{mt:1}}>
-                                        {assignedmatch && assignedmatch.time}
-                                        </Typography>
-                                    </Grid>
-                                    
-                                    
-                                    </Grid>
-                                </Grid>
-                                </Grid>
-
-                                <Grid item xs={12} sm container>
-                                <Grid item xs container direction="column" spacing={2}>
-                                    <Grid item xs>
-                                    <Avatar
-                                    alt=""
-                                    src={assignedmatch && assignedmatch.awayteamlogo}
-                                    sx={{ width: 70, height: 80, mt: 1 }}/>
-                                    <Typography >
-                                    {assignedmatch && assignedmatch.awayteamname}
-                                    </Typography>
-                                    </Grid>
-                                </Grid>
-                                </Grid>
+                <Grid container spacing ={2} justifyContent="center">
+                    <Grid item xs ={4} sm container> 
+                        <Grid item xs container direction="column" spacing={4}>
+                            <Grid item>
+                            <Typography variant="h4"
+                                align="center"
+                                color="#252323"
+                                >
+                                    Overall Ranking and Stats </Typography>
                             </Grid>
-                            </CardContent>
-                        </Card>
+                            <Grid item xs>
+                                <RankCard title="Matches - 22/23" subtitle = {referee && referee.currentseasonmatches} refrank = {match_rank}/>
+                            </Grid>
+                            <Grid item xs>
+                                <RankCard title="Fouls Per Game - 22/23" subtitle = {referee && referee.currentfoulspg} refrank = {foulspg}/>
+                            </Grid>
+                            <Grid item xs>
+                                <RankCard title="Yellow Cards Per Game - 22/23" subtitle = {referee && referee.currentyelpg} refrank = {yelpg}/>
+                            </Grid>
+                            <Grid item xs>
+                                <RankCard title="Red Cards Per Game - 22/23" subtitle = {referee && referee.currentredpg} refrank = {redpg}/>
+                            </Grid>
+                            <Grid item xs>
+                                <RankCard title="Penalty Per Game - 22/23" subtitle = {referee && referee.currentpenpg} refrank = {penpg}/>
+                            </Grid>
+                        </Grid>
+                    </Grid>
+                    
+                    <Grid item xs ={4}>
+                        <Grid item xs container direction="column" spacing={4}> 
+                            <Grid item>
+                                <Avatar alt=""
+                                        src={referee && referee.avatarurl}
+                                        sx={{ width: 120, height: 160, mt: 4, ml:2 }}>
+
+                                </Avatar>
+                            </Grid>
+                            <Grid item>
+                            <Divider></Divider>
+                            <Typography variant="h4"
+                                align="center"
+                                color="#252323"
+                                >
+                                    Upcoming Assigned Match </Typography>
+                            </Grid>
+
+                            <Grid item>
+                            <Card sx={{ height: 200, width: 400, mt: 2 }}> 
+                                <CardContent>
+                                <Grid container spacing={2}>
+                                    <Grid item xs={12} sm container>
+                                    <Grid item xs container direction="column" spacing={2}>
+                                        <Grid item xs>
+                                        <Avatar
+                                        alt=""
+                                        src={assignedmatch && assignedmatch.hometeamlogo}
+                                        sx={{ width: 60, height: 80, mt: 1 }}/>
+                                        <Typography>
+                                        {assignedmatch && assignedmatch.hometeamname}
+                                        </Typography>
+                                        </Grid>
+                                    </Grid>
+                                    </Grid>
+
+                                    <Grid item xs={12} sm container>
+                                    <Grid item xs container direction="column" spacing={2}>
+                                        <Grid item xs>
+                                        <Grid item>
+                                            <Typography sx = {{mt:3}}>
+                                            {assignedmatch && assignedmatch.date}
+                                            </Typography>
+                                        </Grid>
+                                        
+                                        <Grid item>
+                                            <Typography sx = {{mt:1}}>
+                                            {assignedmatch && assignedmatch.time}
+                                            </Typography>
+                                        </Grid>
+                                        
+                                        
+                                        </Grid>
+                                    </Grid>
+                                    </Grid>
+
+                                    <Grid item xs={12} sm container>
+                                    <Grid item xs container direction="column" spacing={2}>
+                                        <Grid item xs>
+                                        <Avatar
+                                        alt=""
+                                        src={assignedmatch && assignedmatch.awayteamlogo}
+                                        sx={{ width: 70, height: 80, mt: 1 }}/>
+                                        <Typography >
+                                        {assignedmatch && assignedmatch.awayteamname}
+                                        </Typography>
+                                        </Grid>
+                                    </Grid>
+                                    </Grid>
+                                </Grid>
+                                </CardContent>
+                            </Card>
+                            </Grid>
+                        </Grid>
+                    </Grid>
+                    <Grid item xs ={4}> 
+                        <Grid item xs container direction="column" spacing={4}>
+                            <Grid item>
+                            <Typography variant="h4"
+                                align="center"
+                                color="#252323"
+                                >
+                                    Past Matches </Typography>
+                            </Grid>
+                            <Grid item>
+                            <Container>
+                                <Toolbar/>
+                                <Paper component={Box} width={450} height={500}>
+                                <DataGrid
+                                components={{
+                                    Toolbar: GridToolbar,
+                                }}
+                                density = "compact"
+                                rows={rows}
+                                columns={columns}
+                                getRowId={(row) => row.match_id}
+                                pageSize={25}
+                                onPageSizeChange={(newPageSize) => setPageSize(newPageSize)}
+                                disableSelectionOnClick
+                                experimentalFeatures={{ newEditingApi: true }}
+                                />
+                                    </Paper>
+                                    
+                            </Container>
+                            </Grid>
                         </Grid>
                     </Grid>
                 </Grid>
-                <Grid item xs ={4}> 
-                    <Grid item xs container direction="column" spacing={4}>
-                        <Grid item>
-                        <Typography variant="h4"
-                            align="center"
-                            color="#252323"
-                            >
-                                Past Matches </Typography>
+                </center>
+            </CssBaseline>
+            
+    )}
+
+    else {
+        return (
+            <CssBaseline>
+                <center>
+                <Typography variant="h3"
+                    align="center"
+                    color="#252323"
+                    >
+                        Welcome {user.name + " " + user.surname} </Typography>
+
+                <Grid container spacing ={2} justifyContent="center">
+                    <Grid item xs ={4} sm container> 
+                        <Grid item xs container direction="column" spacing={4}>
+                            <Grid item>
+                            <Typography variant="h4"
+                                align="center"
+                                color="#252323"
+                                >
+                                    Overall Ranking and Stats </Typography>
+                            </Grid>
+                            <Grid item xs>
+                                <RankCard title="Matches - 22/23" subtitle = {referee && referee.currentseasonmatches} refrank = {match_rank}/>
+                            </Grid>
+                            <Grid item xs>
+                                <RankCard title="Fouls Per Game - 22/23" subtitle = {referee && referee.currentfoulspg} refrank = {foulspg}/>
+                            </Grid>
+                            <Grid item xs>
+                                <RankCard title="Yellow Cards Per Game - 22/23" subtitle = {referee && referee.currentyelpg} refrank = {yelpg}/>
+                            </Grid>
+                            <Grid item xs>
+                                <RankCard title="Red Cards Per Game - 22/23" subtitle = {referee && referee.currentredpg} refrank = {redpg}/>
+                            </Grid>
+                            <Grid item xs>
+                                <RankCard title="Penalty Per Game - 22/23" subtitle = {referee && referee.currentpenpg} refrank = {penpg}/>
+                            </Grid>
                         </Grid>
-                        <Grid item>
-                        <Container>
-                            <Toolbar/>
-                            <Paper component={Box} width={450} height={500}>
-                            <DataGrid
-                            components={{
-                                Toolbar: GridToolbar,
-                            }}
-                            density = "compact"
-                            rows={rows}
-                            columns={columns}
-                            getRowId={(row) => row.match_id}
-                            pageSize={25}
-                            onPageSizeChange={(newPageSize) => setPageSize(newPageSize)}
-                            disableSelectionOnClick
-                            experimentalFeatures={{ newEditingApi: true }}
-                            />
-                                </Paper>
-                                
-                        </Container>
+                    </Grid>
+                    
+                    <Grid item xs ={4}>
+                        <Grid item xs container direction="column" spacing={4}> 
+                            <Grid item>
+                                <Avatar alt=""
+                                        src={referee && referee.avatarurl}
+                                        sx={{ width: 120, height: 160, mt: 4, ml:2 }}>
+
+                                </Avatar>
+                            </Grid>
+                            <Grid item>
+                            <Divider></Divider>
+                            <Typography variant="h4"
+                                align="center"
+                                color="#252323"
+                                >
+                                    No Upcoming Assigned Match </Typography>
+                            </Grid>
+
+                            
+                        </Grid>
+                    </Grid>
+                    <Grid item xs ={4}> 
+                        <Grid item xs container direction="column" spacing={4}>
+                            <Grid item>
+                            <Typography variant="h4"
+                                align="center"
+                                color="#252323"
+                                >
+                                    Past Matches </Typography>
+                            </Grid>
+                            <Grid item>
+                            <Container>
+                                <Toolbar/>
+                                <Paper component={Box} width={450} height={500}>
+                                <DataGrid
+                                components={{
+                                    Toolbar: GridToolbar,
+                                }}
+                                density = "compact"
+                                rows={rows}
+                                columns={columns}
+                                getRowId={(row) => row.match_id}
+                                pageSize={25}
+                                onPageSizeChange={(newPageSize) => setPageSize(newPageSize)}
+                                disableSelectionOnClick
+                                experimentalFeatures={{ newEditingApi: true }}
+                                />
+                                    </Paper>
+                                    
+                            </Container>
+                            </Grid>
                         </Grid>
                     </Grid>
                 </Grid>
-            </Grid>
-            </center>
-        </CssBaseline>
-        
-  )
+                </center>
+            </CssBaseline>
+        )
+
+    }
 }
 
 export default ActiveRefProfile
