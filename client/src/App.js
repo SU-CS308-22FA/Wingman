@@ -29,6 +29,7 @@ import UserArchivePage from "./routes/SuperAdmin/UserArchivePage";
 import { Recover } from "./components/archives/Recover";
 import Recommendation from "./components/RecommendationComponent";
 import RecommendationPage from "./routes/RecommendationPage";
+import RefRankPage from "./routes/RefereeRankingPage";
 
 
 const theme = createTheme({
@@ -91,6 +92,7 @@ class App extends Component {
                     <Route path="/teams/:id" element={<TeamDashboardPage/>}/>
                     <Route path="/fixture/:week" element={<FixturePage/>}/>
                     <Route path="/match/:id" element={<MatchPage/>}/>
+                    <Route path="/rankings/:id" element={<RefRankPage/>}/>
                     <Route path="/history/" element={<RRHistPage/>}/>
                     <Route path="/reporters" element={<ReporterListPage />} />
                     <Route path="/requests" element={<DeleteRequestPage />} />
