@@ -89,7 +89,6 @@ class App extends Component {
                     <Route path="/history/" element={<RRHistPage/>}/>
                     <Route path="/reporters" element={<ReporterListPage />} />
                     <Route path="/requests" element={<DeleteRequestPage />} />
-                    <Route path="/reports/:id" element={<MatchReportPage />} />
                     <Route path="/reports" element={<MatchReportPage />} />
                 </Routes>
               </Router>

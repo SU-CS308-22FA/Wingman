@@ -187,9 +187,7 @@ const ActiveRefProfile = ({}) => {
                             <Grid item xs>
                                 <RankCard title="Matches - 22/23" subtitle = {referee && referee.currentseasonmatches} refrank = {match_rank}/>
                             </Grid>
-                            <Grid item xs>
-                                <RankCard title="Fouls Per Game - 22/23" subtitle = {referee && referee.currentfoulspg} refrank = {foulspg}/>
-                            </Grid>
+                            
                             <Grid item xs>
                                 <RankCard title="Yellow Cards Per Game - 22/23" subtitle = {referee && referee.currentyelpg} refrank = {yelpg}/>
                             </Grid>
@@ -338,9 +336,7 @@ const ActiveRefProfile = ({}) => {
                             <Grid item xs>
                                 <RankCard title="Matches - 22/23" subtitle = {referee && referee.currentseasonmatches} refrank = {match_rank}/>
                             </Grid>
-                            <Grid item xs>
-                                <RankCard title="Fouls Per Game - 22/23" subtitle = {referee && referee.currentfoulspg} refrank = {foulspg}/>
-                            </Grid>
+                            
                             <Grid item xs>
                                 <RankCard title="Yellow Cards Per Game - 22/23" subtitle = {referee && referee.currentyelpg} refrank = {yelpg}/>
                             </Grid>

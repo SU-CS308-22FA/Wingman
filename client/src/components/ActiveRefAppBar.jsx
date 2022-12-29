@@ -25,7 +25,7 @@ function ActiveRefAppBar() {
     const {setUser} = useContext(UsersContext)
     const {user} = useContext(UsersContext)
     const onMatchReportClicked = (e) => {
-      navigate(`/reports/${user.id}`);
+      navigate(`/reports`);
     };
 
     const onProfileClicked = (e) => {

@@ -36,7 +36,7 @@ import MenuItem from '@mui/material/MenuItem';
 import FormControl from '@mui/material/FormControl';
 import Select, { SelectChangeEvent } from '@mui/material/Select';
 import TextField from '@mui/material/TextField';
-
+import Alert from '@mui/material/Alert';
 
 
 
@@ -110,7 +110,7 @@ export default function ActiveRefereeMatch() {
 
   const [dropdown, setDropdown] = useState('');
   const [report, setReport] = useState('');
-
+  const [error, setError] = useState();
   const handleChange = (event: SelectChangeEvent) => {
     setDropdown(event.target.value);
   };
@@ -119,8 +119,24 @@ export default function ActiveRefereeMatch() {
   const onReportChange = (e) => setReport(e.target.value);
 
   const sendReport = async () => {
-    const response = await UserFinder.post(`/report/${user.id}/${dropdown}/${report}`);
-    setReport('');
+    try {
+      if(report == '') {
+        throw{fmessage: "The report cannot be empty"}
+      }
+
+      else if(dropdown == '') {
+        throw{fmessage: "You should choose an action"}
+      }
+
+      const response = await UserFinder.post(`/report/${user.id}/${dropdown}/${report}`);
+      setReport('');
+    }
+
+    
+    catch(err) {
+        console.log(err)
+        setError(err.fmessage);
+    }
   };
 
 
@@ -131,6 +147,8 @@ export default function ActiveRefereeMatch() {
   const fetcData = async () => {
     try {
       const response = await UserFinder.get(`/match/${id}`);
+      console.log("res", response)
+      console.log(user)
       await setMatchData(response.data.data);
       let timeline = (response.data.timeline);
       const goals = timeline.filter(event => event.event_type === "Goal" && event.event_side === "Home");
@@ -186,6 +204,9 @@ export default function ActiveRefereeMatch() {
       if(matchData.is_played == false)
       {
         return (<h1>Match not played...</h1>);
+      }
+      else if (matchData.name != user.name || matchData.surname != user.surname) {
+        return(<h1>You can not report on this match</h1>)
       }
       else
       {
@@ -388,7 +409,7 @@ export default function ActiveRefereeMatch() {
             <Grid item xs container direction="column" spacing={4} >
               <Grid item >
               <FormControl variant="standard" sx={{ m: 1, ml: 62, minWidth: 600 }} >
-                <InputLabel id="demo-simple-select-label">Report</InputLabel>
+                <InputLabel id="demo-simple-select-label">Action</InputLabel>
                 <Select
                   labelId="demo-simple-select-label"
                   id="demo-simple-select"
@@ -406,13 +427,15 @@ export default function ActiveRefereeMatch() {
               </Grid>
 
               <Grid item>
-                <TextField fullWidth label="Comment" id="fullWidth" value={report} onChange ={onReportChange}/>
+                <TextField fullWidth label="Report" id="fullWidth" value={report} onChange ={onReportChange}/>
               </Grid>
                 <center>
               <Grid sx = {{my: 2}}>
                 <Button variant="outlined" onClick={sendReport}>
                 Send
                 </Button>
+                <Box m={1} pt={0}> </Box>
+                {error &&<Alert variant="filled" severity="error"> {error} </Alert>}
               </Grid>
               </center>
     
