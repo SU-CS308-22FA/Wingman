@@ -25,7 +25,9 @@ const FixturesComponent = ({}) => {
   const handleAssign = (id,week) => {
     navigate(`/assign/${id}/week/${week}`);
   };
-
+  const handleRank = (id) => {
+    navigate(`/rankings/${id}`);
+  };
   const handleRecommendation = (id,week) => {
     navigate(`/recommendation/${id}`);
   };
@@ -695,7 +697,8 @@ const FixturesComponent = ({}) => {
   return (
     <center>
       <Stack alignItems="center">
-      <Typography sx = {{mt: 2}}>Week: {week}</Typography>
+      <Button sx = {{mt: 6}}  onClick={() => handleRank(matches && matches[0].week)} color = 'primary' variant="contained">Referee Rankings</Button>
+      <Typography sx = {{mt: 3}}>Week: {week}</Typography>
       <Pagination count={maxWeek} page={week} onChange={(e, value) => handleChange(value)} />
       </Stack>
       
@@ -929,7 +932,7 @@ const FixturesComponent = ({}) => {
                   </Grid>
                   <Grid item>
                     <Button size="medium" sx = {{mt:0}} onClick={() => handleRecommendation(matches[2].match_id)}>
-                    Recommendations
+                    Recommendation History
                     </Button>
                   </Grid>
                   
