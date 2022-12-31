@@ -48,8 +48,6 @@ export const Recommendation = () => {
         setMatch((prevMatch) => []);
       }
     }
-    console.log("Ege", match)
-    console.log("Ege",rate)
     if (id) {
       fetchData();
     }
@@ -57,13 +55,15 @@ export const Recommendation = () => {
   if (!isAvailable) {
     return (
       <center>
-        <Box m={30} pt={0}>
-          {" "}
-        </Box>
-        <Typography variant="h3" color="#A99985" font fontWeight="600">
-          Team not found.
+      <Box height="69vh">
+        <Box height = "30vh"></Box>
+      <Typography variant="h4" color="#A99985" font fontWeight="600">
+      For this match recommendation is not found or match is not available.
         </Typography>
+        </Box>
+  
       </center>
+ 
     );
   } else {
     return match !== null ? (
