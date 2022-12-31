@@ -4,7 +4,6 @@ import { useEffect } from "react";
 import { useContext } from "react";
 import { useNavigate } from "react-router-dom";
 import UserFinder from "../apis/UserFinder";
-
 import CssBaseline from '@mui/material/CssBaseline';
 import Grid from '@mui/material/Grid';
 import Stack from '@mui/material/Stack';
@@ -27,6 +26,7 @@ export const RefRank = () => {
     const [pageSize, setPageSize] = useState(10);
     const queryString = window.location.href;
     const id = queryString.match(/rankings\/(\d+)/)[1];
+    const [isAvailable, setAvailable] = useState(true);
 
     const StyledRating = styled(Rating)({
       '& .MuiRating-iconFilled': {
@@ -49,7 +49,9 @@ export const RefRank = () => {
             setRank(response.data.data.data)
             setLoading(false)
 
-            } catch (err) {}
+            } catch (err) {
+              setAvailable(false);
+            }
         };
 
         fetcData();
@@ -136,7 +138,21 @@ export const RefRank = () => {
       }
     ];
   const rows = rank;
-    if (rank.length == 9){
+  if (!isAvailable) {
+    return (
+      <center>
+      <Box height="69vh">
+        <Box height = "30vh"></Box>
+      <Typography variant="h4" color="#A99985" font fontWeight="600">
+      For this week, rankings information is not available or week is not found.
+        </Typography>
+        </Box>
+  
+      </center>
+ 
+    );
+  }
+   else if (rank.length == 9){
     return (
         <>
      <CssBaseline />
@@ -203,17 +219,14 @@ Best Performance Of The Week     </Typography>
       </center>
 </Grid>
 
-<Grid item ml = {7.5} mt = {0} xs={12} sm={6} md={1} lg={2.75}>
+<Grid item ml = {7.5} mt = {0} xs={12} sm={6} md={1} lg={11/3}>
   <SmallCardDark title="Rating" subtitle =    {<StyledRating name="read-only" value=       {rank.reduce((prev, curr) => prev.avg > curr.avg ? prev : curr).avg} precision={1} size="small" allowHalf={false} max={10} defaultValue={5} readOnly />} />
 </Grid>
-<Grid item xs={12} mt = {0} sm={6} md={1} lg={2.75}>
+<Grid item xs={12} mt = {0} sm={6} md={1} lg={11/3}>
   <SmallCardDark title="Yellow Cards" subtitle =       {rank.reduce((prev, curr) => prev.avg > curr.avg ? prev : curr).yels}/>
 </Grid>
-<Grid item xs={12} mt = {0} sm={6} md={1} lg={2.75}>
+<Grid item xs={12} mt = {0} sm={6} md={1} lg={11/3}>
 <SmallCardDark title="Red Cards " subtitle =       {rank.reduce((prev, curr) => prev.avg > curr.avg ? prev : curr).reds}/>
-</Grid>
-<Grid item xs={12} mt = {0} sm={6} md={1} lg={2.75}>
-<SmallCardDark title="Fouls"  subtitle=      {rank.reduce((prev, curr) => prev.avg > curr.avg ? prev : curr).fouls}     />
 </Grid>
 <Grid item xs={12} mt = {0} sm={6} md={1} lg={12}>
 <center><Typography mt ={1} variant="h6" color="#A99985" font fontWeight="600">
@@ -230,7 +243,7 @@ Best Performance Of The Week     </Typography>
 <SmallCardDark title="Red Cards " subtitle =       {rank.reduce((prev, curr) => prev.avg > curr.avg ? prev : curr).currentred}/>
 </Grid>
 <Grid item xs={12} mt = {0} sm={6} md={1} lg={2.75}>
-<SmallCardDark title="Fouls"  subtitle=      {rank.reduce((prev, curr) => prev.avg > curr.avg ? prev : curr).tension}   reftens =    {rank.reduce((prev, curr) => prev.avg > curr.avg ? prev : curr).tension}  />
+<SmallCardDark title="Tension"  subtitle=      {rank.reduce((prev, curr) => prev.avg > curr.avg ? prev : curr).tension.toFixed(2)}   reftens =    {rank.reduce((prev, curr) => prev.avg > curr.avg ? prev : curr).tension}  />
 </Grid>
 </Grid>
 
@@ -238,7 +251,33 @@ Best Performance Of The Week     </Typography>
     </Box>  
       </>
   ) 
+  
 }
+else {
+  if (isLoading){
+    <div>
+      <center>
+      <Box height="69vh">
+        <Box height = "30vh"></Box>
+          <CircularProgress/>
+        </Box>
+  
+      </center>
+  </div>
+  }
+  else{ 
+  return (
+    <center>
+    <Box height="69vh">
+      <Box height = "30vh"></Box>
+    <Typography variant="h4" color="#A99985" font fontWeight="600">
+        For this week, matches are not completed yet.
+      </Typography>
+      </Box>
+
+    </center>
+  );
+}}
 }
 
  
