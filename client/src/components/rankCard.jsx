@@ -14,7 +14,7 @@ const RankCard = ({ title, subtitle,value,percdif,refrank}) => (
             </Typography>
             <Grid container alignItems="center">
                 <Grid item>
-                    <Typography variant="h5" color="#A99985" font fontWeight="light" sx = {{ml : 20}}>
+                    <Typography variant="h5" color="#A99985" font fontWeight="light" sx = {{ml : 32}}>
                         {subtitle}
                     </Typography>
                 </Grid>

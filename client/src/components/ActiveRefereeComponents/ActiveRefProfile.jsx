@@ -168,23 +168,29 @@ const ActiveRefProfile = ({}) => {
             
             <CssBaseline>
                 <center>
-                <Typography variant="h3"
-                    align="center"
-                    color="#252323"
-                    >
-                        Welcome {user.name + " " + user.surname} </Typography>
+                <center>
+                <Avatar
+              src={referee && referee.avatarurl}
+          	sx={{ mt: 5, width: 200, height: 200 }}
+ 
+            /></center>
+                <center>
+        <Typography variant="h3" color="#A99985" font fontWeight="600" sx={{mb: 5, mt: 3}}>
+                {user.name} {user.surname}
+            </Typography>
+            <Divider></Divider>
+            </center>
+
 
                 <Grid container spacing ={2} justifyContent="center">
-                    <Grid item xs ={4} sm container> 
-                        <Grid item xs container direction="column" spacing={4}>
+                    <Grid item xs ={6} sm container> 
+                        <Grid item xs container direction="column" spacing={4} sx={{ml: 5}}>
                             <Grid item>
-                            <Typography variant="h4"
-                                align="center"
-                                color="#252323"
+                            <Typography variant="h4" color="#252323" font fontWeight="bold"
                                 >
                                     Overall Ranking and Stats </Typography>
                             </Grid>
-                            <Grid item xs>
+                            <Grid item xs sx={{mt:8}}>
                                 <RankCard title="Matches - 22/23" subtitle = {referee && referee.currentseasonmatches} refrank = {match_rank}/>
                             </Grid>
                             
@@ -200,20 +206,43 @@ const ActiveRefProfile = ({}) => {
                         </Grid>
                     </Grid>
                     
-                    <Grid item xs ={4}>
-                        <Grid item xs container direction="column" spacing={4}> 
+                
+                    <Grid item xs ={6}> 
+                        <Grid item xs container direction="column" spacing={4}>
                             <Grid item>
-                                <Avatar alt=""
-                                        src={referee && referee.avatarurl}
-                                        sx={{ width: 120, height: 160, mt: 4, ml:2 }}>
-
-                                </Avatar>
+                            <Typography variant="h4" color="#252323" font fontWeight="bold"
+                                >
+                                    Past Matches </Typography>
                             </Grid>
                             <Grid item>
+                            <Container>
+                                <Toolbar/>
+                                <Paper component={Box} width={600} height={500} >
+                                <DataGrid
+                                components={{
+                                    Toolbar: GridToolbar,
+                                }}
+                                density = "compact"
+                                rows={rows}
+                                columns={columns}
+                                getRowId={(row) => row.match_id}
+                                pageSize={25}
+                                onPageSizeChange={(newPageSize) => setPageSize(newPageSize)}
+                                disableSelectionOnClick
+                                experimentalFeatures={{ newEditingApi: true }}
+                                />
+                                    </Paper>
+                                    
+                            </Container>
+                            </Grid>
+                        </Grid>
+                    </Grid>
+                </Grid>
+                </center>
+                <center>
+                <Grid item sx={{mt: 5}}>
                             <Divider></Divider>
-                            <Typography variant="h4"
-                                align="center"
-                                color="#252323"
+                            <Typography variant="h4" color="#252323" font fontWeight="bold"
                                 >
                                     Upcoming Assigned Match </Typography>
                             </Grid>
@@ -273,42 +302,7 @@ const ActiveRefProfile = ({}) => {
                                 </CardContent>
                             </Card>
                             </Grid>
-                        </Grid>
-                    </Grid>
-                    <Grid item xs ={4}> 
-                        <Grid item xs container direction="column" spacing={4}>
-                            <Grid item>
-                            <Typography variant="h4"
-                                align="center"
-                                color="#252323"
-                                >
-                                    Past Matches </Typography>
-                            </Grid>
-                            <Grid item>
-                            <Container>
-                                <Toolbar/>
-                                <Paper component={Box} width={450} height={500}>
-                                <DataGrid
-                                components={{
-                                    Toolbar: GridToolbar,
-                                }}
-                                density = "compact"
-                                rows={rows}
-                                columns={columns}
-                                getRowId={(row) => row.match_id}
-                                pageSize={25}
-                                onPageSizeChange={(newPageSize) => setPageSize(newPageSize)}
-                                disableSelectionOnClick
-                                experimentalFeatures={{ newEditingApi: true }}
-                                />
-                                    </Paper>
-                                    
-                            </Container>
-                            </Grid>
-                        </Grid>
-                    </Grid>
-                </Grid>
-                </center>
+                            </center>
             </CssBaseline>
             
     )}
@@ -317,23 +311,29 @@ const ActiveRefProfile = ({}) => {
         return (
             <CssBaseline>
                 <center>
-                <Typography variant="h3"
-                    align="center"
-                    color="#252323"
-                    >
-                        Welcome {user.name + " " + user.surname} </Typography>
+                <center>
+                <Avatar
+              src={referee && referee.avatarurl}
+          	sx={{ mt: 5, width: 200, height: 200 }}
+ 
+            /></center>
+                <center>
+        <Typography variant="h3" color="#A99985" font fontWeight="600" sx={{mb: 5, mt: 3}}>
+                {user.name} {user.surname}
+            </Typography>
+            <Divider></Divider>
+            </center>
+
 
                 <Grid container spacing ={2} justifyContent="center">
-                    <Grid item xs ={4} sm container> 
-                        <Grid item xs container direction="column" spacing={4}>
+                    <Grid item xs ={6} sm container> 
+                        <Grid item xs container direction="column" spacing={4} sx={{ml: 5}}>
                             <Grid item>
-                            <Typography variant="h4"
-                                align="center"
-                                color="#252323"
+                            <Typography variant="h4" color="#252323" font fontWeight="bold"
                                 >
                                     Overall Ranking and Stats </Typography>
                             </Grid>
-                            <Grid item xs>
+                            <Grid item xs sx={{mt:8}}>
                                 <RankCard title="Matches - 22/23" subtitle = {referee && referee.currentseasonmatches} refrank = {match_rank}/>
                             </Grid>
                             
@@ -349,40 +349,18 @@ const ActiveRefProfile = ({}) => {
                         </Grid>
                     </Grid>
                     
-                    <Grid item xs ={4}>
-                        <Grid item xs container direction="column" spacing={4}> 
-                            <Grid item>
-                                <Avatar alt=""
-                                        src={referee && referee.avatarurl}
-                                        sx={{ width: 120, height: 160, mt: 4, ml:2 }}>
-
-                                </Avatar>
-                            </Grid>
-                            <Grid item>
-                            <Divider></Divider>
-                            <Typography variant="h4"
-                                align="center"
-                                color="#252323"
-                                >
-                                    No Upcoming Assigned Match </Typography>
-                            </Grid>
-
-                            
-                        </Grid>
-                    </Grid>
-                    <Grid item xs ={4}> 
+                
+                    <Grid item xs ={6}> 
                         <Grid item xs container direction="column" spacing={4}>
                             <Grid item>
-                            <Typography variant="h4"
-                                align="center"
-                                color="#252323"
+                            <Typography variant="h4" color="#252323" font fontWeight="bold"
                                 >
                                     Past Matches </Typography>
                             </Grid>
                             <Grid item>
                             <Container>
                                 <Toolbar/>
-                                <Paper component={Box} width={450} height={500}>
+                                <Paper component={Box} width={600} height={500} >
                                 <DataGrid
                                 components={{
                                     Toolbar: GridToolbar,
@@ -404,6 +382,15 @@ const ActiveRefProfile = ({}) => {
                     </Grid>
                 </Grid>
                 </center>
+                <center>
+                <Grid item sx={{mt: 5}}>
+                            <Divider></Divider>
+                            <Typography variant="h4" color="#252323" font fontWeight="bold"
+                                >
+                                    No Upcoming Assigned Match </Typography>
+                            </Grid>
+
+                            </center>
             </CssBaseline>
         )
 

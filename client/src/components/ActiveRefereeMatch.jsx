@@ -435,7 +435,7 @@ export default function ActiveRefereeMatch() {
                 Send
                 </Button>
                 <Box m={1} pt={0}> </Box>
-                {error &&<Alert variant="filled" severity="error"> {error} </Alert>}
+                {error &&<Alert variant="filled" severity="error" sx={{ml : 5}}> {error} </Alert>}
               </Grid>
               </center>
     

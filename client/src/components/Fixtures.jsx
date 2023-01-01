@@ -16,11 +16,12 @@ const FixturesComponent = ({}) => {
   const [pageSize, setPageSize] = useState(10);
   const [matches, setMacthes] = useState(null);
   const [maxWeek, setMaxWeek] = useState();
-
+  
   const navigate = useNavigate();
   const queryString = window.location.href;
   const index = queryString.search("fixture")
   const week = queryString.substring(index + 8)
+  console.log( " Wekk", week)
   
   const handleAssign = (id,week) => {
     navigate(`/assign/${id}/week/${week}`);
