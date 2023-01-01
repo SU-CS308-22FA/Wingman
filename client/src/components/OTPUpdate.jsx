@@ -99,7 +99,7 @@ const OTPUpdate = ({}) => {
 
   return (
     <div>
-      <Container component="main" maxWidth="xs">
+      <Container component="main">
         <CssBaseline />
           <Box
           sx={{
@@ -155,6 +155,14 @@ const OTPUpdate = ({}) => {
             </Button>
           </Box>
         </Box>  
+        <Box
+          sx={{
+            marginTop: 8,
+            display: 'flex',
+            flexDirection: 'column',
+            alignItems: 'center',
+          }}
+        />
       </Container>
       
     </div>

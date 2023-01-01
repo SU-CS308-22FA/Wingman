@@ -9,6 +9,7 @@ import { Box, Typography } from "@mui/material";
 
 export const Recover = () => {
     const [isRecoverd, setRecovered] = useState(false);
+    const [isLoading, setLoading] = useState(true);
     const { otp } = useParams();
   
     const fetcData = async () => {
@@ -21,6 +22,7 @@ export const Recover = () => {
   
     useEffect(() => {
         fetcData();
+        setLoading(false)
       console.log(otp)
     }, []);
   
@@ -32,6 +34,15 @@ export const Recover = () => {
         height="600px"
       >
         <Typography variant="h5">Your account is successfully recovered! You can login with your old credentials</Typography>
+      </Box>)}
+    else if(isLoading)
+    {return (<Box
+        display="flex"
+        alignItems="center"
+        justifyContent="center"
+        height="600px"
+      >
+        <Typography variant="h5">Please wait...</Typography>
       </Box>)}
     else{
         return (<Box
