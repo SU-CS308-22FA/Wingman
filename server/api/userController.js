@@ -1025,4 +1025,19 @@ static async verify(req, res, next){
       res.status(400).json({ error: error, data: { users: [] } });
     }
   }
+
+  static async getAllReporters(req, res, next){
+        try {
+          const results = await db.query("SELECT * FROM wingman.users where role in ('reporter', 'admin')")
+          res.status(200).json({
+            lenght: results.rows.length,
+            data:{
+              users: results.rows
+            }
+          })
+        } catch (error) {
+          console.log(`Error when getting all reporters ${error.detail}`)
+          res.status(400).json({error:error, data:{users:[]}})
+        }   
+    }
 }
