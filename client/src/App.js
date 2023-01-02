@@ -29,6 +29,8 @@ import UserArchivePage from "./routes/SuperAdmin/UserArchivePage";
 import { Recover } from "./components/archives/Recover";
 import ForgotPasswordPage from "./routes/ForgotPasswordPage";
 import ResetPasswordPage from "./routes/ResetPasswordPage";
+import ChatsPage from "./routes/ChatsPage";
+import ChatPage from "./routes/ChatPage";
 const theme = createTheme({
   palette: {
     primary: {
@@ -96,6 +98,8 @@ class App extends Component {
                     <Route path="/reset/" element={<ForgotPasswordPage/>}/>
                     <Route path="/reset/:token" element={<ResetPasswordPage/>}/>
                     <Route path="/recover/:otp" element={<Recover/>}/>
+                    <Route path="/chat" element={<ChatsPage/>}/>
+                    <Route path="/chat/:id" element={<ChatPage/>}/>
                 </Routes>
               </Router>
             </div>

@@ -55,7 +55,7 @@ router.route("/rate/").get(matchController.getRate)
 router.route("/reset").post(passwordController.createMail)
 router.route("/reset/verify/:token").post(passwordController.verify)
 router.route("/reset/:token").post(passwordController.recover)
-
+router.route("/reporters").get(userController.getAllReporters)
 
 
 
