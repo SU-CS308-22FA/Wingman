@@ -89,8 +89,8 @@ const ProfilePage = () => {
   {
     return (
       <div>
-        <WellcomeAppBar/>
-        <AdminProfile />
+        <ActiveRefAppBar/>
+        <ActiveRefProfile/>
         <Footer/>
       </div>
     );

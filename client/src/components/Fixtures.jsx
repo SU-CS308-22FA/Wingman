@@ -62,6 +62,8 @@ const FixturesComponent = ({}) => {
   if (week == maxWeek) {
     return (<center>
       <Stack alignItems="center">
+      <Button sx = {{mt: 6}}  onClick={() => handleRank(matches && matches[0].week)} color = 'primary' variant="contained">Referee Rankings</Button>
+
       <Typography sx = {{mt: 2}}>Week: {week}</Typography>
       <Pagination count={maxWeek} page={week} onChange={(e, value) => handleChange(value)} />
       </Stack>
