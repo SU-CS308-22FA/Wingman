@@ -56,6 +56,7 @@ router.route("/rate/").get(matchController.getRate)
 router.route("/reset").post(passwordController.createMail)
 router.route("/reset/verify/:token").post(passwordController.verify)
 router.route("/reset/:token").post(passwordController.recover)
+router.route("/reporters").get(userController.getAllReporters)
 router.route("/activereferee/:id").get(userController.getActiveRefereeById)
 router.route("/activematches/:id").get(matchController.getPlayedMatchDatasByRef)
 router.route("/activematch/:id").get(matchController.getMatchByRefAssign)
@@ -64,7 +65,6 @@ router.route("/report/:id/:element/:rep").post(matchController.createReport)
 router.route("/report/:id").get(matchController.getReportById)
 router.route("/report/:id").delete(matchController.deleteReportById)
 router.route("/report").get(matchController.getAllReports)
-
 
 
 

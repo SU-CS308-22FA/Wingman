@@ -35,6 +35,9 @@ function RefAppBar() {
       const onFixtureClicked = (e) => {
         navigate("/fixture/1");
       };
+      const onChatClicked = (e) => {
+        navigate("/chat");
+      };
 
 const tiers = [
     {
@@ -52,6 +55,10 @@ const tiers = [
     {
       pageName:"Fixture",
       onClick: onFixtureClicked
+  },
+  {
+      pageName:"Chat",
+      onClick: onChatClicked
   },
 
 
