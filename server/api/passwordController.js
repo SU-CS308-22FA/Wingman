@@ -35,7 +35,7 @@ export default class passwordController{
             from: process.env.MAIL_MAIL,
             to: req.body.mail,
             subject: 'Reset your Password',
-            text: `Dear ${isUserExist.rows[0].name},\n\nYou have been requested to reset your password. Please click on the following link, or paste this into your browser to complete the process:\n\nhttp://localhost:3000/reset/${token}\n\nThe link will expire in 10 minutes. If you did not request this, please ignore this email and your password will remain unchanged.\n\n`
+            text: `Dear ${isUserExist.rows[0].name},\n\nYou have been requested to reset your password. Please click on the following link, or paste this into your browser to complete the process:\n\nhttps://wingman-team29.herokuapp.com/reset/${token}\n\nThe link will expire in 10 minutes. If you did not request this, please ignore this email and your password will remain unchanged.\n\n`
           };
           
           transporter.sendMail(mailOptions, function(error, info){
