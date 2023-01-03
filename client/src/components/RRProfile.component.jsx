@@ -64,7 +64,10 @@ const RRProfile = ({}) => {
   function onDelete(){
     try {
       const response = UserFinder.delete(`/users/${user.id}`)
-      .then(navigate("/login/"))
+      .then(() => {
+        localStorage.removeItem("token");
+        navigate("/login/");
+      });
     }
     catch(err){
       console.error('profile delete  error: ', err);
