@@ -3,18 +3,19 @@ import PropTypes from "prop-types";
 // material-ui
 import { Box, Chip, Grid, Stack, Typography } from "@mui/material";
 import MainCard from "./MainCard";
+import MainCardDark from "./MainCardDark";
 
 // project import
 // assets
-const SmallCard = ({ title, subtitle,value,percdif,reftens}) => (
-    <MainCard contentSX={{ p: 2.25 }}>
+const SmallCardDark= ({ title, subtitle,value,percdif,reftens}) => (
+    <MainCardDark contentSX={{ p: 2.25 }}>
         <Stack spacing={0.5}>
-            <Typography variant="h6" color="#252323" font fontWeight="bold">
+            <Typography variant="h6" color="#A99985" font fontWeight="bold">
                 {title}
             </Typography>
             <Grid container alignItems="center">
                 <Grid item>
-                    <Typography variant="h5" color="#A99985" font fontWeight="light">
+                    <Typography variant="h5" color="#DAD2BC" font fontWeight="light">
                         {subtitle}
                     </Typography>
                 </Grid>
@@ -52,17 +53,17 @@ const SmallCard = ({ title, subtitle,value,percdif,reftens}) => (
             </Grid>
         </Stack>
 
-    </MainCard>
+    </MainCardDark>
 );
 
-SmallCard.propTypes = {
+SmallCardDark.propTypes = {
   color: PropTypes.string,
   title: PropTypes.string,
   count: PropTypes.string,
 };
 
-SmallCard.defaultProps = {
+SmallCardDark.defaultProps = {
   color: "primary",
 };
 
-export default SmallCard;
+export default SmallCardDark;

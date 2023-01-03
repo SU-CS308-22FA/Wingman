@@ -6,7 +6,7 @@ import MainCard from "./MainCard";
 
 // project import
 // assets
-const SmallCard = ({ title, subtitle,value,percdif,reftens}) => (
+const RankCard = ({ title, subtitle,value,percdif,refrank}) => (
     <MainCard contentSX={{ p: 2.25 }}>
         <Stack spacing={0.5}>
             <Typography variant="h6" color="#252323" font fontWeight="bold">
@@ -14,15 +14,15 @@ const SmallCard = ({ title, subtitle,value,percdif,reftens}) => (
             </Typography>
             <Grid container alignItems="center">
                 <Grid item>
-                    <Typography variant="h5" color="#A99985" font fontWeight="light">
+                    <Typography variant="h5" color="#A99985" font fontWeight="light" sx = {{ml : 32}}>
                         {subtitle}
                     </Typography>
                 </Grid>
                 {value &&
                 <Grid item>
                 <Chip
-                    label={(value < 80 ? "Fair" : value <= 90 ? "Mediocre" : "Severe")}
-                    color={ value < 80 ? "success" : value <= 90 ? "secondary" : "error"}
+                    label={(value < 65 ? "Fair" : value <= 80 ? "Mediocre" : "Severe")}
+                    color={ value < 65 ? "success" : value <= 80 ? "secondary" : "error"}
                     sx={{ ml: 1.25, mb:1, pl: 0 }}
                     size="small"
                 />         
@@ -37,12 +37,12 @@ const SmallCard = ({ title, subtitle,value,percdif,reftens}) => (
                     size="small" />  
                 </Grid>      
                 }
-                {reftens &&
+                {refrank && 
                 <Grid item>
                 <Chip
-                    label={(reftens < 53 ? "Fair" : reftens <= 64.5 ? "Mediocre" : "Severe")}
-                    color={ reftens < 53 ? "success" : reftens <= 64.5 ? "secondary" : "error"}
-                    sx={{ ml: 1.25, mb:1, pl: 0 }}
+                    label={(refrank == 1 ? "First" : refrank == 2 ? "Second" :refrank == 3 ? "Third": refrank.toString() + "th Overall")}
+                    color={ refrank == 1 ? "success" : refrank == 2 ? "secondary" : refrank == 3 ? "secondary" : "error"}
+                    sx={{ ml: 3, mb:1, pl: 0 }}
                     size="small"
                 />         
                 </Grid>         
@@ -55,14 +55,14 @@ const SmallCard = ({ title, subtitle,value,percdif,reftens}) => (
     </MainCard>
 );
 
-SmallCard.propTypes = {
+RankCard.propTypes = {
   color: PropTypes.string,
   title: PropTypes.string,
   count: PropTypes.string,
 };
 
-SmallCard.defaultProps = {
+RankCard.defaultProps = {
   color: "primary",
 };
 
-export default SmallCard;
+export default RankCard;

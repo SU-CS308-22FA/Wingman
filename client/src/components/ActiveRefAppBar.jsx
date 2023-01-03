@@ -19,60 +19,27 @@ import PersonPinIcon from '@mui/icons-material/PersonPin';
 import SportsKabaddiIcon from '@mui/icons-material/SportsKabaddi';
 import { UsersContext } from "../context/UserContex";
 
-function ResponsiveAppBar() {
+function ActiveRefAppBar() {
     const navigate = useNavigate();
-    const {isAuthenticated, setAuth} = useContext(AuthContext)
-    const {user, setUser} = useContext(UsersContext)
+    const {setAuth} = useContext(AuthContext)
+    const {setUser} = useContext(UsersContext)
+    const {user} = useContext(UsersContext)
+    const onMatchReportClicked = (e) => {
+      navigate(`/reports`);
+    };
+
     const onProfileClicked = (e) => {
-        navigate("/profile");
-      };
-      const onSettingsClicked = (e) => {
-        navigate("/update/");
-      };
-      const onRefereeClicked = (e) => {
-        navigate("/refereeList");
-      };
-      const onTeamsClicked = (e) => {
-        navigate("/teams");
-      };
-      const onFixtureClicked = (e) => {
-        navigate("/fixture/1");
-      };
-      const onReportersClicked = (e) => {
-        navigate("/reporters");
-      };
-      const onReportsClicked = (e) => {
-        navigate("/reports");
-      };
+      navigate(`/profile/`);
+    };
 const tiers = [
     {
-        pageName:"Profile",
-        onClick: onProfileClicked
-    },
-    {
-        pageName:"Settings",
-        onClick: onSettingsClicked
-    },
-    {
-        pageName:"Referees",
-        onClick: onRefereeClicked
-    },
-    {
-        pageName:"Teams",
-        onClick: onTeamsClicked
-    },
-    {
-      pageName:"Fixture",
-      onClick: onFixtureClicked
-    },
-    {
-      pageName:"Reporters",
-      onClick: onReportersClicked
-    },
-    {
       pageName:"Match Reports",
-      onClick: onReportsClicked
-    }
+      onClick: onMatchReportClicked
+  },
+  {
+    pageName:"Profile",
+    onClick: onProfileClicked
+},
 
 
   ];
@@ -229,4 +196,4 @@ const tiers = [
     </AppBar>
   );
 }
-export default ResponsiveAppBar;
+export default ActiveRefAppBar;

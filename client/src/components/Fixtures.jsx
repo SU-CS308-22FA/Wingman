@@ -16,15 +16,23 @@ const FixturesComponent = ({}) => {
   const [pageSize, setPageSize] = useState(10);
   const [matches, setMacthes] = useState(null);
   const [maxWeek, setMaxWeek] = useState();
-
+  
   const navigate = useNavigate();
   const queryString = window.location.href;
   const index = queryString.search("fixture")
   const week = queryString.substring(index + 8)
+  console.log( " Wekk", week)
   
   const handleAssign = (id,week) => {
     navigate(`/assign/${id}/week/${week}`);
   };
+  const handleRank = (id) => {
+    navigate(`/rankings/${id}`);
+  };
+  const handleRecommendation = (id,week) => {
+    navigate(`/recommendation/${id}`);
+  };
+
 
   const handleDetails = (id) => {
     navigate(`/match/${id}`);
@@ -58,7 +66,7 @@ const FixturesComponent = ({}) => {
       <Pagination count={maxWeek} page={week} onChange={(e, value) => handleChange(value)} />
       </Stack>
       
-      <Card sx={{ height: 200, width: 1500, mt: 4 }}  > 
+      <Card sx={{ height: 250, width: 1500, mt: 4 }}  > 
         <CardContent>
           <Grid container spacing={2} >
             <Grid item xs={12} sm container>
@@ -99,6 +107,13 @@ const FixturesComponent = ({}) => {
                     Assign Referee
                     </Button>
                   </Grid>
+                  <Grid item>
+                    <Button size="medium" sx = {{mt:0}} onClick={() => handleRecommendation(matches[0].match_id)}>
+                    Recommendations
+                    </Button>
+                  </Grid>
+
+
                 </Grid>
               </Grid>
             </Grid>
@@ -120,7 +135,7 @@ const FixturesComponent = ({}) => {
         </CardContent>
       </Card>
 
-      <Card sx={{ height: 200, width: 1500, mt: 4 }}> 
+      <Card sx={{ height: 250, width: 1500, mt: 4 }}> 
         <CardContent>
           <Grid container spacing={2}>
             <Grid item xs={12} sm container>
@@ -162,6 +177,11 @@ const FixturesComponent = ({}) => {
                     Assign Referee
                     </Button>
                   </Grid>
+                  <Grid item>
+                    <Button size="medium" sx = {{mt:0}} onClick={() => handleRecommendation(matches[1].match_id)}>
+                    Recommendations
+                    </Button>
+                  </Grid>
                 </Grid>
               </Grid>
             </Grid>
@@ -184,7 +204,7 @@ const FixturesComponent = ({}) => {
       </Card>
 
 
-      <Card sx={{ height: 200, width: 1500, mt: 4 }}> 
+      <Card sx={{ height: 250, width: 1500, mt: 4 }}> 
         <CardContent>
           <Grid container spacing={2}>
             <Grid item xs={12} sm container>
@@ -228,6 +248,11 @@ const FixturesComponent = ({}) => {
                     Assign Referee
                     </Button>
                   </Grid>
+                  <Grid item>
+                    <Button size="medium" sx = {{mt:0}} onClick={() => handleRecommendation(matches[2].match_id)}>
+                    Recommendations
+                    </Button>
+                  </Grid>
                   
                 </Grid>
               </Grid>
@@ -252,7 +277,7 @@ const FixturesComponent = ({}) => {
 
 
 
-      <Card sx={{ height: 200, width: 1500, mt: 4 }}> 
+      <Card sx={{ height: 250, width: 1500, mt: 4 }}> 
         <CardContent>
           <Grid container spacing={2}>
             <Grid item xs={12} sm container>
@@ -297,6 +322,11 @@ const FixturesComponent = ({}) => {
                     </Button>
                   </Grid>
                   
+                  <Grid item>
+                    <Button size="medium" sx = {{mt:0}} onClick={() => handleRecommendation(matches[3].match_id)}>
+                    Recommendations
+                    </Button>
+                  </Grid>
                 </Grid>
               </Grid>
             </Grid>
@@ -318,7 +348,7 @@ const FixturesComponent = ({}) => {
         </CardContent>
       </Card>
 
-      <Card sx={{ height: 200, width: 1500, mt: 4 }}> 
+      <Card sx={{ height: 250, width: 1500, mt: 4 }}> 
         <CardContent>
           <Grid container spacing={2}>
             <Grid item xs={12} sm container>
@@ -359,6 +389,11 @@ const FixturesComponent = ({}) => {
                     Assign Referee
                     </Button>
                   </Grid>
+                  <Grid item>
+                    <Button size="medium" sx = {{mt:0}} onClick={() => handleRecommendation(matches[4].match_id)}>
+                    Recommendations
+                    </Button>
+                  </Grid>
                   
                 </Grid>
               </Grid>
@@ -381,7 +416,7 @@ const FixturesComponent = ({}) => {
         </CardContent>
       </Card>
 
-      <Card sx={{ height: 200, width: 1500, mt: 4 }}> 
+      <Card sx={{ height: 250, width: 1500, mt: 4 }}> 
         <CardContent>
           <Grid container spacing={2}>
             <Grid item xs={12} sm container>
@@ -423,7 +458,12 @@ const FixturesComponent = ({}) => {
                     Assign Referee
                     </Button>
                   </Grid>
-                  
+                  <Grid item>
+                    <Button size="medium" sx = {{mt:0}} onClick={() => handleRecommendation(matches[5].match_id)}>
+                    Recommendations
+                    </Button>
+                  </Grid>
+                
                 </Grid>
               </Grid>
             </Grid>
@@ -445,7 +485,7 @@ const FixturesComponent = ({}) => {
         </CardContent>
       </Card>
 
-      <Card sx={{ height: 200, width: 1500, mt: 4 }}> 
+      <Card sx={{ height: 250, width: 1500, mt: 4 }}> 
         <CardContent>
           <Grid container spacing={2}>
             <Grid item xs={12} sm container>
@@ -486,6 +526,11 @@ const FixturesComponent = ({}) => {
                     Assign Referee
                     </Button>
                   </Grid>
+                  <Grid item>
+                    <Button size="medium" sx = {{mt:0}} onClick={() => handleRecommendation(matches[6].match_id)}>
+                    Recommendations
+                    </Button>
+                  </Grid>
                   
                 </Grid>
               </Grid>
@@ -508,7 +553,7 @@ const FixturesComponent = ({}) => {
         </CardContent>
       </Card>
 
-      <Card sx={{ height: 200, width: 1500, mt: 4 }}> 
+      <Card sx={{ height: 250, width: 1500, mt: 4 }}> 
         <CardContent>
           <Grid container spacing={2}>
             <Grid item xs={12} sm container>
@@ -549,6 +594,11 @@ const FixturesComponent = ({}) => {
                     Assign Referee
                     </Button>
                   </Grid>
+                  <Grid item>
+                    <Button size="medium" sx = {{mt:0}} onClick={() => handleRecommendation(matches[7].match_id)}>
+                    Recommendations
+                    </Button>
+                  </Grid>
                   
                 </Grid>
               </Grid>
@@ -571,7 +621,7 @@ const FixturesComponent = ({}) => {
         </CardContent>
       </Card>
 
-      <Card sx={{ height: 200, width: 1500, mt: 4 }}> 
+      <Card sx={{ height: 250, width: 1500, mt: 4 }}> 
         <CardContent>
           <Grid container spacing={2}>
             <Grid item xs={12} sm container>
@@ -612,6 +662,11 @@ const FixturesComponent = ({}) => {
                     Assign Referee
                     </Button>
                   </Grid>
+                  <Grid item>
+                    <Button size="medium" sx = {{mt:0}} onClick={() => handleRecommendation(matches[8].match_id)}>
+                    Recommendations
+                    </Button>
+                  </Grid>
                   
                 </Grid>
               </Grid>
@@ -643,11 +698,12 @@ const FixturesComponent = ({}) => {
   return (
     <center>
       <Stack alignItems="center">
-      <Typography sx = {{mt: 2}}>Week: {week}</Typography>
+      <Button sx = {{mt: 6}}  onClick={() => handleRank(matches && matches[0].week)} color = 'primary' variant="contained">Referee Rankings</Button>
+      <Typography sx = {{mt: 3}}>Week: {week}</Typography>
       <Pagination count={maxWeek} page={week} onChange={(e, value) => handleChange(value)} />
       </Stack>
       
-      <Card sx={{ height: 200, width: 1500, mt: 4 }}  > 
+      <Card sx={{ height: 250, width: 1500, mt: 4 }}  > 
         <CardContent>
           <Grid container spacing={2} >
             <Grid item xs={12} sm container>
@@ -706,6 +762,11 @@ const FixturesComponent = ({}) => {
                     Match Details
                     </Button>
                   </Grid>
+                  <Grid item>
+                    <Button size="medium" sx = {{mt:0}} onClick={() => handleRecommendation(matches[0].match_id)}>
+                    Recommendation History
+                    </Button>
+                  </Grid>
                 </Grid>
               </Grid>
             </Grid>
@@ -727,7 +788,7 @@ const FixturesComponent = ({}) => {
         </CardContent>
       </Card>
 
-      <Card sx={{ height: 200, width: 1500, mt: 4 }}> 
+      <Card sx={{ height: 250, width: 1500, mt: 4 }}> 
         <CardContent>
           <Grid container spacing={2}>
             <Grid item xs={12} sm container>
@@ -785,6 +846,11 @@ const FixturesComponent = ({}) => {
                     Match Details
                     </Button>
                   </Grid>
+                  <Grid item>
+                    <Button size="medium" sx = {{mt:0}} onClick={() => handleRecommendation(matches[1].match_id)}>
+                    Recommendation History
+                    </Button>
+                  </Grid>
                 </Grid>
               </Grid>
             </Grid>
@@ -807,7 +873,7 @@ const FixturesComponent = ({}) => {
       </Card>
 
 
-      <Card sx={{ height: 200, width: 1500, mt: 4 }}> 
+      <Card sx={{ height: 250, width: 1500, mt: 4 }}> 
         <CardContent>
           <Grid container spacing={2}>
             <Grid item xs={12} sm container>
@@ -865,6 +931,11 @@ const FixturesComponent = ({}) => {
                     Match Details
                     </Button>
                   </Grid>
+                  <Grid item>
+                    <Button size="medium" sx = {{mt:0}} onClick={() => handleRecommendation(matches[2].match_id)}>
+                    Recommendation History
+                    </Button>
+                  </Grid>
                   
                 </Grid>
               </Grid>
@@ -889,7 +960,7 @@ const FixturesComponent = ({}) => {
 
 
 
-      <Card sx={{ height: 200, width: 1500, mt: 4 }}> 
+      <Card sx={{ height: 250, width: 1500, mt: 4 }}> 
         <CardContent>
           <Grid container spacing={2}>
             <Grid item xs={12} sm container>
@@ -947,6 +1018,11 @@ const FixturesComponent = ({}) => {
                     Match Details
                     </Button>
                   </Grid>
+                  <Grid item>
+                    <Button size="medium" sx = {{mt:0}} onClick={() => handleRecommendation(matches[3].match_id)}>
+                    Recommendation History
+                    </Button>
+                  </Grid>
                   
                 </Grid>
               </Grid>
@@ -969,7 +1045,7 @@ const FixturesComponent = ({}) => {
         </CardContent>
       </Card>
 
-      <Card sx={{ height: 200, width: 1500, mt: 4 }}> 
+      <Card sx={{ height: 250, width: 1500, mt: 4 }}> 
         <CardContent>
           <Grid container spacing={2}>
             <Grid item xs={12} sm container>
@@ -1027,7 +1103,12 @@ const FixturesComponent = ({}) => {
                     Match Details
                     </Button>
                   </Grid>
-                  
+                  <Grid item>
+                    <Button size="medium" sx = {{mt:0}} onClick={() => handleRecommendation(matches[4].match_id)}>
+                    Recommendation History
+                    </Button>
+                  </Grid>
+                
                 </Grid>
               </Grid>
             </Grid>
@@ -1049,7 +1130,7 @@ const FixturesComponent = ({}) => {
         </CardContent>
       </Card>
 
-      <Card sx={{ height: 200, width: 1500, mt: 4 }}> 
+      <Card sx={{ height: 250, width: 1500, mt: 4 }}> 
         <CardContent>
           <Grid container spacing={2}>
             <Grid item xs={12} sm container>
@@ -1107,6 +1188,11 @@ const FixturesComponent = ({}) => {
                     Match Details
                     </Button>
                   </Grid>
+                  <Grid item>
+                    <Button size="medium" sx = {{mt:0}} onClick={() => handleRecommendation(matches[5].match_id)}>
+                    Recommendation History
+                    </Button>
+                  </Grid>
                   
                 </Grid>
               </Grid>
@@ -1129,7 +1215,7 @@ const FixturesComponent = ({}) => {
         </CardContent>
       </Card>
 
-      <Card sx={{ height: 200, width: 1500, mt: 4 }}> 
+      <Card sx={{ height: 250, width: 1500, mt: 4 }}> 
         <CardContent>
           <Grid container spacing={2}>
             <Grid item xs={12} sm container>
@@ -1187,7 +1273,11 @@ const FixturesComponent = ({}) => {
                     Match Details
                     </Button>
                   </Grid>
-                  
+                  <Grid item>
+                    <Button size="medium" sx = {{mt:0}} onClick={() => handleRecommendation(matches[6].match_id)}>
+                    Recommendation History
+                    </Button>
+                  </Grid>
                 </Grid>
               </Grid>
             </Grid>
@@ -1209,7 +1299,7 @@ const FixturesComponent = ({}) => {
         </CardContent>
       </Card>
 
-      <Card sx={{ height: 200, width: 1500, mt: 4 }}> 
+      <Card sx={{ height: 250, width: 1500, mt: 4 }}> 
         <CardContent>
           <Grid container spacing={2}>
             <Grid item xs={12} sm container>
@@ -1267,7 +1357,11 @@ const FixturesComponent = ({}) => {
                     Match Details
                     </Button>
                   </Grid>
-                  
+                  <Grid item>
+                    <Button size="medium" sx = {{mt:0}} onClick={() => handleRecommendation(matches[7].match_id)}>
+                    Recommendation History
+                    </Button>
+                  </Grid>
                 </Grid>
               </Grid>
             </Grid>
@@ -1289,7 +1383,7 @@ const FixturesComponent = ({}) => {
         </CardContent>
       </Card>
 
-      <Card sx={{ height: 200, width: 1500, mt: 4 }}> 
+      <Card sx={{ height: 250, width: 1500, mt: 4 }}> 
         <CardContent>
           <Grid container spacing={2}>
             <Grid item xs={12} sm container>
@@ -1345,6 +1439,11 @@ const FixturesComponent = ({}) => {
                   <Grid item>
                     <Button size="medium" onClick={() => handleDetails(matches && matches[8].match_id)}>
                     Match Details
+                    </Button>
+                  </Grid>
+                  <Grid item>
+                    <Button size="medium" sx = {{mt:0}} onClick={() => handleRecommendation(matches[8].match_id)}>
+                    Recommendation History
                     </Button>
                   </Grid>
                   

@@ -51,7 +51,7 @@ const MenuProps = {
   },
 };
 
-const names = ["TFF Admin", "Reporter", "Retired Referee", "Super Admin"];
+const names = ["TFF Admin", "Reporter", "Retired Referee", "Super Admin", "Active Referee"];
 
 function getStyles(name, personName, theme) {
   return {
@@ -201,7 +201,7 @@ export const SuperAdminList = () => {
       disableColumnMenu: true,
 
       renderCell: (params) => {
-        if (params.row.role != "Super Admin") {
+        if (params.row.role != "Super Admin" && params.row.role != "Active Referee") {
           return (
             <Button
               variant="contained"

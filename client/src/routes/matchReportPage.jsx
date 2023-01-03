@@ -6,14 +6,12 @@ import { UsersContext } from "../context/UserContex";
 import { useNavigate } from "react-router-dom";
 import { AuthContext } from "../context/authContext";
 import UserFinder from "../apis/UserFinder";
-import ReporterMatch from "../components/RatingComponents/ReporterMatch.component";
-import { CircularProgress } from "@material-ui/core";
-import RefAppBar from "../components/RetiredRefReporterAppBar";
+import { CircularProgress } from "@mui/material";
+import { ActiveRefReports } from "../components/ActiveRefReports";
 import ActiveRefAppBar from "../components/ActiveRefAppBar";
-import ActiveRefereeMatch from "../components/ActiveRefereeMatch";
+import { AdminReports } from "../components/adminReports";
 
-
-const MatchPage = () => {
+const MatchReportPage = () => {
   const navigate = useNavigate();
   const [isLoading, setLoading] = useState(true)
 
@@ -67,29 +65,20 @@ const MatchPage = () => {
       </div>
     );
   }
-  else if(user.role == "TFF Admin"){
-    return (
-      <div>
-        <ResponsiveAppBar/>
-        <ReporterMatch/>
-        <Copyright sx={{ mt: 5 }} />
-      </div>
-    );
-  }
   else if(user.role == "Active Referee"){
     return (
       <div>
         <ActiveRefAppBar/>
-        <ActiveRefereeMatch/>
+        <ActiveRefReports/>
         <Copyright sx={{ mt: 5 }} />
       </div>
     );
   }
-  else if(user.role == "Reporter" || user.role == "Retired Referee"){
+  else if(user.role == "TFF Admin"){
     return (
       <div>
-        <RefAppBar/>
-        <ReporterMatch/>
+        <ResponsiveAppBar/>
+        <AdminReports/>
         <Copyright sx={{ mt: 5 }} />
       </div>
     );
@@ -104,4 +93,4 @@ const MatchPage = () => {
   }
 }
    
-  export default MatchPage;
+  export default MatchReportPage;
