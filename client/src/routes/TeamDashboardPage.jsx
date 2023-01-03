@@ -1,25 +1,24 @@
-import Footer from "../components/Footer.component";
-import RRProfile from "../components/RRProfile.component";
-import AdminProfile from "../components/AdminProfile.component";
-import ResponsiveAppBar from '../components/LoggedInAppBar';
-import React, { useContext, useState, useEffect } from "react";
+import React, { useContext } from "react";
+import Copyright from "./../components/Copyright.component";
+import ResponsiveAppBar from './../components/LoggedInAppBar';
+import Box from '@mui/material/Box';
+import { TeamList } from "../components/TeamList";
 import { UsersContext } from "../context/UserContex";
-import { AuthContext } from "../context/authContext";
 import { useNavigate } from "react-router-dom";
-import { SuperAdminList } from "../components/SuperAdminList";
-import WellcomeAppBar from "../components/WelcomeBar";
-import { GenerateKey } from "../components/KeyGeneration.component";
+import { AuthContext } from "../context/authContext";
+import { useState, useEffect } from "react";
 import UserFinder from "../apis/UserFinder";
 import CircularProgress from '@mui/material/CircularProgress';
-import Box from '@mui/material/Box';
 import RefAppBar from "../components/RetiredRefReporterAppBar";
-import WelcomeAppBar from "../components/WelcomeBar";
-import ActiveRefProfile from "../components/ActiveRefereeComponents/ActiveRefProfile";
-import ActiveRefAppBar from "../components/ActiveRefAppBar";
-import OTPUpdate from "../components/OTPUpdate";
+import TeamProfile from "../components/TeamProfile.component";
+const myStyle={
+     background: "#F5F1ED",
+     height:'50',
+     fontSize:'24px',
+     backgroundSize: 'cover',
+  };
 
-
-const ProfilePage = () => {
+const TeamDashboardPage = () => {
   const navigate = useNavigate();
   const [isLoading, setLoading] = useState(true)
 
@@ -35,7 +34,6 @@ const ProfilePage = () => {
           name: userData.data.data.name,
           surname: userData.data.data.surname,
           role: userData.data.data.role,
-          isotp: userData.data.data.isotp,
         }
         setUser(val)
       })
@@ -66,8 +64,28 @@ const ProfilePage = () => {
   useEffect(() => {
     checkAuthenticated();
   }, []);
-
   if(isLoading || user === undefined){
+    return (
+      <div>
+        
+        <Box m={0} pt={34}> </Box>
+        <center> <CircularProgress /></center>
+      </div>
+    );
+  }
+  else if(user.role == "TFF Admin"){
+    return (
+      <div style = {myStyle}>
+        <ResponsiveAppBar/>
+        <TeamProfile/>
+        <Box m={0} pt={10}> </Box>
+      </div>
+    );
+  }
+  else if(user.role == "Reporter" || user.role == "Retired Referee"){
+    navigate("/profile/")
+  }
+  else{
     return (
       <div>
         <Box m={0} pt={34}> </Box>
@@ -75,63 +93,6 @@ const ProfilePage = () => {
       </div>
     );
   }
-  else if(user.isotp)
-  {
-    return (
-      <div>
-        <WellcomeAppBar/>
-        <OTPUpdate/>
-        <Footer/>
-      </div>
-    );
-  }
-  else if(user.role == "Active Referee")
-  {
-    return (
-      <div>
-        <WellcomeAppBar/>
-        <AdminProfile />
-        <Footer/>
-      </div>
-    );
-  }
-  else if(user.role == "TFF Admin")
-  {
-    return (
-      <div>
-        <ResponsiveAppBar/>
-        <AdminProfile />
-        <Footer/>
-      </div>
-    );
-  }
-  else if(user.role == "Reporter" || user.role=="Retired Referee")
-  {
-    return (
-      <div>
-        <RefAppBar/>
-        <RRProfile />
-        <Footer/>
-      </div>
-    );
-  }
-  else if(user.role == "Super Admin")
-  {
-    return (
-      <div>
-        <WellcomeAppBar/>
-        <GenerateKey/>
-        <SuperAdminList />
-      </div>
-    );
-  }
-  else{
-    return (
-      <div>
-        <center> <CircularProgress /></center>
-      </div>
-    );
-  }    
-  };
+}
    
-  export default ProfilePage;
+  export default TeamDashboardPage;

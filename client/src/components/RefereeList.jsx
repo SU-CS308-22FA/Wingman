@@ -147,7 +147,7 @@ export const RefereeList = (isTFF) => {
     <Container>
         <center>
         <Box m={6} pt={0}> </Box>
-        {isTFF ==true ?<Button onClick={navigateCreate} color = 'secondary' variant="contained">CREATE REFEREE</Button> :  <Box m={0} pt={0}> </Box>}
+        {isTFF.isTFF ==true ?<Button onClick={navigateCreate} color = 'secondary' variant="contained">CREATE REFEREE</Button> :  <Box m={0} pt={0}> </Box>}
     <Toolbar/>
       <Paper component={Box} width={750} height={800}>
     <DataGrid

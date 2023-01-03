@@ -238,7 +238,7 @@ alignItems="center">
       "user_id": user.id,
       "match_id": matchData.match_id,
       "referee_id": matchData.referee_id
-    });
+    }, {headers: {'jwt_token': localStorage.token}});
   }
 
   useEffect(() => {

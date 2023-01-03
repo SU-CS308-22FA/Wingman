@@ -25,6 +25,14 @@ import DeleteRequestPage from "./routes/SuperAdmin/DeleteRequestsPage";
 import RRHistPage from "./routes/RRHistPage";
 import RefereeCreatePage from "./routes/RefereeCreation";
 import MatchReportPage from "./routes/matchReportPage";
+import TeamDashboardPage from "./routes/TeamDashboardPage";
+import UserArchivePage from "./routes/SuperAdmin/UserArchivePage";
+import { Recover } from "./components/archives/Recover";
+import Recommendation from "./components/RecommendationComponent";
+import RecommendationPage from "./routes/RecommendationPage";
+import RefRankPage from "./routes/RefereeRankingPage";
+
+
 const theme = createTheme({
   palette: {
     primary: {
@@ -77,19 +85,21 @@ class App extends Component {
                     <Route path="/profile/" element={<ProfilePage/>}/>\
                     <Route path="/update/" element={<RRUpdatePage/>}/>
                     <Route path="/addReferee" element={<RefereeCreatePage/>}/>
-
+                    <Route path="/recommendation/:id" element={<RecommendationPage/>}/>
                     <Route path="/refereeList" element={<RRRefereeList/>}/>
                     <Route path="/referee/:id" element={<RefereeDashboardPage/>}/>     
                     <Route path="/teams" element={<TeamListPage/>}/>
                     <Route path="/assign/:id/week/:week" element={<RefereeAssignPage/>}/>
-                    <Route path="/teams/:id" element={<ATeamProfile/>}/>
+                    <Route path="/teams/:id" element={<TeamDashboardPage/>}/>
                     <Route path="/fixture/:week" element={<FixturePage/>}/>
-                    <Route path="/teams/:id" element={<ATeamProfile/>}/>
                     <Route path="/match/:id" element={<MatchPage/>}/>
+                    <Route path="/rankings/:id" element={<RefRankPage/>}/>
                     <Route path="/history/" element={<RRHistPage/>}/>
                     <Route path="/reporters" element={<ReporterListPage />} />
                     <Route path="/requests" element={<DeleteRequestPage />} />
                     <Route path="/reports" element={<MatchReportPage />} />
+                    <Route path="/archive" element={<UserArchivePage />} />
+                    <Route path="/recover/:otp" element={<Recover/>}/>
                 </Routes>
               </Router>
             </div>
