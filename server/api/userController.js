@@ -231,7 +231,7 @@ export default class userController{
         
         try {
           
-          const results = await db.query('SELECT * FROM wingman.referees WHERE id != 0 EXCEPT SELECT name, surname, r.totalmatches, r.totalyellowcards, r.totalredcards, age, currentseasonmatches, totalfoulspg, totalfoulsdivtackles, totalpenpg, totalyelpg,totalredpg, currentfoulspg, currentfoulsdivtackles, currentpenpg, currentyelpg, currentyel, currentredpg, currentred, avatarurl, id  FROM wingman.matches m, wingman.referees r, wingman.teams t, wingman.teams t1 WHERE  m.home_id = t.teamid AND m.away_id = t1.teamid  AND m.referee_id = r.id AND m.week = $1;', [req.params.wid])
+          const results = await db.query('SELECT name, surname, totalmatches, totalyellowcards, totalredcards, age, currentseasonmatches, totalfoulspg, totalfoulsdivtackles, totalpenpg, totalyelpg,totalredpg, currentfoulspg, currentfoulsdivtackles, currentpenpg, currentyelpg, currentyel, currentredpg, currentred, avatarurl, id FROM wingman.referees WHERE id != 0  EXCEPT SELECT name, surname, r.totalmatches, r.totalyellowcards, r.totalredcards, age, currentseasonmatches, totalfoulspg, totalfoulsdivtackles, totalpenpg, totalyelpg,totalredpg, currentfoulspg, currentfoulsdivtackles, currentpenpg, currentyelpg, currentyel, currentredpg, currentred, avatarurl, id  FROM wingman.matches m, wingman.referees r, wingman.teams t, wingman.teams t1 WHERE  m.home_id = t.teamid AND m.away_id = t1.teamid  AND m.referee_id = r.id AND m.week = $1;', [req.params.wid])
           
           res.status(200).json({
             lenght: results.rows.length,
@@ -244,6 +244,33 @@ export default class userController{
           console.log(`Error when getting non-assigned referees for a week ${error.detail}`)
           res.status(400).json({error:error, data:{users:[]}})
         } 
+        }
+
+        static async getRank(req, res, next){
+          try {
+            const param = req.params.col
+            const result = await db.query('SELECT q.rnk FROM ( SELECT ROW_NUMBER() OVER (ORDER BY '+param +' DESC) AS rnk, r.* FROM wingman.referees AS r) AS q  WHERE q.user_id = $1', [req.params.id])
+            if(result.rows.length == 0)
+            {
+              throw {
+                detail: "Match not found.",
+                code: 1,
+                error: new Error()
+              };
+            }
+    
+            res.status(200).json({
+            data: result.rows[0]
+            })
+          } catch (err) {
+            console.log(`Error when getting one match ${err}`)
+            if(err.code == 1)
+            {
+              res.status(404).json({detail:err.detail, data:[]})
+              return
+            }
+            res.status(400).json({detail:err, data:[]})
+          }   
         }
         
     /**
@@ -262,6 +289,34 @@ export default class userController{
         try {
           
           const result = await db.query('SELECT wingman.referees.*, COALESCE(AVG(rate), 11) AS avg_rate FROM wingman.referees LEFT JOIN wingman.ratings ON id = referee_id  WHERE id = $1 GROUP BY(id, referee_id)', [req.params.id])
+
+          if(result.rows.length == 0)
+          {
+            throw {
+              detail: "Referee not found.",
+              code: 1,
+              error: new Error()
+            };
+          }
+  
+          res.status(200).json({
+          data: result.rows[0]
+          })
+        } catch (err) {
+          console.log(`Error when getting one referee ${err}`)
+          if(err.code == 1)
+          {
+            res.status(404).json({detail:err.detail, data:[]})
+            return
+          }
+          res.status(400).json({detail:err, data:[]})
+        }   
+      }
+
+      static async getActiveRefereeById(req, res, next){
+        try {
+          
+          const result = await db.query('SELECT * FROM wingman.users u, wingman.referees r WHERE u.user_id = r.user_id AND u.user_id = $1', [req.params.id])
 
           if(result.rows.length == 0)
           {
@@ -1063,4 +1118,6 @@ static async verify(req, res, next){
       res.status(400).json({ error: error, data: { users: [] } });
     }
   }
+
+  
 }

@@ -24,6 +24,7 @@ import ReporterListPage from "./routes/admin/ReporterList";
 import DeleteRequestPage from "./routes/SuperAdmin/DeleteRequestsPage";
 import RRHistPage from "./routes/RRHistPage";
 import RefereeCreatePage from "./routes/RefereeCreation";
+import MatchReportPage from "./routes/matchReportPage";
 import TeamDashboardPage from "./routes/TeamDashboardPage";
 import UserArchivePage from "./routes/SuperAdmin/UserArchivePage";
 import { Recover } from "./components/archives/Recover";
@@ -96,6 +97,7 @@ class App extends Component {
                     <Route path="/history/" element={<RRHistPage/>}/>
                     <Route path="/reporters" element={<ReporterListPage />} />
                     <Route path="/requests" element={<DeleteRequestPage />} />
+                    <Route path="/reports" element={<MatchReportPage />} />
                     <Route path="/archive" element={<UserArchivePage />} />
                     <Route path="/recover/:otp" element={<Recover/>}/>
                 </Routes>
