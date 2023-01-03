@@ -11,6 +11,9 @@ import { CircularProgress } from "@material-ui/core";
 import RefAppBar from "../components/RetiredRefReporterAppBar";
 import ActiveRefAppBar from "../components/ActiveRefAppBar";
 import ActiveRefereeMatch from "../components/ActiveRefereeMatch";
+import OTPUpdate from "../components/OTPUpdate";
+import WellcomeAppBar from "../components/WelcomeBar";
+
 
 
 const MatchPage = () => {
@@ -66,6 +69,13 @@ const MatchPage = () => {
         <center> <CircularProgress /></center>
       </div>
     );
+  }
+  else if(user.isotp)
+  {
+    <div>
+        <WellcomeAppBar/>
+        <OTPUpdate/>
+      </div>
   }
   else if(user.role == "TFF Admin"){
     return (
