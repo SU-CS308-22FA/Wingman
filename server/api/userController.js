@@ -231,7 +231,7 @@ export default class userController{
         
         try {
           
-          const results = await db.query('SELECT * FROM wingman.referees WHERE id != 0 EXCEPT SELECT name, surname, r.totalmatches, r.totalyellowcards, r.totalredcards, age, currentseasonmatches, totalfoulspg, totalfoulsdivtackles, totalpenpg, totalyelpg,totalredpg, currentfoulspg, currentfoulsdivtackles, currentpenpg, currentyelpg, currentyel, currentredpg, currentred, avatarurl, id  FROM wingman.matches m, wingman.referees r, wingman.teams t, wingman.teams t1 WHERE  m.home_id = t.teamid AND m.away_id = t1.teamid  AND m.referee_id = r.id AND m.week = $1;', [req.params.wid])
+          const results = await db.query('SELECT name, surname, totalmatches, totalyellowcards, totalredcards, age, currentseasonmatches, totalfoulspg, totalfoulsdivtackles, totalpenpg, totalyelpg,totalredpg, currentfoulspg, currentfoulsdivtackles, currentpenpg, currentyelpg, currentyel, currentredpg, currentred, avatarurl, id FROM wingman.referees WHERE id != 0  EXCEPT SELECT name, surname, r.totalmatches, r.totalyellowcards, r.totalredcards, age, currentseasonmatches, totalfoulspg, totalfoulsdivtackles, totalpenpg, totalyelpg,totalredpg, currentfoulspg, currentfoulsdivtackles, currentpenpg, currentyelpg, currentyel, currentredpg, currentred, avatarurl, id  FROM wingman.matches m, wingman.referees r, wingman.teams t, wingman.teams t1 WHERE  m.home_id = t.teamid AND m.away_id = t1.teamid  AND m.referee_id = r.id AND m.week = $1;', [req.params.wid])
           
           res.status(200).json({
             lenght: results.rows.length,
@@ -244,6 +244,33 @@ export default class userController{
           console.log(`Error when getting non-assigned referees for a week ${error.detail}`)
           res.status(400).json({error:error, data:{users:[]}})
         } 
+        }
+
+        static async getRank(req, res, next){
+          try {
+            const param = req.params.col
+            const result = await db.query('SELECT q.rnk FROM ( SELECT ROW_NUMBER() OVER (ORDER BY '+param +' DESC) AS rnk, r.* FROM wingman.referees AS r) AS q  WHERE q.user_id = $1', [req.params.id])
+            if(result.rows.length == 0)
+            {
+              throw {
+                detail: "Match not found.",
+                code: 1,
+                error: new Error()
+              };
+            }
+    
+            res.status(200).json({
+            data: result.rows[0]
+            })
+          } catch (err) {
+            console.log(`Error when getting one match ${err}`)
+            if(err.code == 1)
+            {
+              res.status(404).json({detail:err.detail, data:[]})
+              return
+            }
+            res.status(400).json({detail:err, data:[]})
+          }   
         }
         
     /**
@@ -262,6 +289,34 @@ export default class userController{
         try {
           
           const result = await db.query('SELECT wingman.referees.*, COALESCE(AVG(rate), 11) AS avg_rate FROM wingman.referees LEFT JOIN wingman.ratings ON id = referee_id  WHERE id = $1 GROUP BY(id, referee_id)', [req.params.id])
+
+          if(result.rows.length == 0)
+          {
+            throw {
+              detail: "Referee not found.",
+              code: 1,
+              error: new Error()
+            };
+          }
+  
+          res.status(200).json({
+          data: result.rows[0]
+          })
+        } catch (err) {
+          console.log(`Error when getting one referee ${err}`)
+          if(err.code == 1)
+          {
+            res.status(404).json({detail:err.detail, data:[]})
+            return
+          }
+          res.status(400).json({detail:err, data:[]})
+        }   
+      }
+
+      static async getActiveRefereeById(req, res, next){
+        try {
+          
+          const result = await db.query('SELECT * FROM wingman.users u, wingman.referees r WHERE u.user_id = r.user_id AND u.user_id = $1', [req.params.id])
 
           if(result.rows.length == 0)
           {
@@ -313,41 +368,79 @@ export default class userController{
           res.status(400).json({detail:err, data:[]})
         }   
       }
-      // static async doubleQueryForFutureReference(req, res, next) {
-      //   try {
-      //     // First, get the team data
-      //     const teamQuery = await db.query('SELECT DISTINCT * FROM wingman.teams t, wingman.teamref R WHERE teamid = $1 AND  t.teamname = R.teamname', [req.params.id]);
+
+      static async getRefereeRankings(req, res, next){
+        try {
+          
+          const result = await db.query("SELECT r.referee_id, home_yellow_cards+away_yellow_cards AS yels, home_red_cards + away_red_cards AS reds, home_fouls + away_fouls AS fouls,  m.match_id, ref.currentseasonmatches,ref.currentyel, ref.tension, ref.currentred, r.match_id, AVG(r.rate) as avg, CONCAT(t1.teamname, ' - ',t2.teamname) as matchname, CAST( AVG(r.rate)  AS DECIMAL(5, 2)) as avg2, CONCAT(ref.name, ' ', ref.surname) as refname,ROW_NUMBER() OVER(ORDER BY AVG(r.rate) desc) rank, ref.avatarurl FROM wingman.ratings r, wingman.matches m, wingman.referees ref, wingman.teams t1, wingman.teams t2 WHERE r.referee_id = m.referee_id and r.match_id = m.match_id and m.home_id = t1.teamid and m.away_id = t2.teamid and r.referee_id = ref.id AND m.week = $1 GROUP BY (r.referee_id, ref.currentseasonmatches, ref.currentyel, ref.currentred, ref.tension, m.match_id, r.match_id, ref.name,t1.teamname,t2.teamname, ref.surname, ref.avatarurl) ORDER BY AVG(r.rate) DESC", [req.params.id])
+          if(result.rows.length == 0)
+          {
+            throw {
+              detail: "Team not found.",
+              code: 1,
+              error: new Error()
+            };
+          }
+          res.status(200).json({
+            data:{
+              data: result.rows
+            }
+          })
+        } catch (err) {
+          console.log(`Error when getting one team ${err}`)
+          if(err.code == 1)
+          {
+            res.status(404).json({detail:err.detail, data:[]})
+            return
+          }
+          res.status(400).json({detail:err, data:[]})
+        }   
+      }
+
+
+
+
+
+
+
+
+
+
+      static async getRecommendationById(req, res, next) {
+        try {
+          // First, get the team data
+          const tensionQuery = await db.query("SELECT Abs( (r.tension)-(t.avg_tension_score*0.7)) AS TensionDif, t.match_id, r.id, r.avatarurl, t.homelogo, t.awaylogo, t.tension_class, r.tension, CONCAT(r.name, ' ', r.surname) as ref_name, t.avg_tension_score, t.home, t.away, t.hometension,t.awaytension FROM ( SELECT m.match_id, t1.teamname as home, t2.teamname as away, t1.teamlogo as homelogo, t2.teamlogo as awaylogo,t1.tension as hometension, t2.tension as awaytension, (t1.tension + t2.tension) / 2 AS avg_tension_score, (CASE WHEN (t1.tension + t2.tension) / 2 < 80 THEN 'Fair' WHEN (t1.tension + t2.tension) / 2 BETWEEN 80 AND 90 THEN 'Mediocre' WHEN (t1.tension + t2.tension) / 2 > 90  THEN 'Severe' END) AS tension_class FROM wingman.matches m JOIN wingman.teams t1 ON m.home_id = t1.teamid JOIN wingman.teams t2 ON m.away_id = t2.teamid ) t JOIN ( SELECT id, name, surname, tension, avatarurl, CASE WHEN tension < 53 THEN 'Fair' WHEN tension BETWEEN 53 AND 64.5 THEN 'Mediocre' WHEN tension > 64.5 THEN 'Severe' ELSE 'unknown' END AS tension_class FROM wingman.referees ) r ON t.tension_class = r.tension_class WHERE match_id = $1", [req.params.id]);
       
-      //     // Then, get the referees data
-      //     const refereesQuery = await db.query('SELECT id FROM wingman.referees');
+          // Then, get the referees data
+          const ratingQuery = await db.query("SELECT AVG(r.rate) AS avg_rating, rm.surname, CONCAT(rm.name,' ',rm.surname) as refname, rm.avatarurl as avatarurl FROM wingman.ratings r JOIN wingman.matches m ON r.match_id = m.match_id JOIN wingman.referees rm on rm.id = r.referee_id WHERE m.home_id = (SELECT home_id FROM wingman.matches WHERE match_id =$1) OR m.away_id = (SELECT away_id FROM wingman.matches WHERE match_id =$1) OR m.home_id = (SELECT away_id FROM wingman.matches WHERE match_id =$1) OR m.away_id = (SELECT home_id FROM wingman.matches WHERE match_id =$1) GROUP BY (r.referee_id,rm.surname, rm.name, rm.avatarurl)",[req.params.id]);
       
-      //     // Use Promise.all() to wait for both queries to finish
-      //     const [teamData, refereesData] = await Promise.all([teamQuery, refereesQuery]);
+          // Use Promise.all() to wait for both queries to finish
+          const [tensionData, ratingData] = await Promise.all([tensionQuery, ratingQuery]);
       
-      //     if (teamData.rows.length == 0) {
-      //       throw {
-      //         detail: "Team not found.",
-      //         code: 1,
-      //         error: new Error()
-      //       };
-      //     }
+          if (tensionData.rows.length == 0) {
+            throw {
+              detail: "Tension not found.",
+              code: 1,
+              error: new Error()
+            };
+          }
       
-      //     res.status(200).json({
-      //       data: {
-      //         team: teamData.rows,
-      //         referees: refereesData.rows
-      //       }
-      //     });
-      //   } catch (err) {
-      //     console.log(`Error when getting one team ${err}`);
+          res.status(200).json({
+            data: {
+              tensions: tensionData.rows,
+              ratings: ratingData.rows
+            }
+          });
+        } catch (err) {
+          console.log(`Error when getting one team ${err}`);
       
-      //     if (err.code == 1) {
-      //       res.status(404).json({detail: err.detail, data: []});
-      //       return;
-      //     }
-      //     res.status(400).json({detail: err, data: []});
-      //   }
-      // }
+          if (err.code == 1) {
+            res.status(404).json({detail: err.detail, data: []});
+            return;
+          }
+          res.status(400).json({detail: err, data: []});
+        }
+      }
       static async sortReferee(req, res, next){
         try {
           
@@ -1025,4 +1118,6 @@ static async verify(req, res, next){
       res.status(400).json({ error: error, data: { users: [] } });
     }
   }
+
+  
 }

@@ -97,7 +97,7 @@ export const RefereeDashboard = () => {
     <SmallCard title="Red Cards - 22/23 " subtitle = {referee.currentred}/>
     </Grid>
     <Grid item xs={12} mt = {0} sm={6} md={1} lg={2}>
-    <SmallCard title="Tension Metric" subtitle={((((referee.currentred)/referee.currentseasonmatches)*4 + ((referee.currentyel)/referee.currentseasonmatches) * 1.25) * 10).toFixed(2)}  reftens={((((referee.currentred)/referee.currentseasonmatches)*4 + ((referee.currentyel)/referee.currentseasonmatches) * 1.25) * 10)}/>
+    <SmallCard title="Tension Metric" subtitle={referee.tension.toFixed(2)} reftens = {referee.tension}/>
     </Grid>
     <Grid item xs={12} mt = {0} sm={6} md={1} lg={2}>
     <SmallCard title="Rating" subtitle={(Number(referee.avg_rate) ===11) ? "No ratings for this referee." : Number(referee.avg_rate).toFixed(2)}/>
