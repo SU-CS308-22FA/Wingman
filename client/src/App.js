@@ -28,6 +28,8 @@ import MatchReportPage from "./routes/matchReportPage";
 import TeamDashboardPage from "./routes/TeamDashboardPage";
 import UserArchivePage from "./routes/SuperAdmin/UserArchivePage";
 import { Recover } from "./components/archives/Recover";
+import ForgotPasswordPage from "./routes/ForgotPasswordPage";
+import ResetPasswordPage from "./routes/ResetPasswordPage";
 import Recommendation from "./components/RecommendationComponent";
 import RecommendationPage from "./routes/RecommendationPage";
 import RefRankPage from "./routes/RefereeRankingPage";
@@ -99,6 +101,8 @@ class App extends Component {
                     <Route path="/requests" element={<DeleteRequestPage />} />
                     <Route path="/reports" element={<MatchReportPage />} />
                     <Route path="/archive" element={<UserArchivePage />} />
+                    <Route path="/reset/" element={<ForgotPasswordPage/>}/>
+                    <Route path="/reset/:token" element={<ResetPasswordPage/>}/>
                     <Route path="/recover/:otp" element={<Recover/>}/>
                 </Routes>
               </Router>

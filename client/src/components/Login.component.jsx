@@ -167,9 +167,14 @@ const Login = ({}) => {
             Sign In
           </Button>
           <Grid container>
-            <Grid item>
+            <Grid item xs={12}>
               <Link href="/" variant="body2">
                 {"Don't have an account? Sign Up"}
+              </Link>
+            </Grid>
+            <Grid item xs={12}>
+              <Link href="/reset" variant="body2">
+                {"Forgot password?"}
               </Link>
             </Grid>
           </Grid>

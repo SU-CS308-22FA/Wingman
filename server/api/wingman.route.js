@@ -2,6 +2,7 @@ import express from "express";
 import authorize from "../middleware/authorize.js";
 import verify from "../middleware/verify.js";
 import matchController from "./matchController.js";
+import passwordController from "./passwordController.js";
 import userController from './userController.js';
 
 
@@ -52,6 +53,9 @@ router.route("/request").put(userController.acceptDeleteRequest)
 router.route("/request").patch(userController.rejectDeleteRequest)
 router.route("/rate/").post(matchController.rateMatch)
 router.route("/rate/").get(matchController.getRate)
+router.route("/reset").post(passwordController.createMail)
+router.route("/reset/verify/:token").post(passwordController.verify)
+router.route("/reset/:token").post(passwordController.recover)
 router.route("/activereferee/:id").get(userController.getActiveRefereeById)
 router.route("/activematches/:id").get(matchController.getPlayedMatchDatasByRef)
 router.route("/activematch/:id").get(matchController.getMatchByRefAssign)
