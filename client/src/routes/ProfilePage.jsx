@@ -79,7 +79,6 @@ const ProfilePage = () => {
   {
     return (
       <div>
-        <WellcomeAppBar/>
         <OTPUpdate/>
         <Footer/>
       </div>

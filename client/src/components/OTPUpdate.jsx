@@ -101,6 +101,11 @@ const OTPUpdate = ({}) => {
     <div>
       <Container component="main">
         <CssBaseline />
+        <Box
+          sx={{
+            width: 20,
+            height: 20,}}
+        ></Box>
           <Box
           sx={{
             marginTop: 8,
@@ -164,6 +169,11 @@ const OTPUpdate = ({}) => {
           }}
         />
       </Container>
+      <Box
+          sx={{
+            width: 60,
+            height: 60,}}
+        ></Box>
       
     </div>
   );
